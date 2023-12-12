@@ -17,10 +17,11 @@ const snippetSchema = new Schema(
     ref: 'User',
     required: true,
   },
-  //snippet text is a string
+  //snippet text is a required string
   snippetText:
   {
     type: String,
+    required: true
   },
   //snippet text is an array of code block subdocuments
   snippetCode: [codeBlockSchema],
