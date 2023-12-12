@@ -1,8 +1,9 @@
 //importing utilities, models, & database connection files
 //==============================================================
 const db = require('../config/connection');
-const {User} = require('../models');
+const {User, Snippet} = require('../models');
 const userSeeds = require('./userSeeds.json');
+const snippetSeeds = require('./snippetSeeds.json');
 const cleanDB = require('./clearDB');
 //==============================================================
 
@@ -16,18 +17,17 @@ db.once('open', async () =>
     await cleanDB('users');
     await User.create(userSeeds);
 
-    // for (let i = 0; i < thoughtSeeds.length; i++)
-    // {
-    //   const { _id, thoughtAuthor } = await Thought.create(thoughtSeeds[i]);
-    //   const user = await User.findOneAndUpdate(
-    //     { username: thoughtAuthor },
-    //     {
-    //       $addToSet: {
-    //         thoughts: _id,
-    //       },
-    //     }
-    //   );
-    // }
+    //clean out the 'Snippet' collection, before filling it with the pre-defined sample snippet data
+    await cleanDB('snippets');
+    for (let snippet = 0; snippet < snippetSeeds.length; snippet++)
+    {
+      //extracts objectId & username from each snippet, and add the objectId to the appropriate user's 'snippets' array
+      const {_id, username} = await Snippet.create(snippetSeeds[snippet]);
+      await User.findOneAndUpdate({username},
+      {
+        $addToSet:{snippets: _id},
+      });
+    }
   }
   catch (err) //catch any errors that occur, log them to console, & disconnect from the database
   {
