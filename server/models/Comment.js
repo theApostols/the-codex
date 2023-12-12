@@ -9,6 +9,12 @@ const dateFormat = require('../utils/dateFormat.js');
 //==============================================================
 const commentSchema = new Schema(
 {
+  //_id property is an objectId, default value a new objectId value
+  _id:
+  {
+    type: Schema.Types.ObjectId,
+    default: () => new mongoose.Types.ObjectId(),
+  },
   //username is a required string, referencing the user that created the comment
   username:
   {
