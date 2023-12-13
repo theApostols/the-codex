@@ -25,21 +25,46 @@ const snippetSchema = new Schema(
   },
   //snippet text is an array of code block subdocuments
   snippetCode: [codeBlockSchema],
-  //creationDate is a formatted date, default value set to the current timestamp
+  //creationDate is a date, default value set to the current timestamp
   creationDate:
   {
     type: Date,
     default: Date.now,
-    get: (timestamp) => dateFormat(timestamp)
   },
-  //editDate is a formatted date, set if a user ever edits their snippet
+  //editDate is a date, set if a user ever edits their snippet
   editDate:
   {
     type: Date,
-    get: (timestamp) => dateFormat(timestamp)
   },
   //comment schema is an array of comment subdocuments
   comments: [commentSchema]
+},
+{
+  //allows the display of virtuals when returning JSON data
+  toJSON:
+  {
+    virtuals: true,
+  },
+  id: false, //excludes extra ID value when returning JSON data
+});
+//==============================================================
+
+//virtual property for snippetSchema which formats the creation date upon query
+//==============================================================
+snippetSchema.virtual('formattedCreationDate').get(function()
+{
+  return dateFormat(this.creationDate);
+});
+//==============================================================
+
+//virtual property for snippetSchema which formats the edit date upon query
+//==============================================================
+snippetSchema.virtual('formattedEditDate').get(function()
+{
+  if (this.editDate)
+  {
+    return dateFormat(this.editDate);
+  }
 });
 //==============================================================
 
