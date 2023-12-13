@@ -1,9 +1,10 @@
 //importing models from appropriate files
 //==============================================================
 const User = require('./User.js');
+const Snippet = require('./Snippet.js');
 //==============================================================
 
 //exports models
 //==============================================================
-module.exports = {User};
+module.exports = {User, Snippet};
 //==============================================================
