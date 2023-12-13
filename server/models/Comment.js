@@ -29,8 +29,23 @@ const commentSchema = new Schema(
   {
     type: Date,
     default: Date.now,
-    get: (timestamp) => dateFormat(timestamp)
   }
+},
+{
+  //allows the display of virtuals when returning JSON data
+  toJSON:
+  {
+    virtuals: true,
+  },
+  id: false, //excludes extra ID value when returning JSON data
+});
+//==============================================================
+
+//virtual property for commentSchema which formats the creation date upon query
+//==============================================================
+commentSchema.virtual('formattedCreationDate').get(function()
+{
+  return dateFormat(this.creationDate);
 });
 //==============================================================
 
