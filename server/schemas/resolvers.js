@@ -1,85 +1,122 @@
-const { User } = require("../models");
+const { User, Snippet, Comment, CodeBlock } = require("../models");
 const { signToken, AuthenticationError } = require("../utils/auth");
+
+
+//testing resolvers for User, Snippet, Comment, and CodeBlock still a WIP playing around with it
 
 const resolvers = {
   Query: {
-    users: async () => {
-      return User.find();
-    },
-   users: async (parent, { userId }) => {
-      return User.findOne({ _id: userId });
-    },
-    //Retrieve the logged in user without specifically searching for them
-    me: async (parent, args, context) => {
-      if (context.user) {
-        return User.findOne({ _id: context.user._id });
+    //user query (still unsure if this is correct)
+    getUser: async (_, { username }) => {
+      try {
+        const user = await User.findOne({ username });
+        return user;
+      } catch (error) {
+        console.error(error);
+        throw new Error('Failed to fetch user');
       }
-      throw AuthenticationError;
     },
+    //snippet query
+    getSnippet: async (_, { id }) => {
+      try {
+        const snippet = await Snippet.findById(id);
+        return snippet;
+      } catch (error) {
+        console.error(error);
+        throw new Error('Failed to fetch snippet');
+      }
+    },
+    //comment query
+    getComment: async (_, { id }) => {
+      try {
+        const comment = await Comment.findById(id);
+        return comment;
+      } catch (error) {
+        console.error(error);
+        throw new Error('Failed to fetch comment');
+      }
+    },
+    //codeblock query
+    getCodeBlock: async (_, { id }) => {
+      try{
+        const codeBlock = await codeBlock.findById(id);
+        return codeBlock;
+      } catch (error) {
+        console.error(error);
+        throw new Error('Failed to fetch code block');
+      }
+  },
   },
 
+//Might need to add more Queries still a WIP but should be a good start
 
   Mutation: {
-    addUser: async (parent, { name, email, password }) => {
-      const user = await User.create({ name, email, password });
-      const token = signToken(user);
-
-      return { token, user };
+    createUser: async (_, { username, email, password }) => {
+      try {
+        const newUser = new User({ username, email, password });
+        const result = await newUser.save();
+        return result;
+      } catch (error) {
+        console.error(error);
+        throw new Error('Failed to create user');
+      }
     },
-    login: async (parent, { email, password }) => {
-      const user = await User.findOne({ email });
-
-      if (!user) {
-        throw AuthenticationError;
+    createSnippet: async (_, { username, snippetText }) => {
+      try {
+        const newSnippet = new Snippet({ username, snippetText });
+        const result = await newSnippet.save();
+        return result;
+      } catch (error) {
+        console.error(error);
+        throw new Error('Failed to create snippet');
       }
-
-      const correctPw = await user.isCorrectPassword(password);
-
-      if(!correctPw) {
-        throw AuthenticationError;
+    },
+    createComment: async (_, { username, commentText }) => {
+      try {
+        const newComment = new Comment({ username, commentText });
+        const result = await newComment.save();
+        return result;
+      } catch (error) {
+        console.error(error);
+        throw new Error('Failed to create comment');
       }
-
-      const token = signToken(user);
-      return { token, user };
-  },
-
-  // Add a third argument to the resolver to access data in our context
-
-  addSkill: async (parent, { userId, skill }, context) => {
-    // If context has a `user` property, that means the user executing this mutation has a valid JWT and is logged in
-    if (context.user) {
-      return User.findOneAndUpdate(
-        { _id: userId },
-        {
-          $addToSet: { skills: skill },
-        },
-        {
-          new: true,
-          runValidators: true,
-        }
-      );
+    },
+    createCodeBlock: async (_, { username, codeBlockText }) => {
+      try {
+        const newCodeBlock = new CodeBlock({ username, codeBlockText });
+        const result = await newCodeBlock.save();
+        return result;
+      } catch (error) {
+        console.error(error);
+        throw new Error('Failed to create code block');
+      }
     }
-    throw new AuthenticationError('You need to be logged in!');
+    // Need to add more mutations (WIP) this is gonna be LENGTHY hehe
   },
-
-  // Set up mutation so a logged in user can only remove their profile and no one else's
-
-  removeUser: async (parent, args, context) => {
-    if (context.user) {
-      return User.findOneAndDelete({ _id: context.user._id });
-    }
-    throw new AuthenticationError('You need to be logged in!');
+  User: {
+    snippets: async (parent) => {
+      try {
+        const user = await User.findById(parent.id).populate('snippets');
+        return user.snippets || [];
+      } catch (error) {
+        console.error(error);
+        throw new Error('Failed to fetch user snippets');
+      }
+    },
+    // Need to add more field resolvers for the User type (WIP)
   },
+  Snippet: {
+    comments: async (parent) => {
+      try {
+        const snippet = await Snippet.findById(parent.id).populate('comments');
+        return snippet.comments || [];
+      } catch (error) {
+        console.error(error);
+        throw new Error('Failed to fetch snippet comments');
+      }
+    },
+    // Need to add more field resolvers for the Snippet type and a bunch of crap HAHA UGHH (WIP)
   },
 };
-
-
-
-
-// const resolvers = {
-//   Query: {
-//     hello: () => "Hello, world!",
-//   },
-// };
 
 module.exports = resolvers;

@@ -6,34 +6,57 @@
 //   }
 // `;
 
-
 const typeDefs = `
-  type User {
-    _id: ID!
-    name: String!
-    email: String!
-    password: String! 
-    skills: [String] 
-  }
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  snippets: [Snippet]
+  # need to add more fields WIP
+}
 
-  type AuthPayload {
-    token: String
-    user: User
-  }
+type Snippet {
+  id: ID!
+  username: String!
+  snippetText: String!
+  comments: [Comment]
+  # need to add more fields WIP
+}
 
-  type Query {
-    users: [User]
-    user(userId: ID!): User
-    me: User
-  }
+type Comment {
+  id: ID!
+  username: String!
+  commentText: String!
+  # need to add more fields WIP
+}
 
-  type Mutation {
-    addUser(name: String!, email: String!, password: String!): AuthPayload
-    login(email: String!, password: String!): AuthPayload
-    addSkill(userId: ID!, skill: String!): User
-    removeUser: User
-  }
+type CodeBlock {
+  id: ID!
+  username: String!
+  codeBlockText: String!
+  # need to add more fields WIP
+}
+
+type Query {
+  getUser(username: String!): User
+  getSnippet(id: ID!): Snippet
+  getComment(id: ID!): Comment
+  getCodeBlock(id: ID!): CodeBlock
+  # need to add more fields WIP
+}
+
+type Mutation {
+  createUser(username: String!, email: String!, password: String!): User
+  createSnippet(username: String!, snippetText: String!): Snippet
+  createComment(username: String!, commentText: String!): Comment
+  createCodeBlock(username: String!, codeBlockText: String!): CodeBlock
+  # need to add more fields WIP
+}
 `;
+
+
+
+
 
 
 
