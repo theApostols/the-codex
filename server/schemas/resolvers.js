@@ -103,6 +103,7 @@ const resolvers = {
         throw new Error('Failed to fetch user snippets');
       }
     },
+ 
     // Need to add more field resolvers for the User type (WIP)
   },
   Snippet: {
