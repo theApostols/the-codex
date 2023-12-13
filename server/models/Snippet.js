@@ -37,7 +37,23 @@ const snippetSchema = new Schema(
     type: Date,
   },
   //comment schema is an array of comment subdocuments
-  comments: [commentSchema]
+  comments: [commentSchema],
+  //array of objectIds of users that have given the snippet props
+  props:
+  [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
+  //array of objectIds of users that have given the snippet a drop
+  drops:
+  [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
 },
 {
   //allows the display of virtuals when returning JSON data
@@ -46,6 +62,14 @@ const snippetSchema = new Schema(
     virtuals: true,
   },
   id: false, //excludes extra ID value when returning JSON data
+});
+//==============================================================
+
+//virtual property for snippetSchema which calculates the difference of props & drops for the snippet
+//==============================================================
+snippetSchema.virtual('overallProps').get(function()
+{
+  return this.props.length - this.drops.length;
 });
 //==============================================================
 
