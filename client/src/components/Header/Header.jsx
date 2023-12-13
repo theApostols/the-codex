@@ -22,7 +22,7 @@ function Header() {
         <Flex align="center">
           {/* this was the only way i could get the logo to show up, adjust as needed */}
           <Image
-            src="../../public/images/THE-CODEX.png"
+            src="/images/THE-CODEX.png"
             alt="LOGO"
             boxSize="100px"
           />
