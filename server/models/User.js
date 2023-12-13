@@ -16,7 +16,6 @@ const userSchema = new Schema(
     unique: true,
     trim: true,
   },
-  //email is a string, required, must be unique, and is validated via an email regex
   email:
   {
     type: String, //email is a string
@@ -32,6 +31,7 @@ const userSchema = new Schema(
       message: 'The provided email is invalid', //if the validation fails, return this error message
     },
   },
+  //password is a string, required, with a minimum length of eight characters
   password:
   {
     type: String,
@@ -59,7 +59,6 @@ const userSchema = new Schema(
   [
     {
       type: Schema.Types.ObjectId,
-      ref: 'Snippet',
     }
   ],
 });
