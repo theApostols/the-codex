@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ChakraProvider } from "@chakra-ui/react";
+import customTheme from './utils/theme.js';
 
 import "./index.css";
 
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <ChakraProvider>
+  <ChakraProvider theme={customTheme}>
     <RouterProvider router={router} />
   </ChakraProvider>
 );
