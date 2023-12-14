@@ -17,6 +17,12 @@ const snippetSchema = new Schema(
     ref: 'User',
     required: true,
   },
+  //snippet title is a required string
+  snippetTitle:
+  {
+    type: String,
+    required: true
+  },
   //snippet text is a required string
   snippetText:
   {
