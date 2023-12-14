@@ -13,7 +13,7 @@ export default function Footer() {
       color="blue.700"
       display="flex"
       flexDirection="column"
-      minHeight="100vh"
+      minHeight="100vh" // extends footer to bottom of page so no trailing white space
 
     >
       <Container maxW="container.xl" textAlign="center" flex="1">
@@ -29,8 +29,7 @@ export default function Footer() {
                         <Icon as={MdOutlineEmail} boxSize={8} />
                     </Link>
                 </Tooltip>
-            </Box>
-                    
+            </Box>                    
       </Container>
     </Box>
   );

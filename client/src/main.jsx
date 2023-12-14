@@ -12,6 +12,7 @@ import Home from "./pages/Home.jsx";
 import Login from "./components/Login-Signup/LoginForm.jsx";
 import Signup from "./components/Login-Signup/SingupForm.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
+import SnippetPage from "./pages/SnippetPage.jsx";
 
 // routes and corresponding components
 const router = createBrowserRouter([
@@ -32,10 +33,10 @@ const router = createBrowserRouter([
         path: '/signup',
         element: <Signup />,
       },
-      // {
-      //   path: '/',
-      //   element: < />,
-      // },
+      {
+        path: '/createsnippet',
+        element: <SnippetPage />,
+      },
     ],
   },
 ]);
