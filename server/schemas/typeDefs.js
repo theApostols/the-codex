@@ -1,11 +1,5 @@
-// const typeDefs = ``;
-
-// const typeDefs = `
-//   type Query {
-//     hello: String
-//   }
-// `;
-
+//defining typeDefs
+//==============================================================
 const typeDefs = `
 type User
 {
@@ -72,5 +66,9 @@ type Mutation
   createComment(username: String!, commentText: String!, commentCode: [CodeBlockInput], snippetId: ID!): Comment
 }
 `;
+//==============================================================
 
+//exporting typeDefs
+//==============================================================
 module.exports = typeDefs;
+//==============================================================
