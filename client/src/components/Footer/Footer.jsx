@@ -1,6 +1,5 @@
 import { Box, Container, Stack, Text, Link, Heading, SimpleGrid, Icon, Image } from '@chakra-ui/react';
-import { FaTwitter, FaInstagram, FaGithub } from 'react-icons/fa';
-import { EmailIcon } from '@chakra-ui/icons';
+import { FaTwitter, FaInstagram, FaGithub, FaEnvelope } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -61,7 +60,7 @@ const Footer = () => {
             <Link href="#" isExternal><Icon as={FaGithub} /></Link>
             {/* Additional social media icons... */}
             <Link href="mailto:theapostolsofveronica@outlook.com" isExternal>
-              <EmailIcon />
+              <FaEnvelope />
             </Link>
           </Stack>
         </Box>
