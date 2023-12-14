@@ -7,9 +7,26 @@
 // `;
 
 const typeDefs = `
+type User
+{
+  _id: ID!
+  username: String!
+  email: String!
+  password: String!
+  snippets: [ID]
+  savedSnippets: [ID]
+  comments: [ID]
+}
+
 type CodeBlock
 {
   _id: ID!
+  language: String!
+  code: String!
+}
+
+input CodeBlockInput
+{
   language: String!
   code: String!
 }
@@ -18,7 +35,7 @@ type Comment
 {
   _id: ID!
   username: String!
-  commentText: String!
+  commentText: String
   commentCode: [CodeBlock]
   creationDate: String!
   formattedCreationDate: String!
@@ -44,35 +61,14 @@ type Snippet
 type Query
 {
   allSnippets: [Snippet]
-  oneSnippet(snippetId: ID!): [Snippet]
+  oneSnippet(snippetId: ID!): Snippet
   userSnippets(username: String!): [Snippet]
 }
-`;
 
-/*
-type User
+type Mutation
 {
-  id: ID!
-  username: String!
-  email: String!
-  snippets: [Snippet]!
-}
-
-  getSnippet(id: ID!): Snippet
-  getComment(id: ID!): Comment
-  getCodeBlock(id: ID!): CodeBlock
-  # need to add more fields WIP
-}
- */
-
-/*type Mutation {
   createUser(username: String!, email: String!, password: String!): User
-  createSnippet(username: String!, snippetText: String!): Snippet
-  createComment(username: String!, commentText: String!): Comment
-  createCodeBlock(username: String!, codeBlockText: String!): CodeBlock
-  # need to add more fields WIP
-} */
-
-
+}
+`;
 
 module.exports = typeDefs;
