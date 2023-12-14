@@ -20,6 +20,7 @@ type Snippet {
   username: String!
   snippetText: String!
   comments: [Comment]
+  rating: [Ratings]
   # need to add more fields WIP
 }
 
@@ -36,6 +37,12 @@ type CodeBlock {
   codeBlockText: String!
   # need to add more fields WIP
 }
+
+type Ratings {
+  props: Int!
+  drops: Int!
+}
+
 
 type Query {
   getUser(username: String!): User

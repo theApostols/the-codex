@@ -71,16 +71,39 @@ const resolvers = {
         throw new Error('Failed to create snippet');
       }
     },
-    createComment: async (_, { username, commentText }) => {
+    createComment: async (_, { username, commentText, snippetId }) => {
       try {
         const newComment = new Comment({ username, commentText });
         const result = await newComment.save();
-        return result;
-      } catch (error) {
-        console.error(error);
-        throw new Error('Failed to create comment');
-      }
+      //store comments in array of comment IDs
+      const updatedSnippet = await Snippet.findOneAndUpdate(
+        snippetId,
+        { $push: { comments: result._id } },
+        { new: true }
+      );
+      return result;
+      }catch (error);
+      throw new Error('Failed to create comment');
+
     },
+     
+    //resolver to handle upvotes and downvotes (still a WIP)
+    voteSnippet: async (_, { snippetId, voteType }) => {
+      try{
+        const updateField = voteType === 'props' ? 'rating.props' : 'rating.drops';
+
+        const updatedSnippet = await Snippet.findByIdAndUpdate(
+          snippetId, 
+          { $inc: { [updateField]: 1 } },
+          { new: true }
+        )
+      };
+      return updatedSnippet;
+    }catch (error) {
+      console.error(error);
+      throw new Error('Failed to vote on snippet');
+    },
+
     createCodeBlock: async (_, { username, codeBlockText }) => {
       try {
         const newCodeBlock = new CodeBlock({ username, codeBlockText });
