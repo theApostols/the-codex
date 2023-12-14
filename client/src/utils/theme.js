@@ -81,11 +81,11 @@ const linkStyles = {
   Link: {
     variants: {
       link: {
-        color: 'codex.accents',
+        color: 'codex.highlights',
         textDecoration: 'none',
         _hover: {
           textDecoration: 'underline',
-          color: 'codex.highlights',
+          color: 'codex.linkHover',
         },
         _active: {
           color: 'codex.linkActive',
