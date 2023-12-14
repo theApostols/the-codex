@@ -64,6 +64,23 @@ const resolvers =
         throw new Error('Failed to create a new user;', error);
       }
     },
+    createSnippet: async (parent, {username, snippetTitle, snippetText, snippetCode}) =>
+    {
+      try
+      {
+        const newSnippet = new Snippet({username, snippetTitle, snippetText, snippetCode});
+        const result = await newSnippet.save();
+
+        await User.findOneAndUpdate({username}, {$addToSet: {snippets: newSnippet._id}})
+
+        return result;
+      }
+      catch (error)
+      {
+        console.error(error);
+        throw new Error('Failed to create new snippet;', error);
+      }
+    },
   }
 };
 
