@@ -9,8 +9,20 @@ import {
   Spacer,
   Container,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+  const navigate = useNavigate();
+
+  const handleSignUpClick = () => {
+    // Navigate to the sign-up page
+    navigate("/signup");
+  };
+
+  const handleLoginClick = () => {
+    navigate("/login");
+  };
+
   return (
     <Box
       bg="blue.100"
@@ -45,10 +57,19 @@ function Header() {
             </Link>
           </Box>
           <Spacer />
-          <Button colorScheme="blue" variant="ghost" mr={4}>
+          <Button
+            onClick={handleLoginClick}
+            colorScheme="blue"
+            variant="ghost"
+            mr={4}
+          >
             Log In
           </Button>
-          <Button colorScheme="blue" variant="solid">
+          <Button
+            colorScheme="blue"
+            variant="solid"
+            onClick={handleSignUpClick}
+          >
             Sign Up
           </Button>
         </Flex>
