@@ -1,6 +1,5 @@
-//importing models & database connection file
+//importing database connection file
 //==============================================================
-const models = require('../models');
 const db = require('../config/connection');
 //==============================================================
 
