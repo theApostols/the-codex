@@ -1,8 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import customTheme from './utils/theme.js';
+import customTheme from "./utils/theme.js";
 
 import "./index.css";
 
@@ -13,11 +13,12 @@ import Login from "./components/Login-Signup/LoginForm.jsx";
 import Signup from "./components/Login-Signup/SingupForm.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import SnippetPage from "./pages/SnippetPage.jsx";
+import UserPage from "./pages/UserPage.jsx";
 
 // routes and corresponding components
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
@@ -26,24 +27,26 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/login',
-        element:  <Login />,
+        path: "/login",
+        element: <Login />,
       },
       {
-        path: '/signup',
+        path: "/signup",
         element: <Signup />,
       },
       {
-        path: '/createsnippet',
+        path: "/createsnippet",
         element: <SnippetPage />,
+      },
+      {
+        path: "/userpage",
+        element: <UserPage />,
       },
     ],
   },
 ]);
 
-
-
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <ChakraProvider theme={customTheme}>
     <RouterProvider router={router} />
   </ChakraProvider>

@@ -1,5 +1,15 @@
-import { Box, Container, Stack, Text, Link, Heading, SimpleGrid, Icon, Image } from '@chakra-ui/react';
-import { FaTwitter, FaInstagram, FaGithub, FaEnvelope } from 'react-icons/fa';
+import {
+  Box,
+  Container,
+  Stack,
+  Text,
+  Link,
+  Heading,
+  SimpleGrid,
+  Icon,
+  Image,
+} from "@chakra-ui/react";
+import { FaTwitter, FaInstagram, FaGithub, FaEnvelope } from "react-icons/fa";
 
 const Footer = () => {
   return (
