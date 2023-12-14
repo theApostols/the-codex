@@ -22,14 +22,14 @@ const buttonStyles = {
     variants: {
       primary: {
         bg: 'codex.main',
-        color: 'white',
+        color: 'codex.accents',
         _hover: {
           bg: 'codex.highlights',
         },
       },
       secondary: {
         bg: 'codex.highlights',
-        color: 'white',
+        color: 'codex.accents',
         _hover: {
           bg: 'codex.borders',
         },
@@ -43,9 +43,9 @@ const buttonStyles = {
       },
       outline: {
         bg: 'transparent',
-        color: 'codex.main',
+        color: 'codex.accents',
         border: '1px solid',
-        borderColor: 'codex.main',
+        borderColor: 'codex.highlights',
         _hover: {
           bg: 'codex.main',
           color: 'white',
@@ -81,7 +81,7 @@ const linkStyles = {
   Link: {
     variants: {
       link: {
-        color: 'codex.highlights',
+        color: 'codex.accents',
         textDecoration: 'none',
         _hover: {
           textDecoration: 'underline',

@@ -15,7 +15,7 @@ import {
   IconButton
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { MdOutlineEmail, MdMenu  } from "react-icons/md";
+import { MdMenu } from "react-icons/md";
 import theme from "../../utils/theme";
 
 function Header() {
@@ -29,7 +29,7 @@ function Header() {
   const handleLoginClick = () => {
     navigate("/login");
   };
-  
+
   const navLinks = [
     { name: "Home", href: "#!" },
     { name: "Snippets", href: "#!" },
@@ -62,7 +62,7 @@ function Header() {
                 href={link.href}
                 p={2}
                 key={link.name}
-                fontSize="md"
+                fontSize="lg"
                 fontWeight="medium"
             >
                 {link.name}
@@ -73,7 +73,7 @@ function Header() {
           <Box display={{ base: 'none', md: 'block' }}>
           <Button
             onClick={handleLoginClick}
-            variant="primary"
+            variant="outline"
             mr={4}
           >
             Log In
