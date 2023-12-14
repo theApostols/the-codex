@@ -69,6 +69,7 @@ type Mutation
 {
   createUser(username: String!, email: String!, password: String!): User
   createSnippet(username: String!, snippetTitle: String, snippetText: String!, snippetCode: [CodeBlockInput]!): Snippet
+  createComment(username: String!, commentText: String!, commentCode: [CodeBlockInput], snippetId: ID!): Comment
 }
 `;
 

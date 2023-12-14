@@ -81,6 +81,32 @@ const resolvers =
         throw new Error('Failed to create new snippet;', error);
       }
     },
+    createComment: async (parent, {username, commentText, commentCode, snippetId}) =>
+    {
+      try
+      {
+        const newComment =
+        {
+          username,
+          commentText,
+          commentCode
+        };
+
+        const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
+          {$push: {comments: newComment}}, {new: true});
+
+        const result = updatedSnippet.comments[updatedSnippet.comments.length - 1];
+
+        await User.findOneAndUpdate({username}, {$addToSet: {comments: result._id}})
+    
+        return result;
+      }
+      catch (error)
+      {
+        console.error(error);
+        throw new Error('Failed to create new comment;', error);
+      }
+    },
   }
 };
 
