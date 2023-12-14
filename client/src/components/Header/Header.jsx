@@ -12,7 +12,12 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  IconButton
+  IconButton,
+  Avatar,
+  AvatarGroup,
+  Collapse,
+  useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { MdMenu } from "react-icons/md";
@@ -37,6 +42,8 @@ function Header() {
     { name: "Button 4", href: "#!" },
   ];
 
+  const { isOpen, onToggle } = useDisclosure();
+
   return (
     <Box
       //bg="blue.100"
@@ -46,58 +53,81 @@ function Header() {
       <Container maxW="container.xl">
         <Flex align="center">
           {/* this was the only way i could get the logo to show up, adjust as needed */}
-          <Image
-            src="/images/logo_dark.png"
-            alt="LOGO"
-            boxSize="100px"
-          />
-          <Text color='codex.accents' fontSize="xl" fontWeight="bold" ml={2}>
+          <Image src="/images/logo_dark.png" alt="LOGO" boxSize="100px" />
+          <Text color="codex.accents" fontSize="2xl" fontWeight="bold" ml={2}>
             The Codex
           </Text>
           <Spacer />
-          <Box as="nav" display={{ base: 'none', md: 'block' }} >
-          {navLinks.map(link => (
+
+          {/* Navbar */}
+          <Box as="nav" display={{ base: "none", md: "block" }}>
+            {navLinks.map((link) => (
               <Link
-              variant="link"
+                variant="link"
                 href={link.href}
                 p={2}
                 key={link.name}
-                fontSize="lg"
+                fontSize="md"
                 fontWeight="medium"
-            >
+              >
                 {link.name}
               </Link>
             ))}
           </Box>
           <Spacer />
-          <Box display={{ base: 'none', md: 'block' }}>
-          <Button
-            onClick={handleLoginClick}
-            variant="outline"
-            mr={4}
-          >
-            Log In
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={handleSignUpClick}
-          >
-            Sign Up
-          </Button>
+
+          <AvatarGroup mr={4}>
+            <Avatar
+              size="lg"
+              name="Jhon Doe"
+              src="https://bit.ly/broken-link"
+              bg="codex.highlights"
+            />
+          </AvatarGroup>
+          <Box display={{ base: "none", md: "block" }}>
+            <Button onClick={handleLoginClick} variant="outline" mr={4}>
+              Log In
+            </Button>
+            <Button variant="secondary" onClick={handleSignUpClick}>
+              Sign Up
+            </Button>
           </Box>
-          <Box display={{ base: 'block', md: 'none' }}>
-          <Menu>
-              <MenuButton as={IconButton} icon={<MdMenu />} color={theme.colors.codex.highlights} variant='ghost' />
-              <MenuList>
-                {navLinks.map(link => (
-                  <MenuItem key={link.name} onClick={() => navigate(link.href)}>
-                    {link.name}
-                  </MenuItem>
-                ))}
-                <MenuItem onClick={handleLoginClick}>Log In</MenuItem>
-                <MenuItem onClick={handleSignUpClick}>Sign Up</MenuItem>
-              </MenuList>
-            </Menu>
+          <Box display={{ base: "block", md: "none" }}>
+            <>
+              <Button variant='primary' onClick={onToggle} as={IconButton} icon={<MdMenu />} ></Button>
+              <Collapse in={isOpen} animateOpacity>
+                <Box
+                  p="40px"
+                  color="codex.main"
+                  mt="4"
+                  bg="teal.500"
+                  rounded="md"
+                  shadow="md"
+                  display={{ base: "block", md: "block" }}
+                >
+                  <VStack spacing={4}>
+                    {navLinks.map((link) => (
+                      <Link
+                        variant="link"
+                        href={link.href}
+                        p={2}
+                        key={link.name}
+                        fontSize="md"
+                        fontWeight="medium"
+                      >
+                        {link.name}
+                      </Link>
+                    ))}
+                    <Button onClick={handleLoginClick} variant="outline" mr={4}>
+                      Log In
+                    </Button>
+                    <Button variant="secondary" onClick={handleSignUpClick}>
+                      Sign Up
+                    </Button>
+                  </VStack>
+                </Box>
+              </Collapse>
+            </>
           </Box>
         </Flex>
       </Container>

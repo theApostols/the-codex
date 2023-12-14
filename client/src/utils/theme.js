@@ -22,14 +22,14 @@ const buttonStyles = {
     variants: {
       primary: {
         bg: 'codex.main',
-        color: 'codex.accents',
+        color: 'white',
         _hover: {
           bg: 'codex.highlights',
         },
       },
       secondary: {
         bg: 'codex.highlights',
-        color: 'codex.accents',
+        color: 'white',
         _hover: {
           bg: 'codex.borders',
         },
@@ -43,7 +43,7 @@ const buttonStyles = {
       },
       outline: {
         bg: 'transparent',
-        color: 'codex.accents',
+        color: 'white',
         border: '1px solid',
         borderColor: 'codex.highlights',
         _hover: {
@@ -85,7 +85,7 @@ const linkStyles = {
         textDecoration: 'none',
         _hover: {
           textDecoration: 'underline',
-          color: 'codex.linkHover',
+          color: 'codex.highlights',
         },
         _active: {
           color: 'codex.linkActive',
@@ -103,12 +103,12 @@ const globalStyles = {
         fontFamily: 'Helvetica, sans-serif',
         lineHeight: '1.6',
         backgroundColor: 'codex.main',
+        backgroundImage: 'linear-gradient(to right top, #181726, #212035, #2b2945, #363255, #413c66);',
       },
     },
   },
 };
 
-// Combine the color palette and button styles into a custom theme
 const customTheme = extendTheme({
   colors,
   components: {
