@@ -1,0 +1,9 @@
+export const ADD_SNIPPET = "ADD_SNIPPET";
+export const EDIT_SNIPPET = "EDIT_SNIPPET";
+export const DETELE_SNIPPET = "DELETE_SNIPPET";
+export const SAVE_SNIPPET = "SAVE_SNIPPET";
+export const REMOVE_SAVED_SNIPPET = "REMOVE_SAVED_SNIPPET";
+export const ADD_PROPS = "ADD_PROPS";
+export const REMOVE_PROPS = "REMOVE_PROPS";
+export const ADD_DROPS = "ADD_DROPS";
+export const REMOVE_DROPS = "REMOVE_DROPS";
