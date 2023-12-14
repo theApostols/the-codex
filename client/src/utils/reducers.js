@@ -1,13 +1,4 @@
 import {
-  UPDATE_PRODUCTS,
-  ADD_TO_CART,
-  UPDATE_CART_QUANTITY,
-  REMOVE_FROM_CART,
-  ADD_MULTIPLE_TO_CART,
-  UPDATE_CATEGORIES,
-  UPDATE_CURRENT_CATEGORY,
-  CLEAR_CART,
-  TOGGLE_CART,
   ADD_SNIPPET,
   EDIT_SNIPPET,
   DETELE_SNIPPET,
@@ -25,11 +16,6 @@ const initialState = {};
 // Reducer function
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case UPDATE_PRODUCTS:
-      return {
-        ...state,
-      };
-
     case ADD_SNIPPET:
       // Handle the ADD_SNIPPET action
       // Return a new state object with the necessary updates
