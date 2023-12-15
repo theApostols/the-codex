@@ -5,6 +5,8 @@ import { SAVE_SNIPPET } from "../utils/actions";
 import theme from "../utils/theme";
 
 export default function CreateSnippetPage() {
+  const [snippetTitle, setSnippetTitle] = useState("");
+  const [snippetText, setSnippetText] = useState("");
   const [code, setCode] = useState("");
 
   const [language, setLanguage] = useState("javascript"); // default language is javascript
@@ -13,6 +15,14 @@ export default function CreateSnippetPage() {
 
   const [resourceTitle, setResourceTitle] = useState("");
   const [resourceLink, setResourceLink] = useState("");
+
+  const handleSnippetTitleChange = (e) => {
+    setSnippetTitle(e.target.value);
+  };
+
+  const handleSnippetTextChange = (e) => {
+    setSnippetText(e.target.value);
+  };
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);
@@ -47,8 +57,10 @@ export default function CreateSnippetPage() {
     // insert SAVE_SNIPPET logic here
     const selectedLanguage = customLanguage || language;
 
+    console.log("Snippet Title:", snippetTitle);
+    console.log("Snippet Text:", snippetText);
     console.log("Code saved:", code);
-    console.log("Selected language:", language);
+    // console.log("Selected language:", language);
     console.log("Final language:", selectedLanguage);
     console.log("Resource Title:", resourceTitle);
     console.log("Resource Link:", resourceLink);
@@ -56,6 +68,25 @@ export default function CreateSnippetPage() {
 
   return (
     <VStack align="stretch" spacing={4} p={4}>
+      <Box>
+        {/* Snippet title */}
+        <Input
+          type="text"
+          placeholder="Enter snippet title"
+          value={snippetTitle}
+          onChange={handleSnippetTitleChange}
+        />
+      </Box>
+      <Box>
+        {/* Snippet text */}
+        <Textarea
+          value={snippetText}
+          onChange={(e) => handleSnippetTextChange(e.target.value)}
+          placeholder="Say something about your snippet"
+          rows={5}
+          cols={40}
+        />
+      </Box>
       <Box>
         {/*Text area for code snippet input*/}
         <Textarea
