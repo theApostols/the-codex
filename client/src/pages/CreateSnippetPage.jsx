@@ -114,7 +114,7 @@ export default function CreateSnippetPage() {
       {/*Code editor component for syntax highlighting*/}
       <CodeEditor code={code} language={language} />
       {/*Save button*/}
-      <Button colorScheme="secondary" onClick={handleSave}>
+      <Button variant="secondary" onClick={handleSave}>
         Save
       </Button>
     </VStack>
