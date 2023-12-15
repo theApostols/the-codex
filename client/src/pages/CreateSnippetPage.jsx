@@ -1,13 +1,30 @@
 import React, { useState } from "react";
 import CodeEditor from "../components/CodeEditor";
-import { Box, Textarea, Button, VStack, Select } from "@chakra-ui/react";
+import { Box, Textarea, Button, VStack, Select, Input, FormLabel } from "@chakra-ui/react";
 import { SAVE_SNIPPET } from "../utils/actions";
+import theme from "../utils/theme";
 
-export default function SnippetPage() {
+export default function CreateSnippetPage() {
+  const [snippetTitle, setSnippetTitle] = useState("");
+  const [snippetText, setSnippetText] = useState("");
   const [code, setCode] = useState("");
+
   const [language, setLanguage] = useState("javascript"); // default language is javascript
   // give user an option to enter a custom language if their language is not listed
   const [customLanguage, setCustomLanguage] = useState("");
+
+  // give user an option to add a resource to their snippet
+  const [showResourceFields, setShowResourceFields] = useState(false);
+  const [resourceTitle, setResourceTitle] = useState("");
+  const [resourceLink, setResourceLink] = useState("");
+
+  const handleSnippetTitleChange = (e) => {
+    setSnippetTitle(e.target.value);
+  };
+
+  const handleSnippetTextChange = (e) => {
+    setSnippetText(e.target.value);
+  };
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);
@@ -30,17 +47,56 @@ export default function SnippetPage() {
     );
   };
 
+  const handleResourceTitleChange = (e) => {
+    setResourceTitle(e.target.value);
+  };
+
+  const handleResourceLinkChange = (e) => {
+    setResourceLink(e.target.value);
+  };
+
+  const handleToggleResourceFields = () => {
+    setShowResourceFields(!showResourceFields);
+  };
+
   const handleSave = () => {
     // insert SAVE_SNIPPET logic here
-    console.log("Code saved:", code);
-    console.log("Selected language:", language);
     const selectedLanguage = customLanguage || language;
+
+    console.log("Snippet Title:", snippetTitle);
+    console.log("Snippet Text:", snippetText);
+    console.log("Code saved:", code);
+    // console.log("Selected language:", language);
     console.log("Final language:", selectedLanguage);
+    if (showResourceFields) {
+      console.log("Resource Title:", resourceTitle);
+      console.log("Resource Link:", resourceLink);
+    }
   };
 
   return (
     <VStack align="stretch" spacing={4} p={4}>
       <Box>
+        {/* Snippet title */}
+        <Input
+          type="text"
+          placeholder="Enter Snippet Title"
+          value={snippetTitle}
+          onChange={handleSnippetTitleChange}
+        />
+      </Box>
+      <Box>
+        {/* Snippet text */}
+        <Textarea
+          value={snippetText}
+          onChange={(e) => handleSnippetTextChange(e.target.value)}
+          placeholder="Say something about your snippet!"
+          rows={5}
+          cols={40}
+        />
+      </Box>
+      <Box>
+        {/*Text area for code snippet input*/}
         <Textarea
           value={code}
           onChange={(e) => handleCodeChange(e.target.value)}
@@ -49,6 +105,8 @@ export default function SnippetPage() {
           cols={40}
         />
       </Box>
+      {/*Dropdown menu for syntax highlighting*/}
+      <FormLabel>Choose Language:</FormLabel>
       <Select
         value={language}
         onChange={(e) => handleLanguageChange(e.target.value)}
@@ -108,8 +166,33 @@ export default function SnippetPage() {
           onChange={handleCustomLanguageChange}
         />
       )}
+      <Box>
+        {/* Toggle Resource Fields button */}
+        <Button onClick={handleToggleResourceFields} size="sm">
+          {showResourceFields ? "Hide Resource Fields" : "Add Resource"}
+        </Button>
+        {showResourceFields && (
+          <>
+            {/* input fields for resource */}
+            <Input
+              type="text"
+              placeholder="Resource Title"
+              value={resourceTitle}
+              onChange={handleResourceTitleChange}
+            />
+            <Input
+              type="text"
+              placeholder="Resource Link"
+              value={resourceLink}
+              onChange={handleResourceLinkChange}
+            />
+          </>
+        )}
+      </Box>
+      {/*Code editor component for syntax highlighting*/}
       <CodeEditor code={code} language={language} />
-      <Button colorScheme="blue" onClick={handleSave}>
+      {/*Save button*/}
+      <Button variant="secondary" onClick={handleSave}>
         Save
       </Button>
     </VStack>
