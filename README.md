@@ -28,6 +28,9 @@ https://git.bootcampcontent.com/University-of-Toronto/UTOR-VIRT-FSF-PT-07-2023-U
 
 
 ### Milena's Links
+React Syntax Highlighter  
+* https://github.com/react-syntax-highlighter/react-syntax-highlighter/tree/b0d771441590ff06eda265488bbf011a0140fbf4
+* https://www.npmjs.com/package/react-syntax-highlighter
 
 
 
