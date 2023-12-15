@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import CodeEditor from "../components/CodeEditor";
-import { Box, Textarea, Button, VStack, Select } from "@chakra-ui/react";
+import { Box, Textarea, Button, VStack, Select, Input } from "@chakra-ui/react";
 import { SAVE_SNIPPET } from "../utils/actions";
 import theme from "../utils/theme";
 
 export default function CreateSnippetPage() {
   const [code, setCode] = useState("");
+
   const [language, setLanguage] = useState("javascript"); // default language is javascript
   // give user an option to enter a custom language if their language is not listed
   const [customLanguage, setCustomLanguage] = useState("");
+
+  const [resourceTitle, setResourceTitle] = useState("");
+  const [resourceLink, setResourceLink] = useState("");
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);
@@ -31,12 +35,23 @@ export default function CreateSnippetPage() {
     );
   };
 
+  const handleResourceTitleChange = (e) => {
+    setResourceTitle(e.target.value);
+  };
+
+  const handleResourceLinkChange = (e) => {
+    setResourceLink(e.target.value);
+  };
+
   const handleSave = () => {
     // insert SAVE_SNIPPET logic here
+    const selectedLanguage = customLanguage || language;
+
     console.log("Code saved:", code);
     console.log("Selected language:", language);
-    const selectedLanguage = customLanguage || language;
     console.log("Final language:", selectedLanguage);
+    console.log("Resource Title:", resourceTitle);
+    console.log("Resource Link:", resourceLink);
   };
 
   return (
@@ -111,6 +126,21 @@ export default function CreateSnippetPage() {
           onChange={handleCustomLanguageChange}
         />
       )}
+      <Box>
+        {/* input fields for resource */}
+        <Input
+          type="text"
+          placeholder="Resource Title"
+          value={resourceTitle}
+          onChange={handleResourceTitleChange}
+        />
+        <Input
+          type="text"
+          placeholder="Resource Link"
+          value={resourceLink}
+          onChange={handleResourceLinkChange}
+        />
+      </Box>
       {/*Code editor component for syntax highlighting*/}
       <CodeEditor code={code} language={language} />
       {/*Save button*/}
