@@ -20,13 +20,15 @@ const Snippet = ({ snippet }) => {
         {snippetTitle}
       </Text>
       <Text fontSize="sm" color="codex.accents">
-        By {username} on {formattedCreationDate}
+        Created by {username} on {formattedCreationDate}
       </Text>
+      {/* if there is an edit date, display it */}
       {formattedEditDate && (
         <Text fontSize="sm" color="codex.accents">
           Last edited on {formattedEditDate}
         </Text>
       )}
+      
       <Text>{snippetText}</Text>
 
       <CodeEditor
