@@ -1,7 +1,8 @@
 import React from 'react';
 // import react-syntax-highlighter styles and languages
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+// import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { agate } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import {
   apache,
   bash,
@@ -78,7 +79,7 @@ const CodeEditor = ({ code,language }) => {
   
   return (
     <Box p={4} borderRadius="md" borderWidth="1px" overflow="auto">
-      <SyntaxHighlighter language={highlightedLanguage} style={docco}>
+      <SyntaxHighlighter language={highlightedLanguage} style={agate}>
         {code}
       </SyntaxHighlighter>
     </Box>
