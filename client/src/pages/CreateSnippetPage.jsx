@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CodeEditor from "../components/CodeEditor";
-import { Box, Textarea, Button, VStack, Select, Input } from "@chakra-ui/react";
+import { Box, Textarea, Button, VStack, Select, Input, FormLabel } from "@chakra-ui/react";
 import { SAVE_SNIPPET } from "../utils/actions";
 import theme from "../utils/theme";
 
@@ -13,6 +13,8 @@ export default function CreateSnippetPage() {
   // give user an option to enter a custom language if their language is not listed
   const [customLanguage, setCustomLanguage] = useState("");
 
+  // give user an option to add a resource to their snippet
+  const [showResourceFields, setShowResourceFields] = useState(false);
   const [resourceTitle, setResourceTitle] = useState("");
   const [resourceLink, setResourceLink] = useState("");
 
@@ -53,6 +55,10 @@ export default function CreateSnippetPage() {
     setResourceLink(e.target.value);
   };
 
+  const handleToggleResourceFields = () => {
+    setShowResourceFields(!showResourceFields);
+  };
+
   const handleSave = () => {
     // insert SAVE_SNIPPET logic here
     const selectedLanguage = customLanguage || language;
@@ -62,8 +68,10 @@ export default function CreateSnippetPage() {
     console.log("Code saved:", code);
     // console.log("Selected language:", language);
     console.log("Final language:", selectedLanguage);
-    console.log("Resource Title:", resourceTitle);
-    console.log("Resource Link:", resourceLink);
+    if (showResourceFields) {
+      console.log("Resource Title:", resourceTitle);
+      console.log("Resource Link:", resourceLink);
+    }
   };
 
   return (
@@ -72,7 +80,7 @@ export default function CreateSnippetPage() {
         {/* Snippet title */}
         <Input
           type="text"
-          placeholder="Enter snippet title"
+          placeholder="Enter Snippet Title"
           value={snippetTitle}
           onChange={handleSnippetTitleChange}
         />
@@ -82,7 +90,7 @@ export default function CreateSnippetPage() {
         <Textarea
           value={snippetText}
           onChange={(e) => handleSnippetTextChange(e.target.value)}
-          placeholder="Say something about your snippet"
+          placeholder="Say something about your snippet!"
           rows={5}
           cols={40}
         />
@@ -98,6 +106,7 @@ export default function CreateSnippetPage() {
         />
       </Box>
       {/*Dropdown menu for syntax highlighting*/}
+      <FormLabel>Choose Language:</FormLabel>
       <Select
         value={language}
         onChange={(e) => handleLanguageChange(e.target.value)}
@@ -158,19 +167,27 @@ export default function CreateSnippetPage() {
         />
       )}
       <Box>
-        {/* input fields for resource */}
-        <Input
-          type="text"
-          placeholder="Resource Title"
-          value={resourceTitle}
-          onChange={handleResourceTitleChange}
-        />
-        <Input
-          type="text"
-          placeholder="Resource Link"
-          value={resourceLink}
-          onChange={handleResourceLinkChange}
-        />
+        {/* Toggle Resource Fields button */}
+        <Button onClick={handleToggleResourceFields} size="sm">
+          {showResourceFields ? "Hide Resource Fields" : "Add Resource"}
+        </Button>
+        {showResourceFields && (
+          <>
+            {/* input fields for resource */}
+            <Input
+              type="text"
+              placeholder="Resource Title"
+              value={resourceTitle}
+              onChange={handleResourceTitleChange}
+            />
+            <Input
+              type="text"
+              placeholder="Resource Link"
+              value={resourceLink}
+              onChange={handleResourceLinkChange}
+            />
+          </>
+        )}
       </Box>
       {/*Code editor component for syntax highlighting*/}
       <CodeEditor code={code} language={language} />
