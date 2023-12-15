@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import CodeEditor from "../components/CodeEditor";
 import { Box, Textarea, Button, VStack, Select } from "@chakra-ui/react";
 import { SAVE_SNIPPET } from "../utils/actions";
+import theme from "../utils/theme";
 
 export default function SnippetPage() {
   const [code, setCode] = useState("");
@@ -41,6 +42,7 @@ export default function SnippetPage() {
   return (
     <VStack align="stretch" spacing={4} p={4}>
       <Box>
+        {/*Text area for code snippet input*/}
         <Textarea
           value={code}
           onChange={(e) => handleCodeChange(e.target.value)}
@@ -49,6 +51,7 @@ export default function SnippetPage() {
           cols={40}
         />
       </Box>
+      {/*Dropdown menu for syntax highlighting*/}
       <Select
         value={language}
         onChange={(e) => handleLanguageChange(e.target.value)}
@@ -108,8 +111,10 @@ export default function SnippetPage() {
           onChange={handleCustomLanguageChange}
         />
       )}
+      {/*Code editor component for syntax highlighting*/}
       <CodeEditor code={code} language={language} />
-      <Button colorScheme="blue" onClick={handleSave}>
+      {/*Save button*/}
+      <Button colorScheme="secondary" onClick={handleSave}>
         Save
       </Button>
     </VStack>
