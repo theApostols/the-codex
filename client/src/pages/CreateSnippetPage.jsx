@@ -4,7 +4,7 @@ import { Box, Textarea, Button, VStack, Select } from "@chakra-ui/react";
 import { SAVE_SNIPPET } from "../utils/actions";
 import theme from "../utils/theme";
 
-export default function SnippetPage() {
+export default function CreateSnippetPage() {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("javascript"); // default language is javascript
   // give user an option to enter a custom language if their language is not listed

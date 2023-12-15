@@ -1,3 +1,5 @@
+// Purpose: Provide a page to display all snippets.
+
 import React from "react";
 import { useQuery } from "@apollo/client";
 import { VStack, Text, Spinner } from "@chakra-ui/react";
