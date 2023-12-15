@@ -1,7 +1,7 @@
 //importing models
 //==============================================================
 const {User, Snippet} = require('../models');
-//const {signToken, AuthenticationError} = require("../utils/auth");
+const {signToken, AuthenticationError} = require("../utils/auth");
 //==============================================================
 
 //defining resolvers
@@ -58,6 +58,33 @@ const resolvers =
   },
   Mutation:
   {
+    //mutation to for a user to log in
+    loginUser: async (parent, {email, password}) =>
+    {
+      //attempts to find a user with the email provided by the arguments
+      const user = await User.findOne({email});
+
+      //if such a user could not be found, throw an authentication error
+      if (!user)
+      {
+        throw new AuthenticationError('Unable to log in using the provided details. Please try again.');
+      }
+
+      //compare the password provided by the argument to the user's password via bcrypt
+      const passwordComparisonResult = await user.comparePassword(password);
+
+      //if the passwords do not match, throw an authentication error
+      if (!passwordComparisonResult)
+      {
+        throw new AuthenticationError('Unable to log in using the provided details. Please try again.');
+      }
+
+      //sign a new JWT using the user's data
+      const token = signToken(user);
+
+      //return the newly-signed JWT & the user that was logged in to
+      return {token, user};
+    },
     //mutation to create a new user
     createUser: async (parent, {username, email, password}) =>
     {
@@ -65,8 +92,13 @@ const resolvers =
       {
         //attempts to create a new user using the username, email, & password arguments, save it to the database, & return it
         const newUser = new User({username, email, password});
-        const result = await newUser.save();
-        return result;
+        const user = await newUser.save();
+
+        //signs a new JWT using the newly-created user's data
+        const token = signToken(user);
+
+        //return the newly-signed JWT & user data
+        return {token, user};
       }
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
@@ -81,13 +113,13 @@ const resolvers =
       {
         //attempts to create a new snippet using the username, snippetTitle, snippetText, snippetCode, resources, & tags arguments, and save it to the database
         const newSnippet = new Snippet({username, snippetTitle, snippetText, snippetCode, resources, tags});
-        const result = await newSnippet.save();
+        const snippet = await newSnippet.save();
 
         //adds the new snippet's objectId to the appropriate user's 'snippets' array
         await User.findOneAndUpdate({username}, {$addToSet: {snippets: newSnippet._id}})
 
         //returns the newly-created snippet
-        return result;
+        return snippet;
       }
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
@@ -114,13 +146,13 @@ const resolvers =
           {$push: {comments: newComment}}, {new: true});
 
         //retrieves the newly-created comment by grabbing the last comment in the updated snippet's 'comments' array
-        const result = updatedSnippet.comments[updatedSnippet.comments.length - 1];
+        const comment = updatedSnippet.comments[updatedSnippet.comments.length - 1];
 
         //adds the new comment's objectId to the appropriate user's 'comments' array
-        await User.findOneAndUpdate({username}, {$addToSet: {comments: result._id}})
+        await User.findOneAndUpdate({username}, {$addToSet: {comments: comment._id}})
     
         //return the newly-created comment
-        return result;
+        return comment;
       }
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
