@@ -12,6 +12,12 @@ type User
   comments: [ID]
 }
 
+type JWTAuth
+{
+  token: ID
+  user: User
+}
+
 type CodeBlock
 {
   _id: ID!
@@ -71,7 +77,8 @@ type Query
 
 type Mutation
 {
-  createUser(username: String!, email: String!, password: String!): User
+  loginUser(email: String!, password: String!): JWTAuth
+  createUser(username: String!, email: String!, password: String!): JWTAuth
   createSnippet(username: String!, snippetTitle: String, snippetText: String!, snippetCode: [CodeBlockInput]!): Snippet
   createComment(username: String!, commentText: String!, commentCode: [CodeBlockInput], snippetId: ID!): Comment
 }
