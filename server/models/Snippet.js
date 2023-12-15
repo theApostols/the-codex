@@ -32,6 +32,7 @@ const snippetSchema = new Schema(
   //snippet text is an array of code block subdocuments
   snippetCode: [codeBlockSchema],
   resources: [resourceSchema],
+  tags: [{type: String}],
   //creationDate is a date, default value set to the current timestamp
   creationDate:
   {

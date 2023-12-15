@@ -50,7 +50,8 @@
         "title": "the codeX",
         "link": "https://twitter.com/SawyerMerritt/status/1682969511874424832"
       }
-    ]
+    ],
+    "tags": ["HTML", "CSS", "JavaScript", "X", "node-everything"]
   },
   {
     "snippetTitle": "title!",
@@ -95,7 +96,8 @@
           }
         ]
       }
-    ]
+    ],
+    "tags": ["HTML", "X", "node-everything"]
   },
   {
     "snippetTitle": "HAHAHAHA TITLE",
@@ -136,7 +138,8 @@
         "title": "the codeX",
         "link": "https://twitter.com/SawyerMerritt/status/1682969511874424832"
       }
-    ]
+    ],
+    "tags": ["node-everything"]
   },
   {
     "snippetTitle": "title",
@@ -177,7 +180,8 @@
           }
         ]
       }
-    ]
+    ],
+    "tags": ["HTML", "CSS", "JavaScript"]
   },
   {
     "snippetTitle": "title",
@@ -200,6 +204,7 @@
           }
         ]
       }
-    ]
+    ],
+    "tags": ["X", "node-everything"]
   }
 ]
