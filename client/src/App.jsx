@@ -7,8 +7,10 @@ function App() {
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <Header />
-      <Box flex="1">
-        <Outlet />
+      <Box flex="1" display="flex" alignItems="center" justifyContent="center">
+        <Box width="full" maxWidth="container.xl" px="4">
+          <Outlet />
+        </Box>
       </Box>
       <Footer />
     </Box>
