@@ -75,12 +75,12 @@ const resolvers =
       }
     },
     //mutation to create a new snippet
-    createSnippet: async (parent, {username, snippetTitle, snippetText, snippetCode}) =>
+    createSnippet: async (parent, {username, snippetTitle, snippetText, snippetCode, resources, tags}) =>
     {
       try
       {
-        //attempts to create a new snippet using the username, snippetTitle, snippetText, & snippetCode arguments, and save it to the database
-        const newSnippet = new Snippet({username, snippetTitle, snippetText, snippetCode});
+        //attempts to create a new snippet using the username, snippetTitle, snippetText, snippetCode, resources, & tags arguments, and save it to the database
+        const newSnippet = new Snippet({username, snippetTitle, snippetText, snippetCode, resources, tags});
         const result = await newSnippet.save();
 
         //adds the new snippet's objectId to the appropriate user's 'snippets' array
@@ -96,16 +96,17 @@ const resolvers =
       }
     },
     //mutation to create a new comment
-    createComment: async (parent, {username, commentText, commentCode, snippetId}) =>
+    createComment: async (parent, {username, commentText, commentCode, snippetId, resources}) =>
     {
       try
       {
-        //creates a new comment object using the username, commentText, & commentCode arguments
+        //creates a new comment object using the username, commentText, commentCode, & resources arguments
         const newComment =
         {
           username,
           commentText,
-          commentCode
+          commentCode,
+          resources
         };
 
         //attempts to find a snippet by the objectId given in the arguments, and add the newComment object to its 'comments' array

@@ -25,12 +25,20 @@ input CodeBlockInput
   code: String!
 }
 
+type Resource
+{
+  _id: ID!
+  title: String!
+  link: String!
+}
+
 type Comment
 {
   _id: ID!
   username: String!
   commentText: String
   commentCode: [CodeBlock]
+  resources: [Resource]
   creationDate: String!
   formattedCreationDate: String!
 }
@@ -45,6 +53,8 @@ type Snippet
   creationDate: String!
   editDate: String
   comments: [Comment]
+  resources: [Resource]
+  tags: [String]
   props: [ID]
   drops: [ID]
   overallProps: Int
