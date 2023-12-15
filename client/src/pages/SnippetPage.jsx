@@ -6,6 +6,8 @@ import { SAVE_SNIPPET } from "../utils/actions";
 export default function SnippetPage() {
   const [code, setCode] = useState("");
   const [language, setLanguage] = useState("javascript"); // default language is javascript
+  // give user an option to enter a custom language if their language is not listed
+  const [customLanguage, setCustomLanguage] = useState("");
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);
@@ -13,12 +15,27 @@ export default function SnippetPage() {
 
   const handleLanguageChange = (selectedLanguage) => {
     setLanguage(selectedLanguage);
+    // clear customLanguage when a predefined language is selected
+    setCustomLanguage("");
+  };
+
+  const handleCustomLanguageChange = (e) => {
+    // set customLanguage to the value of user input if they choose to enter a custom language
+    // trim whitespace, convert to lowercase, and capitalize the first letter
+    setCustomLanguage(
+      e.target.value
+        .trim()
+        .toLowerCase()
+        .replace(/^\w/, (c) => c.toUpperCase())
+    );
   };
 
   const handleSave = () => {
     // insert SAVE_SNIPPET logic here
     console.log("Code saved:", code);
     console.log("Selected language:", language);
+    const selectedLanguage = customLanguage || language;
+    console.log("Final language:", selectedLanguage);
   };
 
   return (
@@ -80,9 +97,17 @@ export default function SnippetPage() {
         <option value="xml">XML</option>
         <option value="yaml">YAML</option>
         <option value="zephir">Zephir</option>
-        {/* will add more languages if we need too, 
-        these are the most commonly used by web developers */}
+        <option value="custom">Other (Please specify)</option>
       </Select>
+      {/* display the input for custom language if "Other" is selected */}
+      {language === "custom" && (
+        <input
+          type="text"
+          placeholder="Enter custom language"
+          value={customLanguage}
+          onChange={handleCustomLanguageChange}
+        />
+      )}
       <CodeEditor code={code} language={language} />
       <Button colorScheme="blue" onClick={handleSave}>
         Save

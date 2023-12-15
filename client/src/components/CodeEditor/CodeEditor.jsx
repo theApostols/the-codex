@@ -73,10 +73,12 @@ SyntaxHighlighter.registerLanguage('zephir', zephir);
 
 import { Box } from '@chakra-ui/react';
 
-const CodeEditor = ({ code }) => {
+const CodeEditor = ({ code,language }) => {
+  const highlightedLanguage = language === 'custom' ? 'javascript' : language;
+  
   return (
     <Box p={4} borderRadius="md" borderWidth="1px" overflow="auto">
-      <SyntaxHighlighter language="javascript" style={docco}>
+      <SyntaxHighlighter language={highlightedLanguage} style={docco}>
         {code}
       </SyntaxHighlighter>
     </Box>
