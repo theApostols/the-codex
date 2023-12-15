@@ -39,7 +39,19 @@
           }
         ]
       }
-    ]
+    ],
+    "resources":
+    [
+      {
+        "title": "npm install everything github",
+        "link": "https://github.com/PatrickJS/node-everything"
+      },
+      {
+        "title": "the codeX",
+        "link": "https://twitter.com/SawyerMerritt/status/1682969511874424832"
+      }
+    ],
+    "tags": ["HTML", "CSS", "JavaScript", "X", "node-everything"]
   },
   {
     "snippetTitle": "title!",
@@ -71,9 +83,21 @@
             "language": "CSS",
             "code": "body {margin: 0;}"
           }
+        ],
+        "resources":
+        [
+          {
+            "title": "npm install everything github",
+            "link": "https://github.com/PatrickJS/node-everything"
+          },
+          {
+            "title": "the codeX",
+            "link": "https://twitter.com/SawyerMerritt/status/1682969511874424832"
+          }
         ]
       }
-    ]
+    ],
+    "tags": ["HTML", "X", "node-everything"]
   },
   {
     "snippetTitle": "HAHAHAHA TITLE",
@@ -107,7 +131,15 @@
           }
         ]
       }
-    ]
+    ],
+    "resources":
+    [
+      {
+        "title": "the codeX",
+        "link": "https://twitter.com/SawyerMerritt/status/1682969511874424832"
+      }
+    ],
+    "tags": ["node-everything"]
   },
   {
     "snippetTitle": "title",
@@ -139,9 +171,17 @@
             "language": "JavaScript",
             "code": "console.log('test');"
           }
+        ],
+        "resources":
+        [
+          {
+            "title": "the codeX",
+            "link": "https://twitter.com/SawyerMerritt/status/1682969511874424832"
+          }
         ]
       }
-    ]
+    ],
+    "tags": ["HTML", "CSS", "JavaScript"]
   },
   {
     "snippetTitle": "title",
@@ -151,8 +191,20 @@
     [
       {
         "username": "Alan Kay",
-        "commentText": "Some of the best programming is done on paper, really. Putting it into the computer is just a minor detail."
+        "commentText": "Some of the best programming is done on paper, really. Putting it into the computer is just a minor detail.",
+        "resources":
+        [
+          {
+            "title": "npm install everything github",
+            "link": "https://github.com/PatrickJS/node-everything"
+          },
+          {
+            "title": "the codeX",
+            "link": "https://twitter.com/SawyerMerritt/status/1682969511874424832"
+          }
+        ]
       }
-    ]
+    ],
+    "tags": ["X", "node-everything"]
   }
 ]

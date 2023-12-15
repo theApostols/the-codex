@@ -22,7 +22,26 @@ const codeBlockSchema = new Schema(
 });
 //==============================================================
 
+//initializes resource schema
+//==============================================================
+const resourceSchema = new Schema(
+  {
+    //title is a required string
+    title:
+    {
+      type: String,
+      required: true,
+    },
+    //link is a required string
+    link:
+    {
+      type: String,
+      required: true,
+    },
+  });
+  //==============================================================
+
 //exports code block schema
 //==============================================================
-module.exports = codeBlockSchema;
+module.exports = {codeBlockSchema, resourceSchema};
 //==============================================================

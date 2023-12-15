@@ -1,7 +1,7 @@
 //imports mongoose functionality, code block schema, & date format utility
 //==============================================================
 const {Schema} = require('mongoose');
-const codeBlockSchema = require('./CodeBlock.js');
+const {codeBlockSchema, resourceSchema} = require('./miscSubDocs.js');
 const dateFormat = require('../utils/dateFormat.js');
 //==============================================================
 
@@ -24,6 +24,7 @@ const commentSchema = new Schema(
   },
   //comment text is an array of code block subdocuments
   commentCode: [codeBlockSchema],
+  resources: [resourceSchema],
   //creationDate is a date, default value set to the current timestamp
   creationDate:
   {
