@@ -46,19 +46,19 @@ const snippetSchema = new Schema(
   },
   //comment schema is an array of comment subdocuments
   comments: [commentSchema],
-  //array of objectIds of users that have given the snippet props
+  //array of names of users that have given the snippet props
   props:
   [
     {
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: 'User',
     },
   ],
-  //array of objectIds of users that have given the snippet a drop
+  //array of names of users that have given the snippet a drop
   drops:
   [
     {
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: 'User',
     },
   ],

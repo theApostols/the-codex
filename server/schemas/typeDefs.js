@@ -61,8 +61,8 @@ type Snippet
   comments: [Comment]
   resources: [Resource]
   tags: [String]
-  props: [ID]
-  drops: [ID]
+  props: [String]
+  drops: [String]
   overallProps: Int
   formattedCreationDate: String!
   formattedEditDate: String
@@ -81,6 +81,7 @@ type Mutation
   createUser(username: String!, email: String!, password: String!): JWTAuth
   createSnippet(username: String!, snippetTitle: String, snippetText: String!, snippetCode: [CodeBlockInput]!): Snippet
   createComment(username: String!, commentText: String!, commentCode: [CodeBlockInput], snippetId: ID!): Comment
+  addProps(username: String!, snippetId: ID!): Snippet
 }
 `;
 //==============================================================

@@ -41,6 +41,7 @@ const resolvers =
       }
     },
     //query to return all snippets created by a specific user
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     userSnippets: async (parent, {username}) =>
     {
       try
@@ -107,6 +108,7 @@ const resolvers =
       }
     },
     //mutation to create a new snippet
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     createSnippet: async (parent, {username, snippetTitle, snippetText, snippetCode, resources, tags}) =>
     {
       try
@@ -128,6 +130,7 @@ const resolvers =
       }
     },
     //mutation to create a new comment
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     createComment: async (parent, {username, commentText, commentCode, snippetId, resources}) =>
     {
       try
@@ -160,6 +163,25 @@ const resolvers =
         throw new Error('Failed to create new comment;', error);
       }
     },
+    //mutation to add props to a snippet
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
+    addProps: async (parent, {username, snippetId}) =>
+    {
+      try
+      {
+        //attempts to find a snippet by the objectId given in the arguments, and add the name of the user giving props to the 'props' array
+        const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
+          {$addToSet: {props: username}}, {new: true});
+    
+        //return the updated snippet
+        return updatedSnippet;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to add props;', error);
+      }
+    }
   }
 };
 //==============================================================
