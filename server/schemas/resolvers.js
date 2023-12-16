@@ -181,7 +181,24 @@ const resolvers =
         console.error(error);
         throw new Error('Failed to add props;', error);
       }
-    }
+    },
+    removeProps: async (parent, {username, snippetId}) =>
+    {
+      try
+      {
+        //attempts to find a snippet by the objectId given in the arguments, and remove the name of the user removing props from the 'props' array
+        const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
+          {$pull: {props: username}}, {new: true});
+    
+        //return the updated snippet
+        return updatedSnippet;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to add props;', error);
+      }
+    },
   }
 };
 //==============================================================
