@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
-import { LOGIN } from "../../utils/mutations";
+import { LOGIN_USER } from "../../utils/mutations";
 import Auth from "../../utils/auth";
 
 function LoginForm() {
@@ -24,8 +24,8 @@ function LoginForm() {
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-  //Page crashes when I add the LOGIN mutation. The rest of the logic seems to be correct.
-  // const [loginUser] = useMutation(LOGIN);
+  //Page crashes when I add the LOGIN_USER mutation. The rest of the logic seems to be correct.
+  const [loginUser, {error, data}] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -46,9 +46,9 @@ function LoginForm() {
         variables: { ...userFormData },
       });
 
-      const { token, user } = await data.login;
+      const { token, user } = await data.loginUser;
       console.log(user);
-      Auth.login(token);
+      Auth.loginUser(token);
     } catch (err) {
       console.error(`Login failed. Error: ${err.message}`);
       setShowAlert(true);

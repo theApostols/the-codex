@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import Auth from "../../utils/auth";
-import { ADD_USER } from "../../utils/mutations";
+import { CREATE_USER } from "../../utils/mutations";
 
 function SignupForm() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -39,8 +39,8 @@ function SignupForm() {
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-  //Page crashes when I add the ADD_USER mutation. The rest of the logic seems to be correct.
-  // const [addUser] = useMutation(ADD_USER);
+  //Page crashes when I add the CREATE_USER mutation. The rest of the logic seems to be correct.
+  const [createUser, {error, data}] = useMutation(CREATE_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -57,11 +57,11 @@ function SignupForm() {
     }
 
     try {
-      const { data } = await addUser({
+      const { data } = await createUser({
         variables: { ...userFormData },
       });
 
-      const { token, user } = data.addUser;
+      const { token, user } = data.createUser;
       console.log(user);
       Auth.login(token);
     } catch (err) {
