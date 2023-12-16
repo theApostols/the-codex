@@ -118,7 +118,10 @@ const resolvers =
         const snippet = await newSnippet.save();
 
         //adds the new snippet's objectId to the appropriate user's 'snippets' array
-        await User.findOneAndUpdate({username}, {$addToSet: {snippets: newSnippet._id}})
+        await User.findOneAndUpdate({username},
+        {
+          $addToSet: {snippets: newSnippet._id}
+        });
 
         //returns the newly-created snippet
         return snippet;
@@ -146,13 +149,18 @@ const resolvers =
 
         //attempts to find a snippet by the objectId given in the arguments, and add the newComment object to its 'comments' array
         const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
-          {$push: {comments: newComment}}, {new: true});
+        {
+          $push: {comments: newComment}
+        });
 
         //retrieves the newly-created comment by grabbing the last comment in the updated snippet's 'comments' array
         const comment = updatedSnippet.comments[updatedSnippet.comments.length - 1];
 
         //adds the new comment's objectId to the appropriate user's 'comments' array
-        await User.findOneAndUpdate({username}, {$addToSet: {comments: comment._id}})
+        await User.findOneAndUpdate({username},
+        {
+          $addToSet: {comments: comment._id}
+        });
     
         //return the newly-created comment
         return comment;
@@ -169,9 +177,12 @@ const resolvers =
     {
       try
       {
-        //attempts to find a snippet by the objectId given in the arguments, and add the name of the user giving props to the 'props' array
+        //attempts to find a snippet by the objectId given in the arguments
         const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
-          {$addToSet: {props: username}}, {new: true});
+        {
+          $addToSet: {props: username}, //add the given username to the 'props' array if it isn't already there
+          $pull: {drops: username} //remove the given username from the 'drops' array it if is there
+        }, {new: true}); //returns the updated data
     
         //return the updated snippet
         return updatedSnippet;
@@ -188,9 +199,11 @@ const resolvers =
     {
       try
       {
-        //attempts to find a snippet by the objectId given in the arguments, and remove the name of the user removing props from the 'props' array
+        //attempts to find a snippet by the objectId given in the arguments
         const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
-          {$pull: {props: username}}, {new: true});
+        {
+          $pull: {props: username} //remove the name of the user removing props from the 'props' array if it is there
+        }, {new: true}); //returns the updated data
     
         //return the updated snippet
         return updatedSnippet;
@@ -207,9 +220,12 @@ const resolvers =
     {
       try
       {
-        //attempts to find a snippet by the objectId given in the arguments, and add the name of the user giving drops to the 'drops' array
+        //attempts to find a snippet by the objectId given in the arguments
         const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
-          {$addToSet: {drops: username}}, {new: true});
+        {
+          $addToSet: {drops: username}, //add the given username to the 'drops' array if it isn't already there
+          $pull: {props: username} //remove the given username from the 'props' array it if is there
+        }, {new: true}); //returns the updated data
     
         //return the updated snippet
         return updatedSnippet;
@@ -228,7 +244,9 @@ const resolvers =
       {
         //attempts to find a snippet by the objectId given in the arguments, and remove the name of the user removing drops from the 'drops' array
         const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
-          {$pull: {drops: username}}, {new: true});
+        {
+          $pull: {drops: username} //remove the name of the user removing drops from the 'drops' array if it is there
+        }, {new: true}); //returns the updated data
     
         //return the updated snippet
         return updatedSnippet;
