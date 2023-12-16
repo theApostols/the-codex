@@ -201,9 +201,9 @@ const resolvers =
         throw new Error('Failed to remove props;', error);
       }
     },
-  //mutation to add drops to a snippet
+    //mutation to add drops to a snippet
     //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
-    addProps: async (parent, {username, snippetId}) =>
+    addDrops: async (parent, {username, snippetId}) =>
     {
       try
       {
@@ -218,6 +218,25 @@ const resolvers =
       {
         console.error(error);
         throw new Error('Failed to add drops;', error);
+      }
+    },
+    //mutation to remove drops from a snippet
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
+    removeDrops: async (parent, {username, snippetId}) =>
+    {
+      try
+      {
+        //attempts to find a snippet by the objectId given in the arguments, and remove the name of the user removing drops from the 'drops' array
+        const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
+          {$pull: {drops: username}}, {new: true});
+    
+        //return the updated snippet
+        return updatedSnippet;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to remove drops;', error);
       }
     },
   }
