@@ -83,6 +83,7 @@ type Mutation
   createComment(username: String!, commentText: String!, commentCode: [CodeBlockInput], snippetId: ID!): Comment
   addProps(username: String!, snippetId: ID!): Snippet
   removeProps(username: String!, snippetId: ID!): Snippet
+  addDrops(username: String!, snippetId: ID!): Snippet
 }
 `;
 //==============================================================
