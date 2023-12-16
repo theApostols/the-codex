@@ -103,7 +103,7 @@ const globalStyles = {
         fontFamily: 'Helvetica, sans-serif',
         lineHeight: '1.6',
         backgroundColor: 'codex.main',
-        backgroundImage: 'linear-gradient(to right top, #181726, #212035, #2b2945, #363255, #413c66);',
+        backgroundImage: 'linear-gradient(to right top, #211e33, #232036, #252239, #27243d, #292640)',
       },
     },
   },
