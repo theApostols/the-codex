@@ -133,13 +133,12 @@ const resolvers =
       }
     },
     //mutation to edit a snippet
-    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     editSnippet: async (parent, {snippetId, snippetTitle, snippetText, snippetCode, resources, tags}) =>
     {
       try
       {
         //attempts to find a snippet using the given argument, and update it's data using the rest of the arguments
-        const updatedSnippet = Snippet.findOneAndUpdate({_id: snippetId},
+        const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
         {
           snippetTitle,
           snippetText,
@@ -155,6 +154,23 @@ const resolvers =
       {
         console.error(error);
         throw new Error('Failed to edit snippet;', error);
+      }
+    },
+    //mutation to delete a snippet
+    deleteSnippet: async (parent, {snippetId}) =>
+    {
+      try
+      {
+        //attempts to find and delete a snippet using the given ID in the argument
+        const deletedSnippet = await Snippet.findOneAndDelete({_id: snippetId});
+
+        //returns the updated snippet
+        return deletedSnippet;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to delete snippet;', error);
       }
     },
     //mutation to create a new comment

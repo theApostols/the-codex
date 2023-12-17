@@ -87,6 +87,7 @@ type Mutation
   createUser(username: String!, email: String!, password: String!): JWTAuth
   createSnippet(username: String!, snippetTitle: String!, snippetText: String!, snippetCode: [CodeBlockInput]!, resources: [ResourceInput], tags: [String]): Snippet
   editSnippet(snippetId: ID!, snippetTitle: String!, snippetText: String!, snippetCode: [CodeBlockInput]!, resources: [ResourceInput], tags: [String]): Snippet
+  deleteSnippet(snippetId: ID!): Snippet
   createComment(username: String!, commentText: String!, commentCode: [CodeBlockInput], snippetId: ID!, resources: [ResourceInput]): Comment
   addProps(username: String!, snippetId: ID!): Snippet
   removeProps(username: String!, snippetId: ID!): Snippet
