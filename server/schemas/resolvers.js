@@ -137,13 +137,17 @@ const resolvers =
     {
       try
       {
-        //attempts to find a snippet using the given argument, and update its data using the rest of the arguments
+        //creates an edit date to attach to the editted snippet
+        const editDate = Date.now();
+
+        //attempts to find a snippet using the given objectId, and update its data using the rest of the arguments plus the new edit date
         const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
         {
           snippetTitle,
           snippetText,
           snippetCode,
           resources,
+          editDate,
           tags
         }, {new: true}); //returns the updated data
 
@@ -206,12 +210,16 @@ const resolvers =
     {
       try
       {
-        //attempts to find a comment under a specific snippet using the Ids provided by the arguments, and update its data using the rest of the arguments
+        //creates an edit date to attach to the editted comment
+        const editDate = Date.now();
+
+        //attempts to find a comment under a specific snippet using the Ids provided by the arguments, and update its data using the rest of the arguments plus the edit date
         const updatedComment = await Comment.findOneAndUpdate({_id: commentId},
         {
           commentText,
           commentCode,
           resources,
+          editDate
         }, {new: true}); //returns the updated data
 
         //returns the updated comment
