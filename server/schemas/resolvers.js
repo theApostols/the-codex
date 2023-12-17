@@ -201,6 +201,28 @@ const resolvers =
         throw new Error('Failed to create new comment;', error);
       }
     },
+    //mutation to edit a comment
+    editComment: async (parent, {commentId, commentText, commentCode, resources}) =>
+    {
+      try
+      {
+        //attempts to find a comment under a specific snippet using the Ids provided by the arguments, and update its data using the rest of the arguments
+        const updatedComment = await Comment.findOneAndUpdate({_id: commentId},
+        {
+          commentText,
+          commentCode,
+          resources,
+        }, {new: true}); //returns the updated data
+
+        //returns the updated comment
+        return updatedComment;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to edit comment;', error);
+      }
+    },
     //mutation to add props to a snippet
     //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     addProps: async (parent, {username, snippetId}) =>
