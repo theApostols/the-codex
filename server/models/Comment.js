@@ -38,7 +38,7 @@ const commentSchema = new Schema(
     type: Date,
     default: Date.now,
   },
-  //editDate is a date, set if a user ever edits their snippet
+  //editDate is a date, set if a user ever edits their comment
   editDate:
   {
     type: Date,
