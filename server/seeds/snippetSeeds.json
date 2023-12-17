@@ -18,28 +18,6 @@
         "code": "console.log('test');"
       }
     ],
-    "comments":
-    [
-      {
-        "username": "Max Kanat-Alexander",
-        "commentText": "Some of the best programming is done on paper, really. Putting it into the computer is just a minor detail.",
-        "commentCode":
-        [
-          {
-            "language": "HTML",
-            "code": "<html lang='en'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>HAHAHA</title></head><body><div>HAHAHAHAHA</div></body></html>"
-          },
-          {
-            "language": "CSS",
-            "code": "body {margin: 0;}"
-          },
-          {
-            "language": "JavaScript",
-            "code": "console.log('test');"
-          }
-        ]
-      }
-    ],
     "resources":
     [
       {
@@ -68,35 +46,6 @@
         "code": "body {margin: 0;}"
       }
     ],
-    "comments":
-    [
-      {
-        "username": "Why The Lucky Stiff",
-        "commentText": "Some of the best programming is done on paper, really. Putting it into the computer is just a minor detail.",
-        "commentCode":
-        [
-          {
-            "language": "HTML",
-            "code": "<html lang='en'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>HAHAHA</title></head><body><div>HAHAHAHAHA</div></body></html>"
-          },
-          {
-            "language": "CSS",
-            "code": "body {margin: 0;}"
-          }
-        ],
-        "resources":
-        [
-          {
-            "title": "npm install everything github",
-            "link": "https://github.com/PatrickJS/node-everything"
-          },
-          {
-            "title": "the codeX",
-            "link": "https://twitter.com/SawyerMerritt/status/1682969511874424832"
-          }
-        ]
-      }
-    ],
     "tags": ["HTML", "X", "node-everything"]
   },
   {
@@ -112,24 +61,6 @@
       {
         "language": "JavaScript",
         "code": "console.log('test');"
-      }
-    ],
-    "comments":
-    [
-      {
-        "username": "Kent Beck",
-        "commentText": "Some of the best programming is done on paper, really. Putting it into the computer is just a minor detail.",
-        "commentCode":
-        [
-          {
-            "language": "HTML",
-            "code": "<html lang='en'><head><meta charset='UTF-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>HAHAHA</title></head><body><div>HAHAHAHAHA</div></body></html>"
-          },
-          {
-            "language": "JavaScript",
-            "code": "console.log('test');"
-          }
-        ]
       }
     ],
     "resources":
@@ -156,55 +87,12 @@
         "code": "console.log('test');"
       }
     ],
-    "comments":
-    [
-      {
-        "username": "Edward V. Berard",
-        "commentText": "Some of the best programming is done on paper, really. Putting it into the computer is just a minor detail.",
-        "commentCode":
-        [
-          {
-            "language": "CSS",
-            "code": "body {margin: 0;}"
-          },
-          {
-            "language": "JavaScript",
-            "code": "console.log('test');"
-          }
-        ],
-        "resources":
-        [
-          {
-            "title": "the codeX",
-            "link": "https://twitter.com/SawyerMerritt/status/1682969511874424832"
-          }
-        ]
-      }
-    ],
     "tags": ["HTML", "CSS", "JavaScript"]
   },
   {
     "snippetTitle": "title",
     "snippetText": "Walking on water and developing software from a specification are easy if both are frozen.",
     "username": "Edward V. Berard",
-    "comments":
-    [
-      {
-        "username": "Alan Kay",
-        "commentText": "Some of the best programming is done on paper, really. Putting it into the computer is just a minor detail.",
-        "resources":
-        [
-          {
-            "title": "npm install everything github",
-            "link": "https://github.com/PatrickJS/node-everything"
-          },
-          {
-            "title": "the codeX",
-            "link": "https://twitter.com/SawyerMerritt/status/1682969511874424832"
-          }
-        ]
-      }
-    ],
     "tags": ["X", "node-everything"]
   }
 ]

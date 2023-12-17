@@ -2,9 +2,10 @@
 //==============================================================
 const User = require('./User.js');
 const Snippet = require('./Snippet.js');
+const Comment = require('./Comment.js');
 //==============================================================
 
 //exports models
 //==============================================================
-module.exports = {User, Snippet};
+module.exports = {User, Snippet, Comment};
 //==============================================================
