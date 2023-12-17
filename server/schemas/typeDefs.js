@@ -93,6 +93,7 @@ type Mutation
   deleteSnippet(snippetId: ID!): Snippet
   createComment(parentSnippetId: ID!, username: String!, commentText: String!, commentCode: [CodeBlockInput], resources: [ResourceInput]): Comment
   editComment(commentId: ID!, commentText: String!, commentCode: [CodeBlockInput], resources: [ResourceInput]): Comment
+  deleteComment(commentId: ID!): Comment
   addProps(username: String!, snippetId: ID!): Snippet
   removeProps(username: String!, snippetId: ID!): Snippet
   addDrops(username: String!, snippetId: ID!): Snippet

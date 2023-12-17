@@ -161,10 +161,10 @@ const resolvers =
     {
       try
       {
-        //attempts to find and delete a snippet using the given ID in the argument
+        //attempts to find and delete a snippet using the given ID in the arguments
         const deletedSnippet = await Snippet.findOneAndDelete({_id: snippetId});
 
-        //returns the updated snippet
+        //returns the deleted snippet
         return deletedSnippet;
       }
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
@@ -221,6 +221,23 @@ const resolvers =
       {
         console.error(error);
         throw new Error('Failed to edit comment;', error);
+      }
+    },
+    //mutation to delete a comment
+    deleteComment: async (parent, {commentId}) =>
+    {
+      try
+      {
+        //attempts to find and delete a comment using the given ID in the arguments
+        const deletedComment = await Comment.findOneAndDelete({_id: commentId});
+
+        //returns the deleted comment
+        return deletedComment;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to delete comment;', error);
       }
     },
     //mutation to add props to a snippet
