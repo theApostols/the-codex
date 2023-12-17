@@ -1,7 +1,7 @@
 //imports mongoose functionality, code block schema, & date format utility
 //==============================================================
-const {Schema} = require('mongoose');
-const {codeBlockSchema, resourceSchema} = require('./miscSubDocs.js');
+const {Schema, model} = require('mongoose');
+const {codeBlockSchema, resourceSchema} = require('./subDocs.js');
 const dateFormat = require('../utils/dateFormat.js');
 //==============================================================
 
@@ -30,7 +30,18 @@ const commentSchema = new Schema(
   {
     type: Date,
     default: Date.now,
-  }
+  },
+  //editDate is a date, set if a user ever edits their snippet
+  editDate:
+  {
+    type: Date,
+  },
+  //parentSnippet is an objectId referring to the snippet this comment was made under
+  parentSnippet:
+  {
+    type: Schema.Types.ObjectId,
+    ref: 'Snippet',
+  },
 },
 {
   //allows the display of virtuals when returning JSON data
@@ -50,7 +61,23 @@ commentSchema.virtual('formattedCreationDate').get(function()
 });
 //==============================================================
 
-//exports comment schema
+//virtual property for commentSchema which formats the edit date upon query
 //==============================================================
-module.exports = commentSchema;
+commentSchema.virtual('formattedEditDate').get(function()
+{
+  if (this.editDate)
+  {
+    return dateFormat(this.editDate);
+  }
+});
+//==============================================================
+
+//initializes the comment model using the above schema
+//==============================================================
+const Comment = model('Comment', commentSchema);
+//==============================================================
+
+//exports comment model
+//==============================================================
+module.exports = Comment;
 //==============================================================
