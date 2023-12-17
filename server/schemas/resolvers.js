@@ -31,7 +31,7 @@ const resolvers =
       try
       {
         //finds a specific snippet by objectId & return it
-        const snippet = await Snippet.findOne({_id: snippetId});
+        const snippet = await Snippet.findOne({_id: snippetId}).populate('comments');
         return snippet;
       }
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
