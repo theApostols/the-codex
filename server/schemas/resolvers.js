@@ -132,6 +132,31 @@ const resolvers =
         throw new Error('Failed to create new snippet;', error);
       }
     },
+    //mutation to edit a snippet
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
+    editSnippet: async (parent, {snippetId, snippetTitle, snippetText, snippetCode, resources, tags}) =>
+    {
+      try
+      {
+        //attempts to find a snippet using the given argument, and update it's data using the rest of the arguments
+        const updatedSnippet = Snippet.findOneAndUpdate({_id: snippetId},
+        {
+          snippetTitle,
+          snippetText,
+          snippetCode,
+          resources,
+          tags
+        }, {new: true}); //returns the updated data
+
+        //returns the updated snippet
+        return updatedSnippet;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to edit snippet;', error);
+      }
+    },
     //mutation to create a new comment
     //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     createComment: async (parent, {username, commentText, commentCode, snippetId, resources}) =>
