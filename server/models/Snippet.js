@@ -1,8 +1,7 @@
 //imports mongoose functionality, code block schema, & date format utility
 //==============================================================
 const {Schema, model} = require('mongoose');
-const {codeBlockSchema, resourceSchema} = require('./miscSubDocs.js');
-const commentSchema = require('./Comment.js');
+const {codeBlockSchema, resourceSchema} = require('./subDocs.js');
 const dateFormat = require('../utils/dateFormat.js');
 //==============================================================
 
@@ -44,8 +43,14 @@ const snippetSchema = new Schema(
   {
     type: Date,
   },
-  //comment schema is an array of comment subdocuments
-  comments: [commentSchema],
+  //comment schema is an array of objectIds of comments made under this snippet
+  comments:
+  [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment'
+    }
+  ],
   //array of names of users that have given the snippet props
   props:
   [
