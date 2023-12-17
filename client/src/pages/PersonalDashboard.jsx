@@ -1,7 +1,8 @@
 // import React, { useState, useEffect } from 'react';
 // import SnippetCard from './SnippetCard';
 // import { User, Snippet } from '../utils/API';
-// // need to fix imports 
+// import { getUserSnippets } from '../utils/API/userAPI';
+// // // need to fix imports 
 
 
 const PersonalDashboard = ({ userID }) => {
@@ -29,4 +30,6 @@ const PersonalDashboard = ({ userID }) => {
             </div>
         </div>
     );
-    
+ };
+
+    export default PersonalDashboard;
