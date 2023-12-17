@@ -40,7 +40,7 @@ function SignupForm() {
   const [showAlert, setShowAlert] = useState(false);
 
   //Page crashes when I add the CREATE_USER mutation. The rest of the logic seems to be correct.
-  const [createUser, {error, data}] = useMutation(CREATE_USER);
+  const [createUser, { error, data }] = useMutation(CREATE_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -162,6 +162,7 @@ function SignupForm() {
             </FormControl>
 
             <Button
+              type="submit"
               w="full"
               colorScheme="purple"
               mt="4"
