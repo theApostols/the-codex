@@ -24,8 +24,7 @@ function LoginForm() {
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
-  //Page crashes when I add the LOGIN_USER mutation. The rest of the logic seems to be correct.
-  const [loginUser, {error, data}] = useMutation(LOGIN_USER);
+  const [loginUser, { error, data }] = useMutation(LOGIN_USER);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -50,7 +49,7 @@ function LoginForm() {
       console.log(user);
       Auth.loginUser(token);
     } catch (err) {
-      console.error(`Login failed. Error: ${err.message}`);
+      console.error("Login failed. Error:", err);
       setShowAlert(true);
     }
 
@@ -95,6 +94,7 @@ function LoginForm() {
             color="white"
           >
             <Heading fontSize="2xl">Login</Heading>
+
             <FormControl
               name="email"
               onChange={handleInputChange}
@@ -116,9 +116,16 @@ function LoginForm() {
               <Input autoComplete="password" type="password" />
             </FormControl>
             <Checkbox colorScheme="purple">Remember me</Checkbox>
-            <Button w="full" colorScheme="purple" mt="4">
+            <Button
+              disabled={!(userFormData.email && userFormData.password)}
+              type="submit"
+              w="full"
+              colorScheme="purple"
+              mt="4"
+            >
               Login
             </Button>
+
             <Text mt="6">
               Don't have an account?{" "}
               <Link color="purple.300" onClick={handleSignUpClick}>
