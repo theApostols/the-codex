@@ -86,6 +86,7 @@ type Mutation
   addDrops(username: String!, snippetId: ID!): Snippet
   removeDrops(username: String!, snippetId: ID!): Snippet
   saveSnippet(username: String!, snippetId: ID!): User
+  unsaveSnippet(username: String!, snippetId: ID!): User
 }
 `;
 //==============================================================

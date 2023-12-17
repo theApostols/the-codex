@@ -278,6 +278,27 @@ const resolvers =
         throw new Error('Failed to save snippet;', error);
       }
     },
+    //mutation to remove a snippet from a user's personal list
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
+    unsaveSnippet: async (parent, {username, snippetId}) =>
+    {
+      try
+      {
+        //attempts to find a a user by username as per the given argument
+        const updatedUser = await User.findOneAndUpdate({username},
+        {
+          $pull: {savedSnippets: snippetId} //remove the snippetId provided by the arguments from the user's 'savedSnippets' array
+        }, {new: true}); //returns the updated data
+    
+        //return the updated snippet
+        return updatedUser;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to unsave snippet;', error);
+      }
+    }
   }
 };
 //==============================================================
