@@ -41,13 +41,16 @@ function LoginForm() {
     }
 
     try {
+
+      console.log(userFormData);
+
       const { data } = await loginUser({
         variables: { ...userFormData },
       });
 
       const { token, user } = await data.loginUser;
       console.log(user);
-      Auth.loginUser(token);
+      Auth.login(token);
     } catch (err) {
       console.error("Login failed. Error:", err);
       setShowAlert(true);
@@ -95,26 +98,32 @@ function LoginForm() {
           >
             <Heading fontSize="2xl">Login</Heading>
 
-            <FormControl
-              name="email"
-              onChange={handleInputChange}
-              value={userFormData.email}
-              id="email"
-              isRequired
-            >
+            <FormControl id="email" isRequired>
+
               <FormLabel htmlFor="email">Email address</FormLabel>
-              <Input autoComplete="email" type="email" />
+              <Input
+                autoComplete="email"
+                type="email"
+                name="email"
+                onChange={handleInputChange}
+                value={userFormData.email}
+              />
+
             </FormControl>
-            <FormControl
-              name="password"
-              onChange={handleInputChange}
-              value={userFormData.password}
-              id="password"
-              isRequired
-            >
+
+            <FormControl id="password" isRequired>
+
               <FormLabel htmlFor="password">Password</FormLabel>
-              <Input autoComplete="password" type="password" />
+              <Input
+                autoComplete="new-password"
+                type="password"
+                name="password"
+                onChange={handleInputChange}
+                value={userFormData.password}
+              />
+
             </FormControl>
+
             <Checkbox colorScheme="purple">Remember me</Checkbox>
             <Button
               disabled={!(userFormData.email && userFormData.password)}
