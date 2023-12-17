@@ -56,35 +56,58 @@ const resolvers =
         throw new Error("Failed to retrieve the user's snippets;", error);
       }
     },
+    //query to retrieve a specific comment by ID
+    oneComment: async (parent, {commentId}) =>
+    {
+      try
+      {
+        //finds a specific comment by objectId & return it
+        const comment = await Comment.findOne({_id: commentId});
+        return comment;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error("Failed to retrieve the user's snippets;", error);
+      }
+    }
   },
   Mutation:
   {
     //mutation to for a user to log in
     loginUser: async (parent, {email, password}) =>
     {
-      //attempts to find a user with the email provided by the arguments
-      const user = await User.findOne({email});
-
-      //if such a user could not be found, throw an authentication error
-      if (!user)
+      try 
       {
-        throw new AuthenticationError('Unable to log in using the provided details. Please try again.');
+        //attempts to find a user with the email provided by the arguments
+        const user = await User.findOne({email});
+
+        //if such a user could not be found, throw an authentication error
+        if (!user)
+        {
+          throw new AuthenticationError('Unable to log in using the provided details. Please try again.');
+        }
+
+        //compare the password provided by the argument to the user's password via bcrypt
+        const passwordComparisonResult = await user.comparePassword(password);
+
+        //if the passwords do not match, throw an authentication error
+        if (!passwordComparisonResult)
+        {
+          throw new AuthenticationError('Unable to log in using the provided details. Please try again.');
+        }
+
+        //sign a new JWT using the user's data
+        const token = signToken(user);
+
+        //return the newly-signed JWT & the user that was logged in to
+        return {token, user};
       }
-
-      //compare the password provided by the argument to the user's password via bcrypt
-      const passwordComparisonResult = await user.comparePassword(password);
-
-      //if the passwords do not match, throw an authentication error
-      if (!passwordComparisonResult)
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
-        throw new AuthenticationError('Unable to log in using the provided details. Please try again.');
+        console.error(error);
+        throw new Error('Failed to log in;', error);
       }
-
-      //sign a new JWT using the user's data
-      const token = signToken(user);
-
-      //return the newly-signed JWT & the user that was logged in to
-      return {token, user};
     },
     //mutation to create a new user
     createUser: async (parent, {username, email, password}) =>

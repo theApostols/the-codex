@@ -82,6 +82,7 @@ type Query
   allSnippets: [Snippet]
   oneSnippet(snippetId: ID!): Snippet
   userSnippets(username: String!): [Snippet]
+  oneComment(commentId: ID!): Comment
 }
 
 type Mutation
