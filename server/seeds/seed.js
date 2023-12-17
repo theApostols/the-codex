@@ -48,16 +48,16 @@ db.once('open', async () =>
         resources
       };
 
-      //append a snippet's objectId value to the new comment as a 'parentSnippet' property
-      newComment.parentSnippet = snippetIds[comment];
+      //append a snippet's objectId value to the new comment as a 'parentSnippetId' property
+      newComment.parentSnippetId = snippetIds[comment];
 
       //create the new comment, then find & add the objectId to the appropriate user's & snippet's 'comments' array
-      const {_id, parentSnippet} = await Comment.create(newComment);
+      const {_id, parentSnippetId} = await Comment.create(newComment);
       await User.findOneAndUpdate({username},
       {
         $addToSet:{comments: _id},
       });
-      await Snippet.findOneAndUpdate({_id: parentSnippet},
+      await Snippet.findOneAndUpdate({_id: parentSnippetId},
       {
         $addToSet:{comments: _id},
       });

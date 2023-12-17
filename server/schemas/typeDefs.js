@@ -47,12 +47,15 @@ input ResourceInput
 type Comment
 {
   _id: ID!
+  parentSnippetId: ID!
   username: String!
   commentText: String
   commentCode: [CodeBlock]
   resources: [Resource]
   creationDate: String!
+  editDate: String
   formattedCreationDate: String!
+  formattedEditDate: String
 }
 
 type Snippet
@@ -88,7 +91,7 @@ type Mutation
   createSnippet(username: String!, snippetTitle: String!, snippetText: String!, snippetCode: [CodeBlockInput]!, resources: [ResourceInput], tags: [String]): Snippet
   editSnippet(snippetId: ID!, snippetTitle: String!, snippetText: String!, snippetCode: [CodeBlockInput]!, resources: [ResourceInput], tags: [String]): Snippet
   deleteSnippet(snippetId: ID!): Snippet
-  createComment(username: String!, commentText: String!, commentCode: [CodeBlockInput], snippetId: ID!, resources: [ResourceInput]): Comment
+  createComment(parentSnippetId: ID!, username: String!, commentText: String!, commentCode: [CodeBlockInput], resources: [ResourceInput]): Comment
   addProps(username: String!, snippetId: ID!): Snippet
   removeProps(username: String!, snippetId: ID!): Snippet
   addDrops(username: String!, snippetId: ID!): Snippet

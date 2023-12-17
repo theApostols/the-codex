@@ -1,6 +1,6 @@
 //importing models
 //==============================================================
-const {User, Snippet} = require('../models');
+const {User, Snippet, Comment} = require('../models');
 const {signToken, AuthenticationError} = require("../utils/auth");
 //==============================================================
 
@@ -137,7 +137,7 @@ const resolvers =
     {
       try
       {
-        //attempts to find a snippet using the given argument, and update it's data using the rest of the arguments
+        //attempts to find a snippet using the given argument, and update its data using the rest of the arguments
         const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
         {
           snippetTitle,
@@ -175,36 +175,25 @@ const resolvers =
     },
     //mutation to create a new comment
     //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
-    createComment: async (parent, {username, commentText, commentCode, snippetId, resources}) =>
+    createComment: async (parent, {parentSnippetId, username, commentText, commentCode, resources}) =>
     {
       try
       {
-        //creates a new comment object using the username, commentText, commentCode, & resources arguments
-        const newComment =
-        {
-          username,
-          commentText,
-          commentCode,
-          resources
-        };
+        //attempts to create a new comment using the data provided by the arguments
+        const newComment = await Comment.create({parentSnippetId, username, commentText, commentCode, resources});
 
-        //attempts to find a snippet by the objectId given in the arguments, and add the newComment object to its 'comments' array
-        const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
-        {
-          $push: {comments: newComment}
-        });
-
-        //retrieves the newly-created comment by grabbing the last comment in the updated snippet's 'comments' array
-        const comment = updatedSnippet.comments[updatedSnippet.comments.length - 1];
-
-        //adds the new comment's objectId to the appropriate user's 'comments' array
+        //finds & adds the objectId of the new comment to the appropriate user's and snippet's 'comments' array
         await User.findOneAndUpdate({username},
         {
-          $addToSet: {comments: comment._id}
+          $addToSet:{comments: newComment._id},
+        });
+        await Snippet.findOneAndUpdate({_id: parentSnippetId},
+        {
+          $addToSet:{comments: newComment._id},
         });
     
         //return the newly-created comment
-        return comment;
+        return newComment;
       }
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {

@@ -9,6 +9,13 @@ const dateFormat = require('../utils/dateFormat.js');
 //==============================================================
 const commentSchema = new Schema(
 {
+  //parentSnippetId is an objectId referring to the snippet this comment was made under
+  parentSnippetId:
+  {
+    type: Schema.Types.ObjectId,
+    ref: 'Snippet',
+    required: true
+  },
   //username is a required string, referencing the user that created the comment
   username:
   {
@@ -35,14 +42,7 @@ const commentSchema = new Schema(
   editDate:
   {
     type: Date,
-  },
-  //parentSnippet is an objectId referring to the snippet this comment was made under
-  parentSnippet:
-  {
-    type: Schema.Types.ObjectId,
-    ref: 'Snippet',
-    required: true
-  },
+  }
 },
 {
   //allows the display of virtuals when returning JSON data
