@@ -242,7 +242,7 @@ const resolvers =
     {
       try
       {
-        //attempts to find a snippet by the objectId given in the arguments, and remove the name of the user removing drops from the 'drops' array
+        //attempts to find a snippet by the objectId given in the arguments
         const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
         {
           $pull: {drops: username} //remove the name of the user removing drops from the 'drops' array if it is there
@@ -255,6 +255,27 @@ const resolvers =
       {
         console.error(error);
         throw new Error('Failed to remove drops;', error);
+      }
+    },
+    //mutation to save a snippet to a user's personal list
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
+    saveSnippet: async (parent, {username, snippetId}) =>
+    {
+      try
+      {
+        //attempts to find a a user by username as per the given argument
+        const updatedUser = await User.findOneAndUpdate({username},
+        {
+          $addToSet: {savedSnippets: snippetId} //add the snippetId provided by the arguments to the 'savedSnippets' array if it isn't already there
+        }, {new: true}); //returns the updated data
+    
+        //return the updated snippet
+        return updatedUser;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to save snippet;', error);
       }
     },
   }
