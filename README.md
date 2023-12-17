@@ -13,8 +13,11 @@ https://git.bootcampcontent.com/University-of-Toronto/UTOR-VIRT-FSF-PT-07-2023-U
 userSeeds.json file (./server/seeds/userSeeds.json);
 https://git.bootcampcontent.com/University-of-Toronto/UTOR-VIRT-FSF-PT-07-2023-U-LOLC/-/blob/main/21-MERN/01-Activities/22-Stu_Sign-JWT/Unsolved/seeders/userSeeds.json?ref_type=heads
 
-dateFormat file (./server/utils/dateFormat.js);
+dateFormat file setup (./server/utils/dateFormat.js);
 https://git.bootcampcontent.com/University-of-Toronto/UTOR-VIRT-FSF-PT-07-2023-U-LOLC/-/blob/main/21-MERN/01-Activities/22-Stu_Sign-JWT/Unsolved/utils/dateFormat.js?ref_type=heads
+
+JWT Authentication file (./server/utils/auth.js);
+https://git.bootcampcontent.com/University-of-Toronto/UTOR-VIRT-FSF-PT-07-2023-U-LOLC/-/blob/main/22-State/01-Activities/26-Stu_Actions-Reducers/Unsolved/server/utils/auth.js?ref_type=heads
 
 ### Wesley's Links
 
@@ -25,6 +28,9 @@ https://git.bootcampcontent.com/University-of-Toronto/UTOR-VIRT-FSF-PT-07-2023-U
 
 
 ### Milena's Links
+React Syntax Highlighter  
+* https://github.com/react-syntax-highlighter/react-syntax-highlighter/tree/b0d771441590ff06eda265488bbf011a0140fbf4
+* https://www.npmjs.com/package/react-syntax-highlighter
 
 
 

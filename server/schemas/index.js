@@ -1,4 +1,10 @@
-const typeDefs = require("./typeDefs");
-const resolvers = require("./resolvers");
+//importing resolvers & typeDefs
+//==============================================================
+const resolvers = require('./resolvers');
+const typeDefs = require('./typeDefs');
+//==============================================================
 
-module.exports = { typeDefs, resolvers };
+//exporting resolvers & typeDefs
+//==============================================================
+module.exports = {resolvers, typeDefs};
+//==============================================================

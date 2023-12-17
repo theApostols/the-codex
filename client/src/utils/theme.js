@@ -43,9 +43,9 @@ const buttonStyles = {
       },
       outline: {
         bg: 'transparent',
-        color: 'codex.main',
+        color: 'white',
         border: '1px solid',
-        borderColor: 'codex.main',
+        borderColor: 'codex.highlights',
         _hover: {
           bg: 'codex.main',
           color: 'white',
@@ -77,12 +77,45 @@ const buttonStyles = {
   },
 };
 
-// Combine the color palette and button styles into a custom theme
+const linkStyles = {
+  Link: {
+    variants: {
+      link: {
+        color: 'codex.accents',
+        textDecoration: 'none',
+        _hover: {
+          textDecoration: 'underline',
+          color: 'codex.highlights',
+        },
+        _active: {
+          color: 'codex.linkActive',
+        },
+      },
+    },
+  },
+};
+
+const globalStyles = {
+  styles: {
+    global: {
+      'html, body': {
+        fontSize: '16px',
+        fontFamily: 'Helvetica, sans-serif',
+        lineHeight: '1.6',
+        backgroundColor: 'codex.main',
+        backgroundImage: 'linear-gradient(to right top, #211e33, #232036, #252239, #27243d, #292640)',
+      },
+    },
+  },
+};
+
 const customTheme = extendTheme({
   colors,
   components: {
     ...buttonStyles,
+    ...linkStyles,
   },
+  ...globalStyles,
 });
 
 export default customTheme;
