@@ -44,6 +44,7 @@ function SignupForm() {
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
+    console.log('handling input');
     setUserFormData({ ...userFormData, [name]: value });
   };
 
@@ -57,6 +58,9 @@ function SignupForm() {
     }
 
     try {
+
+      console.log(userFormData);
+
       const { data } = await createUser({
         variables: { ...userFormData },
       });
@@ -111,44 +115,56 @@ function SignupForm() {
             color="white"
           >
             <Heading fontSize="2xl">Register</Heading>
-            <FormControl
-              name="username"
-              onChange={handleInputChange}
-              value={userFormData.username}
-              id="username"
-              isRequired
-            >
+
+            <FormControl id="username" isRequired>
+
               <FormLabel htmlFor="username">Username</FormLabel>
-              <Input autoComplete="username" type="username" />
+              <Input
+                autoComplete="username"
+                type="username"
+                name="username"
+                onChange={handleInputChange}
+                value={userFormData.username}
+              />
+
             </FormControl>
-            <FormControl
-              name="email"
-              onChange={handleInputChange}
-              value={userFormData.email}
-              id="email"
-              isRequired
-            >
+
+            <FormControl id="email" isRequired>
+
               <FormLabel htmlFor="email">Email address</FormLabel>
-              <Input autoComplete="email" type="email" />
+              <Input
+                autoComplete="email"
+                type="email"
+                name="email"
+                onChange={handleInputChange}
+                value={userFormData.email}
+              />
+
             </FormControl>
-            <FormControl
-              name="password"
-              onChange={handleInputChange}
-              value={userFormData.password}
-              id="password"
-              isRequired
-            >
+
+            <FormControl id="password" isRequired>
+
               <FormLabel htmlFor="password">Password</FormLabel>
-              <Input autoComplete="new-password" type="password" />
+              <Input
+                autoComplete="new-password"
+                type="password"
+                name="password"
+                onChange={handleInputChange}
+                value={userFormData.password}
+              />
+
             </FormControl>
-            <FormControl
-              name="confirm-password"
-              onChange={handleInputChange}
-              id="confirm-password"
-              isRequired
-            >
+          
+            <FormControl id="confirm-password" isRequired>
+
               <FormLabel htmlFor="confirm-password">Confirm Password</FormLabel>
-              <Input autoComplete="new-password" type="password" />
+              <Input
+                autoComplete="new-password"
+                type="password"
+                name="confirm-password"
+                onChange={handleInputChange}
+              />
+
             </FormControl>
 
             {/* Terms and Conditions Checkbox and Modal */}
