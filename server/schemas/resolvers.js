@@ -165,8 +165,14 @@ const resolvers =
     {
       try
       {
-        //attempts to find and delete a snippet using the given ID in the arguments
+        //attempts to find and delete a snippet using the given ID
         const deletedSnippet = await Snippet.findOneAndDelete({_id: snippetId});
+
+        //remove the objectId of the deleted snippet from the appropriate user's 'snippets' array
+        await User.findOneAndUpdate({username: deletedSnippet.username},
+        {
+          $pull: {snippets: snippetId} 
+        });
 
         //returns the deleted snippet
         return deletedSnippet;
@@ -238,6 +244,16 @@ const resolvers =
       {
         //attempts to find and delete a comment using the given ID in the arguments
         const deletedComment = await Comment.findOneAndDelete({_id: commentId});
+
+        //remove the objectId of the deleted comment from the appropriate user's & snippet's 'comments' array
+        await User.findOneAndUpdate({username: deletedComment.username},
+        {
+          $pull: {comments: commentId} 
+        });
+        await Snippet.findOneAndUpdate({_id: deletedComment.parentSnippetId},
+        {
+          $pull: {comments: commentId} 
+        });
 
         //returns the deleted comment
         return deletedComment;

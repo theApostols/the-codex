@@ -47,7 +47,7 @@ input ResourceInput
 type Comment
 {
   _id: ID!
-  parentSnippetId: ID!
+  parentSnippetId: ID
   username: String!
   commentText: String
   commentCode: [CodeBlock]
