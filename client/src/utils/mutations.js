@@ -42,3 +42,40 @@ export const CREATE_USER = gql`
     }
   }
 `;
+
+export const CREATE_SNIPPET = gql`
+  mutation CreateSnippet(
+    $username: String!
+    $snippetTitle: String!
+    $snippetText: String!
+    $snippetCode: [CodeBlockInput]!
+    $resources: [ResourceInput]
+    $tags: [String]
+  ) {
+    createSnippet(
+      username: $username
+      snippetTitle: $snippetTitle
+      snippetText: $snippetText
+      snippetCode: $snippetCode
+      resources: $resources
+      tags: $tags
+    ) {
+      _id
+      username
+      snippetTitle
+      snippetText
+      snippetCode {
+        language
+        code
+      }
+      resources {
+        _id
+        title
+        link
+      }
+      tags
+      formattedCreationDate
+      formattedEditDate
+    }
+  }
+`;
