@@ -34,12 +34,17 @@ const buttonStyles = {
           bg: 'codex.borders',
         },
       },
-      accent: {
-        bg: 'codex.accents',
+      ghost: {
+        bg: 'transparent',
         color: 'codex.text',
         _hover: {
-          bg: 'codex.highlights',
+          bg: 'codex.dark',
+          color: 'codex.text',
         },
+        active: {
+          bg:'transparent',
+        color: 'codex.highlights',
+      }
       },
       outline: {
         bg: 'transparent',
@@ -62,15 +67,15 @@ const buttonStyles = {
       link: {
         bg: 'transparent',
         color: 'codex.text',
-        textDecoration: 'underline',
+        textDecoration: 'none',
         _hover: {
-          textDecoration: 'none',
+          textDecoration: 'underline',
           bg: 'transparent',
-          color: 'codex.linkHover',
+          color: 'codex.highlights',
         },
         _active: {
           bg: 'transparent',
-          color: 'codex.linkActive',
+          color: 'codex.accents200',
         },
       },
     },
@@ -88,7 +93,7 @@ const linkStyles = {
           color: 'codex.highlights',
         },
         _active: {
-          color: 'codex.linkActive',
+          color: 'codex.accents200',
         },
       },
     },
