@@ -1,6 +1,5 @@
 //importing models
 //==============================================================
-const {Pool} = require('mysql2/typings/mysql/lib/Pool');
 const {User, Snippet, Comment} = require('../models');
 const {signToken, AuthenticationError} = require("../utils/auth");
 //==============================================================
