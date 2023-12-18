@@ -38,9 +38,7 @@ export default function CreateSnippetPage() {
   const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   // sample tags
-  const availableTags = 
-  ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
-
+  const availableTags = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
 
   //////////////////Handlers//////////////////////
 
@@ -72,6 +70,7 @@ export default function CreateSnippetPage() {
         .replace(/^\w/, (c) => c.toUpperCase())
     );
   };
+  const selectedLanguage = customLanguage || language;
 
   const handleResourceTitleChange = (e) => {
     setResourceTitle(e.target.value);
@@ -96,7 +95,7 @@ export default function CreateSnippetPage() {
   // };
   const handleTagChange = (tag) => {
     const isTagSelected = selectedTags.includes(tag);
-  
+
     if (isTagSelected) {
       // Tag is already selected, remove it
       setSelectedTags((prevSelectedTags) =>
@@ -108,6 +107,8 @@ export default function CreateSnippetPage() {
     }
   };
 
+  ///////////CREATE SNIPPET BLOCK////////////////////
+
   const [createSnippet] = useMutation(CREATE_SNIPPET);
 
   const [snippetData, setSnippetData] = useState({
@@ -115,15 +116,37 @@ export default function CreateSnippetPage() {
     snippetTitle: "",
     snippetText: "",
     snippetCode: [],
-    resources: showResourceFields ? [{ title: resourceTitle, link: resourceLink }] : [],
+    resources: showResourceFields
+      ? [{ title: resourceTitle, link: resourceLink }]
+      : [],
     tags: selectedTags,
   });
 
   useEffect(() => {
     // const getUsername = Auth.loggedIn() ? Auth.getProfile().data.username : null;
     const getUsername = Auth.getProfile().data.username;
-    setSnippetData({ ...snippetData, username: getUsername });
-  }, []);
+    //   setSnippetData({ ...snippetData, username: getUsername });
+    // }, []);
+    setSnippetData({
+      ...snippetData,
+      username: getUsername,
+      snippetTitle: snippetTitle,
+      snippetText: snippetText,
+      snippetCode: [code],
+      resources: showResourceFields
+        ? [{ title: resourceTitle, link: resourceLink }]
+        : [],
+      tags: selectedTags,
+    });
+  }, [
+    snippetTitle,
+    snippetText,
+    code,
+    showResourceFields,
+    resourceTitle,
+    resourceLink,
+    selectedTags,
+  ]);
 
   const handleCreateSnippet = async () => {
     try {
@@ -144,11 +167,12 @@ export default function CreateSnippetPage() {
       setShowResourceFields(false);
       setResourceTitle("");
       setResourceLink("");
+      setSelectedTags([]);
     } catch (error) {
       console.error("Error creating snippet:", error);
     }
 
-    const selectedLanguage = customLanguage || language;
+    // const selectedLanguage = customLanguage || language;
 
     console.log("Snippet Title:", snippetTitle);
     console.log("Snippet Text:", snippetText);
@@ -163,6 +187,7 @@ export default function CreateSnippetPage() {
       console.log("Tags:", selectedTags);
     }
   };
+  ////////////////////////////////////////////////
 
   useEffect(() => {
     //Hide success creation message after 3 seconds
@@ -302,7 +327,7 @@ export default function CreateSnippetPage() {
                 isChecked={selectedTags.includes(tag)}
                 onChange={() => handleTagChange(tag)}
                 marginRight={2} // adds margin between tags
-              >                
+              >
                 {tag}
               </Checkbox>
             ))}
