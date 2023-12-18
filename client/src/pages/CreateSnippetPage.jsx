@@ -87,6 +87,15 @@ export default function CreateSnippetPage() {
     } catch (error) {
       console.error('Error creating snippet:', error)
     }
+    // Reset form data once snippet is created
+    setSnippetTitle("");
+    setSnippetText("");
+    setCode("");
+    setLanguage("javascript");
+    setCustomLanguage("");
+    setShowResourceFields(false);
+    setResourceTitle("");
+    setResourceLink("");
 
 
     const selectedLanguage = customLanguage || language;
