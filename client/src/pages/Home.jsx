@@ -1,5 +1,6 @@
 import React from "react";
 import { useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -30,6 +31,13 @@ import '../index.css'
 const MotionBox = motion(Box);
 
 function HeroSection() {
+  const navigate = useNavigate();
+
+  const handleSignUpClick = () => {
+    // Navigate to the sign-up page
+    navigate("/signup");
+  };
+
   return (
     <MotionBox
     initial="hidden"
@@ -46,7 +54,7 @@ function HeroSection() {
       <Text color='codex.text200' fontSize="xl" mb={5}>
         Join a community of passionate developers
       </Text>
-      <Button size="lg" variant="secondary" mt={4}>
+      <Button size="lg" variant="secondary" mt={4} onClick={handleSignUpClick}>
         Get Started
       </Button>
     </Box>
@@ -233,6 +241,13 @@ function FeaturedSnippets() {
 }
 
 function HowItWorks() {
+  const navigate = useNavigate();
+
+  const handleSignUpClick = () => {
+    // Navigate to the sign-up page
+    navigate("/signup");
+  };
+  
   return (
     <MotionBox
     initial="hidden"
@@ -252,7 +267,7 @@ function HowItWorks() {
       <Text color='codex.text200' mb={3}>
         "The community support is fantastic. I've learned so much!"
       </Text>
-      <Button size="lg" variant='secondary' mt={4}>
+      <Button size="lg" variant='secondary' mt={4} onClick={handleSignUpClick}>
         Start Sharing Today
       </Button>
     </Box>
