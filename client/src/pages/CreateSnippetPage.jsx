@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import CodeEditor from "../components/CodeEditor";
-import { Box, Textarea, Button, VStack, Select, Input, FormLabel } from "@chakra-ui/react";
-import { SAVE_SNIPPET } from "../utils/actions";
+import { Box, Textarea, Button, VStack, Select, Input, Text } from "@chakra-ui/react";
+import { CREATE_SNIPPET } from "../utils/mutations";
 import theme from "../utils/theme";
+import { useMutation } from "@apollo/client";
 
 export default function CreateSnippetPage() {
   const [snippetTitle, setSnippetTitle] = useState("");
@@ -59,8 +60,28 @@ export default function CreateSnippetPage() {
     setShowResourceFields(!showResourceFields);
   };
 
-  const handleSave = () => {
-    // insert SAVE_SNIPPET logic here
+  const [createSnippet, { error }] = useMutation(CREATE_SNIPPET);
+
+  const snippetData, setSnippetData = useState({
+    username: "",
+    snippetTitle: "",
+    snippetText: "",
+    snippetCode: [],
+    resources: [],
+    tags: [],
+  });
+
+  const handleSave = async () => {
+    try {
+      const response = await createSnippet({
+        variables: snippetData,
+    });
+    console.log('Snippet created:', response.data.createSnippet);
+    } catch (error) {
+      console.error('Error creating snippet:', error)
+    }
+
+
     const selectedLanguage = customLanguage || language;
 
     console.log("Snippet Title:", snippetTitle);
@@ -106,7 +127,7 @@ export default function CreateSnippetPage() {
         />
       </Box>
       {/*Dropdown menu for syntax highlighting*/}
-      <FormLabel>Choose Language:</FormLabel>
+      <Text>Choose Language:</Text>
       <Select
         value={language}
         onChange={(e) => handleLanguageChange(e.target.value)}
@@ -193,7 +214,7 @@ export default function CreateSnippetPage() {
       <CodeEditor code={code} language={language} />
       {/*Save button*/}
       <Button variant="secondary" onClick={handleSave}>
-        Save
+        Create Snippet
       </Button>
     </VStack>
   );
