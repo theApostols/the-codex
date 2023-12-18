@@ -79,6 +79,7 @@ type Snippet
 
 type Query
 {
+  allUsers: [User]
   allSnippets: [Snippet]
   oneSnippet(snippetId: ID!): Snippet
   userSnippets(username: String!): [Snippet]

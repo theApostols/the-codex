@@ -10,6 +10,21 @@ const resolvers =
 {
   Query:
   {
+    //query to retrieve all users
+    allUsers: async () => {
+      try 
+      {
+        // Retrieve and return all users
+        const users = await User.find({});
+        return users;
+      } 
+      catch (error) 
+      {
+        // Log the error and throw a new error
+        console.error(error);
+        throw new Error('Failed to retrieve users: ' + error.message);
+      }
+    },
     //query to retrieve all snippets
     allSnippets: async () =>
     {
