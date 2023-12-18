@@ -9,10 +9,10 @@ const colors = {
     borders: '#413C66',
     highlights: '#8278CC',
     accents: '#A5E9E1',
-    disabledBg: '#CCCCCC',
-    disabledText: '#666666',
-    linkHover: '#4B9A94',
-    linkActive: '#3D7873',
+    text: '#FFFFFF',
+    text200: "#E0E0E0",
+    accents200: '#87cac3',
+    accents300: "#448780",
   },
 };
 
@@ -22,33 +22,33 @@ const buttonStyles = {
     variants: {
       primary: {
         bg: 'codex.main',
-        color: 'white',
+        color: 'codex.text',
         _hover: {
-          bg: 'codex.highlights',
+          bg: 'codex.dark',
         },
       },
       secondary: {
         bg: 'codex.highlights',
-        color: 'white',
+        color: 'codex.text',
         _hover: {
           bg: 'codex.borders',
         },
       },
       accent: {
         bg: 'codex.accents',
-        color: 'black',
+        color: 'codex.text',
         _hover: {
           bg: 'codex.highlights',
         },
       },
       outline: {
         bg: 'transparent',
-        color: 'white',
+        color: 'codex.text',
         border: '1px solid',
         borderColor: 'codex.highlights',
         _hover: {
-          bg: 'codex.main',
-          color: 'white',
+          bg: 'codex.dark',
+          color: 'codex.text',
         },
       },
       disabled: {
@@ -61,7 +61,7 @@ const buttonStyles = {
       },
       link: {
         bg: 'transparent',
-        color: 'codex.accents',
+        color: 'codex.text',
         textDecoration: 'underline',
         _hover: {
           textDecoration: 'none',
@@ -81,7 +81,7 @@ const linkStyles = {
   Link: {
     variants: {
       link: {
-        color: 'codex.accents',
+        color: 'codex.text',
         textDecoration: 'none',
         _hover: {
           textDecoration: 'underline',
