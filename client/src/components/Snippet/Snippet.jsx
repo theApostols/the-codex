@@ -2,16 +2,17 @@ import CodeEditor from "../CodeEditor";
 import { Box, Text, Button, VStack, Code } from "@chakra-ui/react";
 import theme from "../../utils/theme";
 
-const Snippet = ({ snippet }) => {
+// Added default value to the snippet renders on the userpage
+const Snippet = ({ snippet = {} }) => {
   const {
-    username,
-    snippetTitle,
-    snippetText,
-    snippetCode,
-    formattedCreationDate,
-    formattedEditDate,
-    overallProps,
-    comments,
+    username = "",
+    snippetTitle = "",
+    snippetText = "",
+    snippetCode = [],
+    formattedCreationDate = "",
+    formattedEditDate = "",
+    overallProps = 0,
+    comments = [],
   } = snippet;
 
   return (
@@ -28,12 +29,12 @@ const Snippet = ({ snippet }) => {
           Last edited on {formattedEditDate}
         </Text>
       )}
-      
+
       <Text>{snippetText}</Text>
 
       <CodeEditor
-        code={snippetCode[0].code}
-        language={snippetCode[0].language}
+        code={snippetCode.length > 0 ? snippetCode[0].code : ""}
+        language={snippetCode.length > 0 ? snippetCode[0].language : ""}
       />
 
       <VStack mt={4} align="start" spacing={2}>
@@ -45,8 +46,16 @@ const Snippet = ({ snippet }) => {
                 <Text>{comment.username} said:</Text>
                 <Text>{comment.commentText}</Text>
                 <CodeEditor
-                  code={comment.commentCode[0].code}
-                  language={comment.commentCode[0].language}
+                  code={
+                    comment.commentCode.length > 0
+                      ? comment.commentCode[0].code
+                      : ""
+                  }
+                  language={
+                    comment.commentCode.length > 0
+                      ? comment.commentCode[0].language
+                      : ""
+                  }
                 />
                 <Text fontSize="sm" color="codex.accents">
                   Commented on {comment.formattedCreationDate}

@@ -1,16 +1,5 @@
 import React from "react";
-// import Snippet from "../components/Snippet/snippets.jsx"
-// import UserInfo from "../components/UserInfo/userinfo.jsx"
-
-// export default function UserPage() {
-//   return (
-//     <>
-//       <p>Testing UserPage</p>
-//       <Snippet />
-//       <UserInfo />
-//     </>
-//   );
-// }
+import Snippet from "../components/Snippet/Snippet";
 
 export default function UserPage() {
   const paragraphStyle = {
@@ -21,6 +10,7 @@ export default function UserPage() {
   return (
     <>
       <p style={paragraphStyle}>UserPage is rendering</p>
+      <Snippet />
     </>
   );
 }
