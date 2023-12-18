@@ -10,6 +10,7 @@ import {
   Text,
   Flex,
   Checkbox,
+  FormLabel,
 } from "@chakra-ui/react";
 import { CREATE_SNIPPET } from "../utils/mutations";
 import customTheme from "../utils/theme";
@@ -227,6 +228,12 @@ export default function CreateSnippetPage() {
         value={language}
         onChange={(e) => handleLanguageChange(e.target.value)}
       >
+        {/* <option value="apache">Apache</option>
+        <option value="bash">Bash</option>
+        <option value="c">C</option>
+        <option value="cpp">C++</option>
+        <option value="csharp">C#</option> */}
+        </Select>
         <Box w="full">
           {/* Snippet title */}
           <Input
@@ -325,7 +332,6 @@ export default function CreateSnippetPage() {
             onChange={handleCustomLanguageChange}
           />
         )}
-      </Box>
       {/* Toggle Tags Section */}
       <Box>
         <Button onClick={handleToggleTags} size="sm">
