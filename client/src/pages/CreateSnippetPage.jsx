@@ -325,8 +325,8 @@ export default function CreateSnippetPage() {
             onChange={handleCustomLanguageChange}
           />
         )}
-      </Box>
       {/* Toggle Tags Section */}
+      </Select>
       <Box>
         <Button onClick={handleToggleTags} size="sm">
           {showTagsSection ? "Hide Tags" : "Add Tags"}

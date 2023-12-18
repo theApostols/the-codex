@@ -1,16 +1,19 @@
 import { gql } from "@apollo/client";
 
 export const GET_ALL_USERS = gql`
-query Query {
-  allUsers {
-    username
-    snippets {
-      snippetCode {
-        code
+  query Query {
+    allUsers {
+      username
+      snippets {
+        snippetCode {
+          code
+        }
+        comments {
+          commentText
+        }
       }
     }
   }
-}
 `;
 
 export const GET_ALL_SNIPPETS = gql`
