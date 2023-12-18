@@ -14,8 +14,11 @@ const resolvers =
     allUsers: async () => {
       try 
       {
-        // Retrieve and return all users
-        const users = await User.find({});
+       // Retrieve and return all users, populating their snippets along with comments
+      const users = await User.find({}).populate({
+        path: 'snippets',
+        populate: { path: 'comments' }
+      });
         return users;
       } 
       catch (error) 
