@@ -4,6 +4,7 @@ import { Box, Textarea, Button, VStack, Select, Input, Text } from "@chakra-ui/r
 import { CREATE_SNIPPET } from "../utils/mutations";
 import theme from "../utils/theme";
 import { useMutation } from "@apollo/client";
+import Auth from "../utils/auth";
 
 export default function CreateSnippetPage() {
   const [snippetTitle, setSnippetTitle] = useState("");
@@ -60,9 +61,9 @@ export default function CreateSnippetPage() {
     setShowResourceFields(!showResourceFields);
   };
 
-  const [createSnippet, { error }] = useMutation(CREATE_SNIPPET);
+  const [createSnippet] = useMutation(CREATE_SNIPPET);
 
-  const snippetData, setSnippetData = useState({
+  const [snippetData, setSnippetData] = useState({
     username: "",
     snippetTitle: "",
     snippetText: "",
@@ -71,7 +72,13 @@ export default function CreateSnippetPage() {
     tags: [],
   });
 
-  const handleSave = async () => {
+  useEffect(() => {
+    // const getUsername = Auth.loggedIn() ? Auth.getProfile().data.username : null;
+    const getUsername = Auth.getProfile().data.username;
+      setSnippetData({ ...snippetData, username: getUsername });
+  }, []);
+
+  const handleCreateSnippet = async () => {
     try {
       const response = await createSnippet({
         variables: snippetData,
@@ -213,7 +220,7 @@ export default function CreateSnippetPage() {
       {/*Code editor component for syntax highlighting*/}
       <CodeEditor code={code} language={language} />
       {/*Save button*/}
-      <Button variant="secondary" onClick={handleSave}>
+      <Button variant="secondary" onClick={handleCreateSnippet}>
         Create Snippet
       </Button>
     </VStack>
