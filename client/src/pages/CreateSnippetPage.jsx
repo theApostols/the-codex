@@ -11,7 +11,9 @@ import {
   Flex,
   Checkbox,
   FormLabel,
+  Icon,
 } from "@chakra-ui/react";
+import { BiSave } from "react-icons/bi";
 import { CREATE_SNIPPET } from "../utils/mutations";
 import customTheme from "../utils/theme";
 import { useMutation } from "@apollo/client";
@@ -192,48 +194,20 @@ export default function CreateSnippetPage() {
   }, [createMessage]);
 
   return (
-    <VStack align="stretch" spacing={4} p={4}>
-      <Box>
-        {/* Snippet title */}
-        <Input
-          type="text"
-          placeholder="Enter Snippet Title"
-          value={snippetTitle}
-          onChange={handleSnippetTitleChange}
-        />
-      </Box>
-      <Box>
-        {/* Snippet text */}
-        <Textarea
-          value={snippetText}
-          onChange={(e) => handleSnippetTextChange(e)}
-          placeholder="Say something about your snippet!"
-          rows={5}
-          cols={40}
-        />
-      </Box>
-      <Box>
-        {/*Text area for code snippet input*/}
-        <Textarea
-          value={code}
-          onChange={(e) => handleCodeChange(e.target.value)}
-          placeholder="Enter your code snippet here"
-          rows={10}
-          cols={40}
-        />
-      </Box>
-      {/*Dropdown menu for syntax highlighting*/}
-      <Text>Choose Language:</Text>
-      <Select
-        value={language}
-        onChange={(e) => handleLanguageChange(e.target.value)}
+    <Box p="50" d="flex" alignItems="center" justifyContent="center">
+      <VStack
+        spacing="4"
+        w="full"
+        maxW="5xl"
+        mx="auto"
+        p="8"
+        borderRadius="lg"
+        boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
+        border="1px solid rgba(255, 255, 255, 0.2)"
+        bg="rgba(45, 55, 72, 0.8)"
+        backdropFilter="saturate(100%) blur(10px)"
+        color="white"
       >
-        {/* <option value="apache">Apache</option>
-        <option value="bash">Bash</option>
-        <option value="c">C</option>
-        <option value="cpp">C++</option>
-        <option value="csharp">C#</option> */}
-        </Select>
         <Box w="full">
           {/* Snippet title */}
           <Input
@@ -250,8 +224,9 @@ export default function CreateSnippetPage() {
           <Textarea
             bg="codex.darkest"
             color="codex.text"
+            type="text"
             value={snippetText}
-            onChange={(e) => handleSnippetTextChange(e.target.value)}
+            onChange={(e) => handleSnippetTextChange(e)}
             placeholder="Say something about your snippet!"
             rows={5}
             cols={40}
@@ -269,6 +244,7 @@ export default function CreateSnippetPage() {
             cols={40}
           />
         </Box>
+        
         {/*Dropdown menu for syntax highlighting*/}
         <FormLabel color="codex.accents">Choose Language:</FormLabel>
         <Select
@@ -332,38 +308,47 @@ export default function CreateSnippetPage() {
             onChange={handleCustomLanguageChange}
           />
         )}
-      {/* Toggle Tags Section */}
-      <Box>
-        <Button onClick={handleToggleTags} size="sm">
-          {showTagsSection ? "Hide Tags" : "Add Tags"}
-        </Button>
-        {showTagsSection && (
-          <Flex wrap="wrap" marginTop={2}>
-            {availableTags.map((tag, index) => (
-              <Checkbox
-                key={index}
-                isChecked={selectedTags.includes(tag)}
-                onChange={() => handleTagChange(tag)}
-                marginRight={2} // adds margin between tags
-              >
-                {tag}
-              </Checkbox>
-            ))}
-          </Flex>
-        )}
-      </Box>
-      {/*Code editor component for syntax highlighting*/}
-      <CodeEditor code={code} language={language} />
-      {/*Save button*/}
-      <Button variant="secondary" onClick={handleCreateSnippet}>
-        Create Snippet
-      </Button>
-      {/*Message to confirm snippet was created*/}
-      {createMessage && (
-        <Text color="green.500" fontWeight="bold">
-          Snippet created!
-        </Text>
-      )}
-    </VStack>
+        {/* Toggle Tags Section */}
+        <Box w="full">
+          <Button variant="secondary" onClick={handleToggleTags} size="sm">
+            {showTagsSection ? "Hide Tags" : "Add Tags"}
+          </Button>
+          {showTagsSection && (
+            <Flex wrap="wrap" marginTop={2}>
+              {availableTags.map((tag, index) => (
+                <Checkbox
+                  colorScheme="teal"
+                  size="lg"
+                  color="codex.accents"
+                  key={index}
+                  isChecked={selectedTags.includes(tag)}
+                  onChange={() => handleTagChange(tag)}
+                  marginRight={2} // adds margin between tags
+                >
+                  {tag}
+                </Checkbox>
+              ))}
+            </Flex>
+          )}
+        </Box>
+        <Box w="full">
+          {/*Code editor component for syntax highlighting*/}
+          <CodeEditor code={code} language={language} />
+          {/*Save button*/}
+          <Box pt="5">
+            <Button variant="secondary" onClick={handleCreateSnippet}>
+              <Icon as={BiSave} w={6} h={8} mr="2" color="codex.text" />
+              Save
+            </Button>
+          </Box>
+          {/*Message to confirm snippet was created*/}
+          {createMessage && (
+            <Text color="codex.accents200" fontWeight="bold">
+              Snippet created!
+            </Text>
+          )}
+        </Box>
+      </VStack>
+    </Box>
   );
 }
