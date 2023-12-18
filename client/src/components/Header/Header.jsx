@@ -1,29 +1,32 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import {
-  Box,
   Flex,
   Text,
   Button,
-  Link,
+  Stack,
   Image,
-  Spacer,
-  Container,
+  Avatar,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  IconButton,
+  useDisclosure,
+  useBreakpointValue,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
-  IconButton,
-  Avatar,
-  AvatarGroup,
-  Collapse,
-  useDisclosure,
   VStack,
+  Divider,
+  Icon,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { MdMenu } from "react-icons/md";
-import theme from "../../utils/theme";
+import { BiLogOut, BiMenu, BiPlus, BiUser, BiCog } from "react-icons/bi";
 
-function Header() {
+const Header = ({ isAuthenticated, user }) => {
   const navigate = useNavigate();
 
   const handleSignUpClick = () => {
@@ -35,104 +38,151 @@ function Header() {
     navigate("/login");
   };
 
-  const navLinks = [
-    { name: "Home", href: "#!" },
-    { name: "Snippets", href: "#!" },
-    { name: "Button 3", href: "#!" },
-    { name: "Button 4", href: "#!" },
-  ];
-
-  const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const isMobile = useBreakpointValue({ base: true, md: false });
+  const btnRef = useRef();
 
   return (
-    <Box
-      //bg="blue.100"
-      // w="100vh" //commented this out to make header cover full width of page
-      p="50px"
+    <Flex
+      as="header"
+      align="center"
+      justify="space-between"
+      padding="1.5rem"
+      color="codex.accents"
+      boxShadow="md"
     >
-      <Container maxW="container.xl">
-        <Flex align="center">
-          {/* this was the only way i could get the logo to show up, adjust as needed */}
-          <Image src="/images/logo_dark.png" alt="LOGO" boxSize="100px" />
-          <Text color="codex.accents" fontSize="2xl" fontWeight="bold" ml={2}>
-            The Codex
-          </Text>
-          <Spacer />
-
-          {/* Navbar */}
-          <Box as="nav" display={{ base: "none", md: "block" }}>
-            {navLinks.map((link) => (
-              <Link
-                variant="link"
-                href={link.href}
-                p={2}
-                key={link.name}
-                fontSize="md"
-                fontWeight="medium"
-              >
-                {link.name}
-              </Link>
-            ))}
-          </Box>
-          <Spacer />
-
-          <AvatarGroup mr={4}>
-            <Avatar
-              size="lg"
-              name="Jhon Doe"
-              src="https://bit.ly/broken-link"
-              bg="codex.highlights"
+      {isMobile ? (
+        <>
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              icon={<Icon as={BiMenu} w={8} h={8} color="codex.text" />}
+              variant="outline"
             />
-          </AvatarGroup>
-          <Box display={{ base: "none", md: "block" }}>
-            <Button onClick={handleLoginClick} variant="outline" mr={4}>
-              Log In
+            <MenuList bg="codex.main" border="1px solid teal">
+              <MenuItem bg="transparent" color="codex.text">
+                Home
+              </MenuItem>
+              <MenuItem bg="codex.main" color="codex.text">
+                Snippets
+              </MenuItem>
+              <MenuItem bg="codex.main" color="codex.text">
+                Button03
+              </MenuItem>
+              <MenuItem bg="codex.main" color="codex.text">
+                Button04
+              </MenuItem>
+            </MenuList>
+          </Menu>
+
+          <Image src="/images/logo_dark.png" alt="Logo" boxSize="50px" />
+
+          {isAuthenticated ? (
+            <Avatar
+              size="sm"
+              src={user.avatar}
+              ref={btnRef}
+              onClick={onOpen}
+              cursor="pointer"
+            />
+          ) : (
+            <Button onClick={handleLoginClick} variant="outline">
+              Login
             </Button>
-            <Button variant="secondary" onClick={handleSignUpClick}>
-              Sign Up
+          )}
+        </>
+      ) : (
+        <>
+          <Flex align="center">
+            <Image src="/images/logo_dark.png" alt="Logo" boxSize="50px" />
+            <Text fontSize="xl" fontWeight="bold" ml="2">
+              The Codex
+            </Text>
+          </Flex>
+
+          <Stack direction="row" spacing={4}>
+            <Button variant="link">Home</Button>
+            <Button variant="link">Snippets</Button>
+            <Button variant="link">Button03</Button>
+            <Button variant="link">Button04</Button>
+
+            {isAuthenticated ? (
+              <Avatar
+                size="sm"
+                src={user.avatar}
+                ref={btnRef}
+                onClick={onOpen}
+                cursor="pointer"
+              />
+            ) : (
+              <>
+                <Button onClick={handleLoginClick} variant="outline">
+                  Login
+                </Button>
+                <Button onClick={handleSignUpClick} variant="secondary">
+                  Sign Up
+                </Button>
+              </>
+            )}
+          </Stack>
+        </>
+      )}
+
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
+        <DrawerOverlay />
+        <DrawerContent bg="codex.darkest">
+          <DrawerCloseButton />
+          <DrawerHeader color="codex.accents">{user?.name}</DrawerHeader>
+          <DrawerBody>
+            <VStack align="stretch" spacing={4}>
+              <Button
+                leftIcon={
+                  <Icon as={BiPlus} w={8} h={8} color="codex.highlights" />
+                }
+                variant="ghost"
+                justifyContent="start"
+              >
+                Create
+              </Button>
+              <Button
+                leftIcon={
+                  <Icon as={BiUser} w={8} h={8} color="codex.highlights" />
+                }
+                variant="ghost"
+                justifyContent="start"
+              >
+                Profile
+              </Button>
+              <Button
+                leftIcon={
+                  <Icon as={BiCog} w={8} h={8} color="codex.highlights" />
+                }
+                variant="ghost"
+                justifyContent="start"
+              >
+                User Settings
+              </Button>
+            </VStack>
+            <Divider my="4" />
+            <Button
+              leftIcon={
+                <Icon as={BiLogOut} w={8} h={8} color="codex.highlights" />
+              }
+              variant="ghost"
+              justifyContent="start"
+            >
+              Logout
             </Button>
-          </Box>
-          <Box display={{ base: "block", md: "none" }}>
-            <>
-              <Button variant='primary' onClick={onToggle} as={IconButton} icon={<MdMenu />} ></Button>
-              <Collapse in={isOpen} animateOpacity>
-                <Box
-                  p="40px"
-                  color="codex.main"
-                  mt="4"
-                  bg="teal.500"
-                  rounded="md"
-                  shadow="md"
-                  display={{ base: "block", md: "block" }}
-                >
-                  <VStack spacing={4}>
-                    {navLinks.map((link) => (
-                      <Link
-                        variant="link"
-                        href={link.href}
-                        p={2}
-                        key={link.name}
-                        fontSize="md"
-                        fontWeight="medium"
-                      >
-                        {link.name}
-                      </Link>
-                    ))}
-                    <Button onClick={handleLoginClick} variant="outline" mr={4}>
-                      Log In
-                    </Button>
-                    <Button variant="secondary" onClick={handleSignUpClick}>
-                      Sign Up
-                    </Button>
-                  </VStack>
-                </Box>
-              </Collapse>
-            </>
-          </Box>
-        </Flex>
-      </Container>
-    </Box>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </Flex>
   );
-}
+};
 
 export default Header;
