@@ -1,7 +1,7 @@
-// SnippetCard.js
-import React, { useState } from 'react';
-import CommentSection from './CommentSection';
-import Rating from './Rating';
+// // SnippetCard.js
+// import React, { useState } from 'react';
+// import CommentSection from './CommentSection';
+// import Rating from './Rating';
 
 const SnippetCard = ({ snippet }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -15,7 +15,7 @@ const SnippetCard = ({ snippet }) => {
 
   const handleSave = () => {
     // Logic to save the edited snippet
-    // You may want to make an API request to update the snippet
+   
     // and then set isEditing to false
     setIsEditing(false);
   };
