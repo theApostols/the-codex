@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import CodeEditor from "../components/CodeEditor";
-import { Box, Textarea, Button, VStack, Select, Input, FormLabel } from "@chakra-ui/react";
+import {
+  Box,
+  Textarea,
+  Button,
+  VStack,
+  Select,
+  Input,
+  FormLabel,
+} from "@chakra-ui/react";
 import { SAVE_SNIPPET } from "../utils/actions";
 import theme from "../utils/theme";
 
@@ -75,23 +83,42 @@ export default function CreateSnippetPage() {
   };
 
   return (
-    <VStack align="stretch" spacing={4} p={4}>
-      <Box>
+    <Box
+          p="50px"
+          px={{ base: "4", lg: "8" }}
+          d="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+    <VStack
+      spacing="4"
+      w="full"
+      maxW="5xl"
+      mx="auto"
+      p="8"
+      borderRadius="lg"
+      boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
+      border="1px solid rgba(255, 255, 255, 0.2)"
+      bg="rgba(45, 55, 72, 0.8)"
+      backdropFilter="saturate(100%) blur(10px)"
+      color="white"
+    >
+      <Box w="full">
         {/* Snippet title */}
         <Input
-        bg="codex.darkest"
-        color="codex.text"
+          bg="codex.darkest"
+          color="codex.text"
           type="text"
           placeholder="Enter Snippet Title"
           value={snippetTitle}
           onChange={handleSnippetTitleChange}
         />
       </Box>
-      <Box>
+      <Box w="full">
         {/* Snippet text */}
         <Textarea
-        bg="codex.darkest"
-        color="codex.text"
+          bg="codex.darkest"
+          color="codex.text"
           value={snippetText}
           onChange={(e) => handleSnippetTextChange(e.target.value)}
           placeholder="Say something about your snippet!"
@@ -99,11 +126,11 @@ export default function CreateSnippetPage() {
           cols={40}
         />
       </Box>
-      <Box>
+      <Box w="full">
         {/*Text area for code snippet input*/}
         <Textarea
-        bg="codex.darkest"
-        color="codex.text"
+          bg="codex.darkest"
+          color="codex.text"
           value={code}
           onChange={(e) => handleCodeChange(e.target.value)}
           placeholder="Enter your code snippet here"
@@ -112,10 +139,10 @@ export default function CreateSnippetPage() {
         />
       </Box>
       {/*Dropdown menu for syntax highlighting*/}
-      <FormLabel color='codex.accents' >Choose Language:</FormLabel>
+      <FormLabel color="codex.accents">Choose Language:</FormLabel>
       <Select
-      bg='codex.borders'
-      color='codex.text'
+        bg="codex.borders"
+        color="codex.text"
         value={language}
         onChange={(e) => handleLanguageChange(e.target.value)}
       >
@@ -174,9 +201,13 @@ export default function CreateSnippetPage() {
           onChange={handleCustomLanguageChange}
         />
       )}
-      <Box>
+      <Box w="full">
         {/* Toggle Resource Fields button */}
-        <Button variant="secondary" onClick={handleToggleResourceFields} size="sm">
+        <Button
+          variant="secondary"
+          onClick={handleToggleResourceFields}
+          size="sm"
+        >
           {showResourceFields ? "Hide Resource Fields" : "Add Resource"}
         </Button>
         {showResourceFields && (
@@ -197,6 +228,7 @@ export default function CreateSnippetPage() {
           </>
         )}
       </Box>
+      
       {/*Code editor component for syntax highlighting*/}
       <CodeEditor code={code} language={language} />
       {/*Save button*/}
@@ -204,5 +236,6 @@ export default function CreateSnippetPage() {
         Save
       </Button>
     </VStack>
+    </Box>
   );
 }
