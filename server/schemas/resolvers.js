@@ -30,7 +30,7 @@ const resolvers =
     {
       try
       {
-        //finds a specific snippet by objectId & return it
+        //finds a specific snippet by objectId & return it, populating any comments attached to the snippet
         const snippet = await Snippet.findOne({_id: snippetId}).populate('comments');
         return snippet;
       }
