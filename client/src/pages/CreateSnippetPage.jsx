@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
 import CodeEditor from "../components/CodeEditor";
-import { Box, Textarea, Button, VStack, Select, Input, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Textarea,
+  Button,
+  VStack,
+  Select,
+  Input,
+  Text,
+} from "@chakra-ui/react";
 import { CREATE_SNIPPET } from "../utils/mutations";
-import theme from "../utils/theme";
+import customTheme from "../utils/theme";
 import { useMutation } from "@apollo/client";
 import Auth from "../utils/auth";
 
@@ -19,6 +27,9 @@ export default function CreateSnippetPage() {
   const [showResourceFields, setShowResourceFields] = useState(false);
   const [resourceTitle, setResourceTitle] = useState("");
   const [resourceLink, setResourceLink] = useState("");
+
+  //Message to confirm snippet was created
+  const [createMessage, setCreateMessage] = useState(false);
 
   const handleSnippetTitleChange = (e) => {
     setSnippetTitle(e.target.value);
@@ -75,29 +86,32 @@ export default function CreateSnippetPage() {
   useEffect(() => {
     // const getUsername = Auth.loggedIn() ? Auth.getProfile().data.username : null;
     const getUsername = Auth.getProfile().data.username;
-      setSnippetData({ ...snippetData, username: getUsername });
+    setSnippetData({ ...snippetData, username: getUsername });
   }, []);
 
   const handleCreateSnippet = async () => {
     try {
       const response = await createSnippet({
         variables: snippetData,
-    });
-    console.log('Snippet created:', response.data.createSnippet);
+      });
+      console.log("Snippet created:", response.data.createSnippet);
+
+      // Show message to confirm snippet was created
+      setCreateMessage(true);
+
+      // Reset form data once snippet is created
+      setSnippetTitle("");
+      setSnippetText("");
+      setCode("");
+      setLanguage("javascript");
+      setCustomLanguage("");
+      setShowResourceFields(false);
+      setResourceTitle("");
+      setResourceLink("");
     } catch (error) {
-      console.error('Error creating snippet:', error)
+      console.error("Error creating snippet:", error);
     }
-    // Reset form data once snippet is created
-    setSnippetTitle("");
-    setSnippetText("");
-    setCode("");
-    setLanguage("javascript");
-    setCustomLanguage("");
-    setShowResourceFields(false);
-    setResourceTitle("");
-    setResourceLink("");
-
-
+  
     const selectedLanguage = customLanguage || language;
 
     console.log("Snippet Title:", snippetTitle);
@@ -110,6 +124,16 @@ export default function CreateSnippetPage() {
       console.log("Resource Link:", resourceLink);
     }
   };
+
+  useEffect(() => {
+    //Hide success creation message after 3 seconds
+    if (createMessage) {
+      const timer = setTimeout(() => {
+        setCreateMessage(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [createMessage]);
 
   return (
     <VStack align="stretch" spacing={4} p={4}>
@@ -126,7 +150,7 @@ export default function CreateSnippetPage() {
         {/* Snippet text */}
         <Textarea
           value={snippetText}
-          onChange={(e) => handleSnippetTextChange(e.target.value)}
+          onChange={(e) => handleSnippetTextChange(e)}
           placeholder="Say something about your snippet!"
           rows={5}
           cols={40}
@@ -232,6 +256,12 @@ export default function CreateSnippetPage() {
       <Button variant="secondary" onClick={handleCreateSnippet}>
         Create Snippet
       </Button>
+      {/*Message to confirm snippet was created*/}
+      {createMessage && (
+        <Text color="green.500" fontWeight="bold">
+          Snippet created!
+        </Text>
+      )}
     </VStack>
   );
 }
