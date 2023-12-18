@@ -24,6 +24,7 @@ export default function CreateSnippetPage() {
   const [language, setLanguage] = useState("javascript"); // default language is javascript
   // give user an option to enter a custom language if their language is not listed
   const [customLanguage, setCustomLanguage] = useState("");
+  const selectedLanguage = customLanguage || language;
 
   // give user an option to add a resource to their snippet
   const [showResourceFields, setShowResourceFields] = useState(false);
@@ -35,7 +36,7 @@ export default function CreateSnippetPage() {
 
   // set state for Tags
   const [showTagsSection, setShowTagsSection] = useState(false);
-  const [tags, setTags] = useState([]);
+  // const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   // sample tags
   const availableTags = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
@@ -70,7 +71,6 @@ export default function CreateSnippetPage() {
         .replace(/^\w/, (c) => c.toUpperCase())
     );
   };
-  const selectedLanguage = customLanguage || language;
 
   const handleResourceTitleChange = (e) => {
     setResourceTitle(e.target.value);
@@ -88,11 +88,6 @@ export default function CreateSnippetPage() {
     setShowTagsSection(!showTagsSection);
   };
 
-  // const handleTagChange = (index) => {
-  //   const updatedTags = [...tags];
-  //   updatedTags[index] = !updatedTags[index]; // toggle the tag
-  //   setTags(updatedTags);
-  // };
   const handleTagChange = (tag) => {
     const isTagSelected = selectedTags.includes(tag);
 
@@ -125,14 +120,12 @@ export default function CreateSnippetPage() {
   useEffect(() => {
     // const getUsername = Auth.loggedIn() ? Auth.getProfile().data.username : null;
     const getUsername = Auth.getProfile().data.username;
-    //   setSnippetData({ ...snippetData, username: getUsername });
-    // }, []);
     setSnippetData({
       ...snippetData,
       username: getUsername,
       snippetTitle: snippetTitle,
       snippetText: snippetText,
-      snippetCode: [code],
+      snippetCode: [{ language: selectedLanguage, code: code }],
       resources: showResourceFields
         ? [{ title: resourceTitle, link: resourceLink }]
         : [],
@@ -171,8 +164,6 @@ export default function CreateSnippetPage() {
     } catch (error) {
       console.error("Error creating snippet:", error);
     }
-
-    // const selectedLanguage = customLanguage || language;
 
     console.log("Snippet Title:", snippetTitle);
     console.log("Snippet Text:", snippetText);
