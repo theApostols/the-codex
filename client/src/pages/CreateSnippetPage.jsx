@@ -114,7 +114,7 @@ export default function CreateSnippetPage() {
     username: "",
     snippetTitle: "",
     snippetText: "",
-    snippetCode: [code],
+    snippetCode: [],
     resources: showResourceFields ? [{ title: resourceTitle, link: resourceLink }] : [],
     tags: selectedTags,
   });
