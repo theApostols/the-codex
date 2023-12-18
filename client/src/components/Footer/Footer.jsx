@@ -4,7 +4,6 @@ import { FaTwitter, FaInstagram, FaGithub, FaEnvelope } from 'react-icons/fa';
 const Footer = () => {
   return (
     <Box
-      as="footer"
       bg="codex.darkest" 
       color="codex.accents"
       py="10"
@@ -25,7 +24,7 @@ const Footer = () => {
             <Heading as="p" size="lg" fontWeight="bold">
               The CodeX
             </Heading>
-            <Text mt="2" fontSize="sm">
+            <Text color='codex.text' mt="2" fontSize="sm">
               Created by The Apostols
             </Text>
           </Box>
@@ -56,11 +55,11 @@ const Footer = () => {
           flexWrap="wrap"
           borderTop="1px solid #413C66"
         >
-          <Text fontSize="sm">
+          <Text color='codex.accents300' fontSize="sm">
             © {new Date().getFullYear()} The CodeX. All rights reserved.
           </Text>
           {/* Social media icons with links. */}
-          <Stack direction="row" spacing={6} mt={{ base: '4', md: '0' }} pt='5px'>
+          <Stack color='codex.accents300' direction="row" spacing={6} mt={{ base: '4', md: '0' }} pt='5px'>
             <Link href="#" isExternal><Icon as={FaGithub} /></Link>
             {/* Additional social media icons... */}
             <Link href="mailto:theapostolsofveronica@outlook.com" isExternal>

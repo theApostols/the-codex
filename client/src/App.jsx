@@ -43,7 +43,7 @@ function App() {
           alignItems="center"
           justifyContent="center"
         >
-          <Box width="full" maxWidth="container.xl" px="4">
+          <Box width="full" px="4">
             <Outlet />
           </Box>
         </Box>
