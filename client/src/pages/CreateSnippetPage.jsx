@@ -79,6 +79,8 @@ export default function CreateSnippetPage() {
       <Box>
         {/* Snippet title */}
         <Input
+        bg="codex.darkest"
+        color="codex.text"
           type="text"
           placeholder="Enter Snippet Title"
           value={snippetTitle}
@@ -88,6 +90,8 @@ export default function CreateSnippetPage() {
       <Box>
         {/* Snippet text */}
         <Textarea
+        bg="codex.darkest"
+        color="codex.text"
           value={snippetText}
           onChange={(e) => handleSnippetTextChange(e.target.value)}
           placeholder="Say something about your snippet!"
@@ -98,6 +102,8 @@ export default function CreateSnippetPage() {
       <Box>
         {/*Text area for code snippet input*/}
         <Textarea
+        bg="codex.darkest"
+        color="codex.text"
           value={code}
           onChange={(e) => handleCodeChange(e.target.value)}
           placeholder="Enter your code snippet here"
@@ -106,8 +112,10 @@ export default function CreateSnippetPage() {
         />
       </Box>
       {/*Dropdown menu for syntax highlighting*/}
-      <FormLabel>Choose Language:</FormLabel>
+      <FormLabel color='codex.accents' >Choose Language:</FormLabel>
       <Select
+      bg='codex.borders'
+      color='codex.text'
         value={language}
         onChange={(e) => handleLanguageChange(e.target.value)}
       >
@@ -168,7 +176,7 @@ export default function CreateSnippetPage() {
       )}
       <Box>
         {/* Toggle Resource Fields button */}
-        <Button onClick={handleToggleResourceFields} size="sm">
+        <Button variant="secondary" onClick={handleToggleResourceFields} size="sm">
           {showResourceFields ? "Hide Resource Fields" : "Add Resource"}
         </Button>
         {showResourceFields && (
