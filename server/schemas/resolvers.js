@@ -1,5 +1,6 @@
 //importing models
 //==============================================================
+const {Pool} = require('mysql2/typings/mysql/lib/Pool');
 const {User, Snippet, Comment} = require('../models');
 const {signToken, AuthenticationError} = require("../utils/auth");
 //==============================================================
@@ -37,7 +38,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error("Failed to retrieve the user's snippets;", error);
+        throw new Error("Failed to retrieve the snippet;", error);
       }
     },
     //query to return all snippets created by a specific user
