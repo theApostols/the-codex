@@ -8,6 +8,8 @@ import {
   Select,
   Input,
   Text,
+  Flex,
+  Checkbox,
 } from "@chakra-ui/react";
 import { CREATE_SNIPPET } from "../utils/mutations";
 import customTheme from "../utils/theme";
@@ -30,6 +32,17 @@ export default function CreateSnippetPage() {
 
   //Message to confirm snippet was created
   const [createMessage, setCreateMessage] = useState(false);
+
+  // set state for Tags
+  const [showTagsSection, setShowTagsSection] = useState(false);
+  const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  // sample tags
+  const availableTags = 
+  ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+
+
+  //////////////////Handlers//////////////////////
 
   const handleSnippetTitleChange = (e) => {
     setSnippetTitle(e.target.value);
@@ -72,15 +85,38 @@ export default function CreateSnippetPage() {
     setShowResourceFields(!showResourceFields);
   };
 
+  const handleToggleTags = () => {
+    setShowTagsSection(!showTagsSection);
+  };
+
+  // const handleTagChange = (index) => {
+  //   const updatedTags = [...tags];
+  //   updatedTags[index] = !updatedTags[index]; // toggle the tag
+  //   setTags(updatedTags);
+  // };
+  const handleTagChange = (tag) => {
+    const isTagSelected = selectedTags.includes(tag);
+  
+    if (isTagSelected) {
+      // Tag is already selected, remove it
+      setSelectedTags((prevSelectedTags) =>
+        prevSelectedTags.filter((selectedTag) => selectedTag !== tag)
+      );
+    } else {
+      // Tag is not selected, add it
+      setSelectedTags((prevSelectedTags) => [...prevSelectedTags, tag]);
+    }
+  };
+
   const [createSnippet] = useMutation(CREATE_SNIPPET);
 
   const [snippetData, setSnippetData] = useState({
     username: "",
     snippetTitle: "",
     snippetText: "",
-    snippetCode: [],
-    resources: [],
-    tags: [],
+    snippetCode: [code],
+    resources: showResourceFields ? [{ title: resourceTitle, link: resourceLink }] : [],
+    tags: selectedTags,
   });
 
   useEffect(() => {
@@ -111,7 +147,7 @@ export default function CreateSnippetPage() {
     } catch (error) {
       console.error("Error creating snippet:", error);
     }
-  
+
     const selectedLanguage = customLanguage || language;
 
     console.log("Snippet Title:", snippetTitle);
@@ -122,6 +158,9 @@ export default function CreateSnippetPage() {
     if (showResourceFields) {
       console.log("Resource Title:", resourceTitle);
       console.log("Resource Link:", resourceLink);
+    }
+    if (showTagsSection) {
+      console.log("Tags:", selectedTags);
     }
   };
 
@@ -248,6 +287,26 @@ export default function CreateSnippetPage() {
               onChange={handleResourceLinkChange}
             />
           </>
+        )}
+      </Box>
+      {/* Toggle Tags Section */}
+      <Box>
+        <Button onClick={handleToggleTags} size="sm">
+          {showTagsSection ? "Hide Tags" : "Add Tags"}
+        </Button>
+        {showTagsSection && (
+          <Flex wrap="wrap" marginTop={2}>
+            {availableTags.map((tag, index) => (
+              <Checkbox
+                key={index}
+                isChecked={selectedTags.includes(tag)}
+                onChange={() => handleTagChange(tag)}
+                marginRight={2} // adds margin between tags
+              >                
+                {tag}
+              </Checkbox>
+            ))}
+          </Flex>
         )}
       </Box>
       {/*Code editor component for syntax highlighting*/}
