@@ -1,4 +1,6 @@
 import React from "react";
+import { useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -6,51 +8,36 @@ import {
   Text,
   SimpleGrid,
   VStack,
-  HStack,
   Stack,
   useBreakpointValue,
   Badge,
-  Wrap,
-  WrapItem,
   Image,
 } from "@chakra-ui/react";
-import { motion } from 'framer-motion';
+
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+  useMotionValue,
+  useVelocity,
+  useAnimationFrame
+} from "framer-motion";
+import { wrap } from "@motionone/utils";
+import { heroVariants, aboutVariants, snippetsVariants, howItWorksVariants, transition } from "../utils/animations";
+import '../index.css'
+
 
 const MotionBox = motion(Box);
 
-// animation variants
-const heroVariants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: { opacity: 1, y: 0 }
-};
-
-const aboutVariants = {
-  hidden: { opacity: 0, x: -50 },
-  visible: { opacity: 1, x: 0 }
-};
-
-const snippetsVariants = {
-  hidden: { opacity: 0, x: 50 },
-  visible: { opacity: 1, x: 0 }
-};
-
-const howItWorksVariants = {
-  hidden: { scale: 0 },
-  visible: { scale: 1 }
-};
-
-const languageVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 }
-};
-
-// animation transition
-const transition = {
-  duration: 0.8,
-  ease: 'easeInOut'
-};
-
 function HeroSection() {
+  const navigate = useNavigate();
+
+  const handleSignUpClick = () => {
+    // Navigate to the sign-up page
+    navigate("/signup");
+  };
+
   return (
     <MotionBox
     initial="hidden"
@@ -64,10 +51,10 @@ function HeroSection() {
   >
     <Box p={10} textAlign="center">
       <Heading color='codex.accents' mb={4}>Explore and Share Cutting-Edge Code Snippets</Heading>
-      <Text color='gray' fontSize="xl" mb={5}>
+      <Text color='codex.text200' fontSize="xl" mb={5}>
         Join a community of passionate developers
       </Text>
-      <Button size="lg" variant="secondary" mt={4}>
+      <Button size="lg" variant="secondary" mt={4} onClick={handleSignUpClick}>
         Get Started
       </Button>
     </Box>
@@ -92,7 +79,7 @@ function AboutPlatform() {
     <VStack spacing={8} p={{ base: 4, md: 10 }} align="center">
     <Box textAlign="center" maxWidth={{ base: "90%", md: "80%", lg: "70%" }}>
       <Heading color='codex.accents' mb={4}>A Hub for Developers to Share and Discover Code</Heading>
-      <Text color='gray' fontSize="lg">
+      <Text color='codex.text200' fontSize="lg">
         Explore the world of development with a platform designed for developers to share,
         enhance, and showcase their programming skills.
       </Text>
@@ -108,7 +95,7 @@ function AboutPlatform() {
               h="auto"
               m='5'
             />
-            <Text color="white">Variety of languages</Text>
+            <Heading color="codex.text">Variety of languages</Heading>
           </VStack>
           <VStack spacing={2}>
             <Image 
@@ -120,7 +107,7 @@ function AboutPlatform() {
               h="auto"
               m='5'
             />
-            <Text color="white">Community interaction</Text>
+            <Heading color="codex.text">Community interaction</Heading>
           </VStack>
           <VStack spacing={2}>
             <Image 
@@ -132,7 +119,7 @@ function AboutPlatform() {
               h="auto"
               m='5'
             />
-            <Text color="white">Easy snippet sharing</Text>
+            <Heading color="codex.text">Easy snippet sharing</Heading>
           </VStack>
         </Stack>
   </VStack>
@@ -140,25 +127,66 @@ function AboutPlatform() {
   );
 }
 
-const LanguagesSection = () => (
-  <MotionBox
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true }}
-    transition={{ ...transition, staggerChildren: 0.1 }}
-    variants={languageVariants}
-    p={10}
-    m='5'
-    textAlign="center"
-  >
-    <Heading color='codex.accents' mb={6}>Languages We Love</Heading>
-    <Wrap color='gray' justify="center" spacing="30px">
-      <WrapItem variants={languageVariants}><Badge p={4}>JavaScript</Badge></WrapItem>
-      <WrapItem variants={languageVariants}><Badge p={4}>Python</Badge></WrapItem>
-      <WrapItem variants={languageVariants}><Badge p={4}>Java</Badge></WrapItem>
-    </Wrap>
-  </MotionBox>
-);
+// function to animate text
+
+function ParallaxText({ children, baseVelocity = 100 }) {
+  const baseX = useMotionValue(0);
+  const { scrollY } = useScroll();
+  const scrollVelocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(scrollVelocity, {
+    damping: 50,
+    stiffness: 400
+  });
+  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
+    clamp: false
+  });
+
+  const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`);
+
+  const directionFactor = useRef(1);
+  useAnimationFrame((t, delta) => {
+    let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
+
+    if (velocityFactor.get() < 0) {
+      directionFactor.current = -1;
+    } else if (velocityFactor.get() > 0) {
+      directionFactor.current = 1;
+    }
+
+    moveBy += directionFactor.current * moveBy * velocityFactor.get();
+
+    baseX.set(baseX.get() + moveBy);
+  });
+
+  return (
+    <div className="parallax" style={{ width: '100%', height: '100%' }}>
+      <motion.div className="scroller" style={{ x, width: '100%', height: '100%' }}>
+        <span>{children} </span>
+        <span>{children} </span>
+        <span>{children} </span>
+        <span>{children} </span>
+        <span>{children} </span>
+        <span>{children} </span>
+        <span>{children} </span>
+        <span>{children} </span>
+        <span>{children} </span>
+      </motion.div>
+    </div>
+  );
+}
+
+function LanguagesSection () {
+
+  return (
+    <Box color='codex.highlights'
+    textAlign="center">
+      <Heading color='codex.accents' p={10} m='5' mb={6} >Languages we Love</Heading>
+      <ParallaxText baseVelocity={-5}>JavaScript CSS HTML</ParallaxText>
+      <ParallaxText baseVelocity={5}>Python Java C# Ruby</ParallaxText>
+    </Box>
+  );
+};
+
 
 function SnippetCard({ title, category }) {
   return (
@@ -196,7 +224,7 @@ function FeaturedSnippets() {
   >
     <Box p={10}>
       <Heading color='codex.accents' mb={6}>Featured Snippets</Heading>
-      <SimpleGrid color='gray' columns={3} spacing={10}>
+      <SimpleGrid color='codex.text200' columns={3} spacing={10}>
         <SnippetCard title="React Components" category="Web Development" />
         <SnippetCard title="Unity Scripts" category="Game Development" />
         <SnippetCard
@@ -213,6 +241,13 @@ function FeaturedSnippets() {
 }
 
 function HowItWorks() {
+  const navigate = useNavigate();
+
+  const handleSignUpClick = () => {
+    // Navigate to the sign-up page
+    navigate("/signup");
+  };
+  
   return (
     <MotionBox
     initial="hidden"
@@ -225,14 +260,14 @@ function HowItWorks() {
     textAlign="center"
   >
     <Box p={10}>
-      <Heading color='codex.accents' mb={6}>How It Works</Heading>
-      <Text color='gray' mb={3}>
+      <Heading color='codex.accents200' mb={6}>How It Works</Heading>
+      <Text color='codex.text200' mb={3}>
         "This platform has transformed the way I manage my code snippets."
       </Text>
-      <Text color='gray' mb={3}>
+      <Text color='codex.text200' mb={3}>
         "The community support is fantastic. I've learned so much!"
       </Text>
-      <Button size="lg" variant='secondary' mt={4}>
+      <Button size="lg" variant='secondary' mt={4} onClick={handleSignUpClick}>
         Start Sharing Today
       </Button>
     </Box>
