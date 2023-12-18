@@ -6,25 +6,25 @@ import {
   Stack,
   Image,
   Avatar,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
   IconButton,
+  useDisclosure,
   useBreakpointValue,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
-  Icon,
-  useDisclosure,
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  DrawerHeader,
-  DrawerBody,
   VStack,
   Divider,
+  Icon,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { BiMenu, BiPlus, BiUser, BiCog, BiLogOut } from "react-icons/bi";
+import { BiLogOut, BiMenu, BiPlus, BiUser, BiCog } from "react-icons/bi";
 
 const Header = ({ isAuthenticated, user }) => {
   const navigate = useNavigate();
@@ -38,6 +38,7 @@ const Header = ({ isAuthenticated, user }) => {
     navigate("/login");
   };
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useBreakpointValue({ base: true, md: false });
   const btnRef = useRef();
 
@@ -91,7 +92,6 @@ const Header = ({ isAuthenticated, user }) => {
           )}
         </>
       ) : (
-        // Desktop view: display full header with navigation buttons and user avatar
         <>
           <Flex align="center">
             <Image src="/images/logo_dark.png" alt="Logo" boxSize="50px" />
@@ -129,7 +129,10 @@ const Header = ({ isAuthenticated, user }) => {
       )}
 
       <Drawer
+        isOpen={isOpen}
         placement="right"
+        onClose={onClose}
+        finalFocusRef={btnRef}
       >
         <DrawerOverlay />
         <DrawerContent bg="codex.darkest">
