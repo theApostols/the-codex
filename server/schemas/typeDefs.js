@@ -80,9 +80,9 @@ type Snippet
 type Query
 {
   allUsers: [User]
-  allSnippets: [Snippet]
+  allSnippets(tags: [String]): [Snippet]
+  userSnippets(username: String!, tags: [String]): [Snippet]
   oneSnippet(snippetId: ID!): Snippet
-  userSnippets(username: String!): [Snippet]
   oneComment(commentId: ID!): Comment
 }
 

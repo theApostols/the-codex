@@ -28,19 +28,40 @@ const resolvers =
         throw new Error('Failed to retrieve users: ' + error.message);
       }
     },
-    //query to retrieve all snippets
-    allSnippets: async () =>
+    //query to retrieve all snippets, filtering by provided tags
+    allSnippets: async (parent, {tags}) =>
     {
       try
       {
-        //retrieves & returns all snippets
-        const snippets = await Snippet.find({});
+        //create a tags filter if any tags were provided, otherwise use an empty filter
+        const filter = tags ? {tags: {$all: tags}} : {};
+
+        //retrieves & returns all snippets, filtering by tags if applicable
+        const snippets = await Snippet.find(filter);
         return snippets;
       }
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
         throw new Error('Failed to retrieve snippets;', error);
+      }
+    },
+    //query to return all snippets created by a specific user
+    userSnippets: async (parent, {username, tags}) =>
+    {
+      try
+      {
+        //create a tags filter if any tags were provided, otherwise use a filter to just search by username
+        const filter = tags ? {tags: {$all: tags}, username: username} : {username};
+
+        //finds and returns all snippets created by a specific user, filter by tags if applicable
+        const snippets = await Snippet.find(filter);
+        return snippets;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error("Failed to retrieve the user's snippets;", error);
       }
     },
     //query to retrieve a specific snippet by ID
@@ -55,23 +76,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error("Failed to retrieve the user's snippets;", error);
-      }
-    },
-    //query to return all snippets created by a specific user
-    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
-    userSnippets: async (parent, {username}) =>
-    {
-      try
-      {
-        //finds and returns all snippets created by a specific user
-        const snippets = await Snippet.find({username});
-        return snippets;
-      }
-      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
-      {
-        console.error(error);
-        throw new Error("Failed to retrieve the user's snippets;", error);
+        throw new Error("Failed to retrieve the snippet;", error);
       }
     },
     //query to retrieve a specific comment by ID
@@ -149,7 +154,6 @@ const resolvers =
       }
     },
     //mutation to create a new snippet
-    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     createSnippet: async (parent, {username, snippetTitle, snippetText, snippetCode, resources, tags}) =>
     {
       try
@@ -225,7 +229,6 @@ const resolvers =
       }
     },
     //mutation to create a new comment
-    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     createComment: async (parent, {parentSnippetId, username, commentText, commentCode, resources}) =>
     {
       try
@@ -306,7 +309,6 @@ const resolvers =
       }
     },
     //mutation to add props to a snippet
-    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     addProps: async (parent, {username, snippetId}) =>
     {
       try
@@ -328,7 +330,6 @@ const resolvers =
       }
     },
     //mutation to remove props from a snippet
-    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     removeProps: async (parent, {username, snippetId}) =>
     {
       try
@@ -349,7 +350,6 @@ const resolvers =
       }
     },
     //mutation to add drops to a snippet
-    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     addDrops: async (parent, {username, snippetId}) =>
     {
       try
@@ -371,7 +371,6 @@ const resolvers =
       }
     },
     //mutation to remove drops from a snippet
-    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     removeDrops: async (parent, {username, snippetId}) =>
     {
       try
@@ -392,7 +391,6 @@ const resolvers =
       }
     },
     //mutation to save a snippet to a user's personal list
-    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     saveSnippet: async (parent, {username, snippetId}) =>
     {
       try
@@ -413,7 +411,6 @@ const resolvers =
       }
     },
     //mutation to remove a snippet from a user's personal list
-    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     unsaveSnippet: async (parent, {username, snippetId}) =>
     {
       try
