@@ -55,3 +55,34 @@ export const GET_ALL_SNIPPETS = gql`
     }
   }
 `;
+
+export const GET_INDIVIDUAL_SNIPPET = gql`
+query OneSnippet($snippetId: ID!) {
+  oneSnippet(snippetId: $snippetId) {
+    snippetText
+    snippetCode {
+      code
+    }
+    comments {
+      _id
+      parentSnippetId
+      username
+      commentText
+      commentCode {
+        code
+        _id
+        language
+      }
+      resources {
+        link
+        title
+        _id
+      }
+      creationDate
+      editDate
+      formattedCreationDate
+      formattedEditDate
+    }
+  }
+}
+`;
