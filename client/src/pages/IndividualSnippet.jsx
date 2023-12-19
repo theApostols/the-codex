@@ -1,8 +1,8 @@
 import { useQuery, useMutation } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import React from "react";
-import { GET_ALL_SNIPPETS } from "../utils/queries";
-import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
+import { GET_INDIVIDUAL_SNIPPET } from "../utils/queries";
+import IndividualSnippetPreview from "../components/Snippet/IndividualSnippetPreview";
 
 export default function UserSnippets() {
   const paragraphStyle = {
@@ -12,25 +12,27 @@ export default function UserSnippets() {
   };
 
   //retrieve user route parameter
-  // const { username } = useParams();
+  const { snippetId } = useParams();
 
   // Use the useQuery hook to execute the GET_USER_SNIPPETS query
-  const { loading, error, data } = useQuery(GET_ALL_SNIPPETS);
+  const { loading, error, data } = useQuery(GET_INDIVIDUAL_SNIPPET, {
+    variables: { snippetId },
+  });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   // Extract snippets from the data
   const snippets = data.allSnippets;
-  // console.log(snippets);
+  console.log(data);
 
   return (
     <>
       <p style={paragraphStyle}>Hello</p>
       <p style={paragraphStyle}>UserPage is rendering</p>
-      {snippets.map((snippet) => (
-        <MainSnippetPreview key={snippet._id} snippet={snippet} />
-      ))}
+      {/* {snippets.map((snippet) => (
+        <IndividualSnippetPreview key={snippet._id} snippet={snippet} />
+      ))} */}
     </>
   );
 }

@@ -16,7 +16,7 @@ import CreateSnippetPage from "./pages/CreateSnippetPage.jsx";
 import UserPage from "./pages/UserPage.jsx";
 import UserSnippets from "./pages/UserSnippets.jsx";
 import MainSnippets from "./pages/MainSnippets.jsx";
-import IndividualSnippets from "./pages/IndividualSnippet.jsx"
+import IndividualSnippets from "./pages/IndividualSnippet.jsx";
 
 // routes and corresponding components
 const router = createBrowserRouter([
@@ -54,7 +54,7 @@ const router = createBrowserRouter([
         element: <MainSnippets />,
       },
       {
-        path: "/individual-snippets",
+        path: "/individual-snippets/:snippetId",
         element: <IndividualSnippets />,
       },
     ],
