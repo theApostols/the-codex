@@ -81,20 +81,7 @@ const resolvers =
     },
     //query to return all snippets created by a specific user
     //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
-    userSnippets: async (parent, {username}) =>
-    {
-      try
-      {
-        //finds and returns all snippets created by a specific user
-        const snippets = await Snippet.find({username});
-        return snippets;
-      }
-      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
-      {
-        console.error(error);
-        throw new Error("Failed to retrieve the user's snippets;", error);
-      }
-    },
+    
   },
   Mutation:
   {
