@@ -37,6 +37,11 @@ const Header = () => {
     onClose();
   };
 
+  const handleProfileClick = () => {
+    navigate(`/user-snippets/${user.data.username}`);
+    onClose();
+  };
+
   const handleSignUpClick = () => {
     navigate("/signup");
   };
@@ -163,6 +168,7 @@ const Header = () => {
                 }
                 variant="ghost"
                 justifyContent="start"
+                onClick={handleProfileClick}
               >
                 Profile
               </Button>
