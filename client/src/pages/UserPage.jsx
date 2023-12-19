@@ -18,13 +18,13 @@ export default function UserPage() {
 
   // Extract users from the data
   const users = data.allUsers;
-  console.log(users);
+  // console.log(users);
 
   return (
     <>
       <p style={paragraphStyle}>UserPage is rendering</p>
       {users.map((user) => (
-        <Snippet key={user.username} snippet={user} />
+        <Snippet key={user._id} snippet={user} />
       ))}
     </>
   );
