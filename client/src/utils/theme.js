@@ -13,6 +13,7 @@ const colors = {
     text200: "#E0E0E0",
     accents200: '#87cac3',
     accents300: "#448780",
+    // Asegúrate de agregar cualquier otro color que necesites aquí
   },
 };
 
@@ -41,10 +42,6 @@ const buttonStyles = {
           bg: 'codex.dark',
           color: 'codex.text',
         },
-        active: {
-          bg:'transparent',
-        color: 'codex.highlights',
-      }
       },
       outline: {
         bg: 'transparent',
@@ -70,12 +67,21 @@ const buttonStyles = {
         textDecoration: 'none',
         _hover: {
           textDecoration: 'underline',
-          bg: 'transparent',
           color: 'codex.highlights',
         },
         _active: {
-          bg: 'transparent',
           color: 'codex.accents200',
+        },
+      },
+      icon: {
+        background: 'transparent',
+        border: 'none',
+        color: 'codex.borders',
+        _hover: {
+          color: 'codex.highlights',
+        },
+        _active: {
+          color: 'codex.highlights',
         },
       },
     },
