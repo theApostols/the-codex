@@ -211,6 +211,11 @@ export default function CreateSnippetPage() {
         <Box w="full">
           {/* Snippet title */}
           <Input
+            borderLeft="4px"
+            borderColor="codex.accents"
+            borderRight="0"
+            borderTop="0"
+            borderBottom="0"
             bg="codex.darkest"
             color="codex.text"
             type="text"
@@ -222,6 +227,11 @@ export default function CreateSnippetPage() {
         <Box w="full">
           {/* Snippet text */}
           <Textarea
+            borderLeft="4px"
+            borderColor="codex.accents"
+            borderRight="0"
+            borderTop="0"
+            borderBottom="0"
             bg="codex.darkest"
             color="codex.text"
             type="text"
@@ -235,6 +245,11 @@ export default function CreateSnippetPage() {
         <Box w="full">
           {/*Text area for code snippet input*/}
           <Textarea
+            borderLeft="4px"
+            borderColor="codex.accents"
+            borderRight="0"
+            borderTop="0"
+            borderBottom="0"
             bg="codex.darkest"
             color="codex.text"
             value={code}
@@ -246,8 +261,11 @@ export default function CreateSnippetPage() {
         </Box>
 
         {/*Dropdown menu for syntax highlighting*/}
-        <FormLabel color="codex.accents">Choose Language:</FormLabel>
+        <FormLabel fontSize="lg" color="codex.accents">
+          Choose Language:
+        </FormLabel>
         <Select
+          borderColor="codex.borders"
           bg="codex.borders"
           color="codex.text"
           value={language}
