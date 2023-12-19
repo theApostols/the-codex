@@ -211,6 +211,11 @@ export default function CreateSnippetPage() {
         <Box w="full">
           {/* Snippet title */}
           <Input
+            borderLeft="4px"
+            borderColor="codex.accents"
+            borderRight="0"
+            borderTop="0"
+            borderBottom="0"
             bg="codex.darkest"
             color="codex.text"
             type="text"
@@ -222,6 +227,11 @@ export default function CreateSnippetPage() {
         <Box w="full">
           {/* Snippet text */}
           <Textarea
+            borderLeft="4px"
+            borderColor="codex.accents"
+            borderRight="0"
+            borderTop="0"
+            borderBottom="0"
             bg="codex.darkest"
             color="codex.text"
             type="text"
@@ -235,6 +245,11 @@ export default function CreateSnippetPage() {
         <Box w="full">
           {/*Text area for code snippet input*/}
           <Textarea
+            borderLeft="4px"
+            borderColor="codex.accents"
+            borderRight="0"
+            borderTop="0"
+            borderBottom="0"
             bg="codex.darkest"
             color="codex.text"
             value={code}
@@ -244,10 +259,13 @@ export default function CreateSnippetPage() {
             cols={40}
           />
         </Box>
-        
+
         {/*Dropdown menu for syntax highlighting*/}
-        <FormLabel color="codex.accents">Choose Language:</FormLabel>
+        <FormLabel fontSize="lg" color="codex.accents">
+          Choose Language:
+        </FormLabel>
         <Select
+          borderColor="codex.borders"
           bg="codex.borders"
           color="codex.text"
           value={language}
@@ -308,6 +326,38 @@ export default function CreateSnippetPage() {
             onChange={handleCustomLanguageChange}
           />
         )}
+        <Box w="full">
+          {/* Toggle Resource Fields button */}
+          <Button
+            variant="secondary"
+            onClick={handleToggleResourceFields}
+            size="sm"
+          >
+            {showResourceFields ? "Hide Resource Fields" : "Add Resource"}
+          </Button>
+          {showResourceFields && (
+            <VStack mt={4} spacing={4}>
+              <Box w="full">
+                <Input
+                  bg="codex.darkest"
+                  type="text"
+                  placeholder="Resource Title"
+                  value={resourceTitle}
+                  onChange={handleResourceTitleChange}
+                />
+              </Box>
+              <Box w="full">
+                <Input
+                  bg="codex.darkest"
+                  type="text"
+                  placeholder="Resource Link"
+                  value={resourceLink}
+                  onChange={handleResourceLinkChange}
+                />
+              </Box>
+            </VStack>
+          )}
+        </Box>
         {/* Toggle Tags Section */}
         <Box w="full">
           <Button variant="secondary" onClick={handleToggleTags} size="sm">

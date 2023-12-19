@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Flex,
   Text,
@@ -23,14 +24,25 @@ import {
   Divider,
   Icon,
 } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
 import { BiLogOut, BiMenu, BiPlus, BiUser, BiCog } from "react-icons/bi";
+import AuthService from "../../utils/auth";
 
-const Header = ({ isAuthenticated, user }) => {
+const Header = () => {
   const navigate = useNavigate();
+  const isAuthenticated = AuthService.loggedIn();
+  const user = isAuthenticated ? AuthService.getProfile() : null;
+
+  const handleCreateClick = () => {
+    navigate("/createsnippet");
+    onClose();
+  };
+
+  const handleProfileClick = () => {
+    navigate(`/user-snippets/${user.data.username}`);
+    onClose();
+  };
 
   const handleSignUpClick = () => {
-    // Navigate to the sign-up page
     navigate("/signup");
   };
 
@@ -146,6 +158,7 @@ const Header = ({ isAuthenticated, user }) => {
                 }
                 variant="ghost"
                 justifyContent="start"
+                onClick={handleCreateClick}
               >
                 Create
               </Button>
@@ -155,6 +168,7 @@ const Header = ({ isAuthenticated, user }) => {
                 }
                 variant="ghost"
                 justifyContent="start"
+                onClick={handleProfileClick}
               >
                 Profile
               </Button>
@@ -175,6 +189,10 @@ const Header = ({ isAuthenticated, user }) => {
               }
               variant="ghost"
               justifyContent="start"
+              onClick={() => {
+                AuthService.logout();
+                onClose();
+              }}
             >
               Logout
             </Button>

@@ -10,19 +10,58 @@ const resolvers =
 {
   Query:
   {
-    //query to retrieve all snippets
-    allSnippets: async () =>
+    //query to retrieve all users
+    allUsers: async () => {
+      try 
+      {
+       // Retrieve and return all users, populating their snippets along with comments
+      const users = await User.find({}).populate({
+        path: 'snippets',
+        populate: { path: 'comments' }
+      });
+        return users;
+      } 
+      catch (error) 
+      {
+        // Log the error and throw a new error
+        console.error(error);
+        throw new Error('Failed to retrieve users: ' + error.message);
+      }
+    },
+    //query to retrieve all snippets, filtering by provided tags
+    allSnippets: async (parent, {tags}) =>
     {
       try
       {
-        //retrieves & returns all snippets
-        const snippets = await Snippet.find({});
+        //create a tags filter if any tags were provided, otherwise use an empty filter
+        const filter = tags ? {tags: {$all: tags}} : {};
+
+        //retrieves & returns all snippets, filtering by tags if applicable
+        const snippets = await Snippet.find(filter);
         return snippets;
       }
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
         throw new Error('Failed to retrieve snippets;', error);
+      }
+    },
+    //query to return all snippets created by a specific user
+    userSnippets: async (parent, {username, tags}) =>
+    {
+      try
+      {
+        //create a tags filter if any tags were provided, otherwise use a filter to just search by username
+        const filter = tags ? {tags: {$all: tags}, username: username} : {username};
+
+        //finds and returns all snippets created by a specific user, filter by tags if applicable
+        const snippets = await Snippet.find(filter);
+        return snippets;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error("Failed to retrieve the user's snippets;", error);
       }
     },
     //query to retrieve a specific snippet by ID
@@ -41,6 +80,7 @@ const resolvers =
       }
     },
     //query to return all snippets created by a specific user
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
     userSnippets: async (parent, {username}) =>
     {
       try
@@ -128,7 +168,8 @@ const resolvers =
       }
     },
     //mutation to create a new comment
-    createComment: async (parent, {username, commentText, commentCode, snippetId, resources}) =>
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
+    createComment: async (parent, {parentSnippetId, username, commentText, commentCode, resources}) =>
     {
       try
       {
@@ -160,6 +201,187 @@ const resolvers =
         throw new Error('Failed to create new comment;', error);
       }
     },
+    //mutation to edit a comment
+    editComment: async (parent, {commentId, commentText, commentCode, resources}) =>
+    {
+      try
+      {
+        //creates an edit date to attach to the editted comment
+        const editDate = Date.now();
+
+        //attempts to find a comment under a specific snippet using the Ids provided by the arguments, and update its data using the rest of the arguments plus the edit date
+        const updatedComment = await Comment.findOneAndUpdate({_id: commentId},
+        {
+          commentText,
+          commentCode,
+          resources,
+          editDate
+        }, {new: true}); //returns the updated data
+
+        //returns the updated comment
+        return updatedComment;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to edit comment;', error);
+      }
+    },
+    //mutation to delete a comment
+    deleteComment: async (parent, {commentId}) =>
+    {
+      try
+      {
+        //attempts to find and delete a comment using the given ID in the arguments
+        const deletedComment = await Comment.findOneAndDelete({_id: commentId});
+
+        //remove the objectId of the deleted comment from the appropriate user's & snippet's 'comments' array
+        await User.findOneAndUpdate({username: deletedComment.username},
+        {
+          $pull: {comments: commentId} 
+        });
+        await Snippet.findOneAndUpdate({_id: deletedComment.parentSnippetId},
+        {
+          $pull: {comments: commentId} 
+        });
+
+        //returns the deleted comment
+        return deletedComment;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to delete comment;', error);
+      }
+    },
+    //mutation to add props to a snippet
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
+    addProps: async (parent, {username, snippetId}) =>
+    {
+      try
+      {
+        //attempts to find a snippet by the objectId given in the arguments
+        const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
+        {
+          $addToSet: {props: username}, //add the given username to the 'props' array if it isn't already there
+          $pull: {drops: username} //remove the given username from the 'drops' array it if is there
+        }, {new: true}); //returns the updated data
+    
+        //return the updated snippet
+        return updatedSnippet;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to add props;', error);
+      }
+    },
+    //mutation to remove props from a snippet
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
+    removeProps: async (parent, {username, snippetId}) =>
+    {
+      try
+      {
+        //attempts to find a snippet by the objectId given in the arguments
+        const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
+        {
+          $pull: {props: username} //remove the name of the user removing props from the 'props' array if it is there
+        }, {new: true}); //returns the updated data
+    
+        //return the updated snippet
+        return updatedSnippet;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to remove props;', error);
+      }
+    },
+    //mutation to add drops to a snippet
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
+    addDrops: async (parent, {username, snippetId}) =>
+    {
+      try
+      {
+        //attempts to find a snippet by the objectId given in the arguments
+        const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
+        {
+          $addToSet: {drops: username}, //add the given username to the 'drops' array if it isn't already there
+          $pull: {props: username} //remove the given username from the 'props' array it if is there
+        }, {new: true}); //returns the updated data
+    
+        //return the updated snippet
+        return updatedSnippet;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to add drops;', error);
+      }
+    },
+    //mutation to remove drops from a snippet
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
+    removeDrops: async (parent, {username, snippetId}) =>
+    {
+      try
+      {
+        //attempts to find a snippet by the objectId given in the arguments
+        const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
+        {
+          $pull: {drops: username} //remove the name of the user removing drops from the 'drops' array if it is there
+        }, {new: true}); //returns the updated data
+    
+        //return the updated snippet
+        return updatedSnippet;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to remove drops;', error);
+      }
+    },
+    //mutation to save a snippet to a user's personal list
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
+    saveSnippet: async (parent, {username, snippetId}) =>
+    {
+      try
+      {
+        //attempts to find a a user by username as per the given argument
+        const updatedUser = await User.findOneAndUpdate({username},
+        {
+          $addToSet: {savedSnippets: snippetId} //add the snippetId provided by the arguments to the 'savedSnippets' array if it isn't already there
+        }, {new: true}); //returns the updated data
+    
+        //return the updated snippet
+        return updatedUser;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to save snippet;', error);
+      }
+    },
+    //mutation to remove a snippet from a user's personal list
+    //NOTE; UPDATE THIS TO RETRIEVE USERNAME FROM CONTEXT
+    unsaveSnippet: async (parent, {username, snippetId}) =>
+    {
+      try
+      {
+        //attempts to find a a user by username as per the given argument
+        const updatedUser = await User.findOneAndUpdate({username},
+        {
+          $pull: {savedSnippets: snippetId} //remove the snippetId provided by the arguments from the user's 'savedSnippets' array
+        }, {new: true}); //returns the updated data
+    
+        //return the updated snippet
+        return updatedUser;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to unsave snippet;', error);
+      }
+    }
   }
 };
 //==============================================================
