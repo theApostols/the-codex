@@ -10,6 +10,24 @@ const resolvers =
 {
   Query:
   {
+    //query to retrieve all users
+    allUsers: async () => {
+      try 
+      {
+       // Retrieve and return all users, populating their snippets along with comments
+      const users = await User.find({}).populate({
+        path: 'snippets',
+        populate: { path: 'comments' }
+      });
+        return users;
+      } 
+      catch (error) 
+      {
+        // Log the error and throw a new error
+        console.error(error);
+        throw new Error('Failed to retrieve users: ' + error.message);
+      }
+    },
     //query to retrieve all snippets
     allSnippets: async () =>
     {
