@@ -58,6 +58,11 @@ function SignupForm() {
     navigate("/login");
   };
 
+  const handleTermsClick = (event) => {
+    event.preventDefault();
+    onOpen();
+  };
+
   return (
     <>
       <form onSubmit={handleFormSubmit}>
@@ -129,7 +134,7 @@ function SignupForm() {
 
               <Checkbox isChecked={agreeToTerms} onChange={handleAgreeChange}>
                 I agree to the{" "}
-                <Link color="purple.300" onClick={onOpen}>
+                <Link color="purple.300" onClick={handleTermsClick}>
                   Terms and Conditions
                 </Link>
               </Checkbox>

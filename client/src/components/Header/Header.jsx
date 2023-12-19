@@ -25,12 +25,22 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { BiLogOut, BiMenu, BiPlus, BiUser, BiCog } from "react-icons/bi";
-import AuthService from '../../utils/auth';
+import AuthService from "../../utils/auth";
 
 const Header = () => {
   const navigate = useNavigate();
   const isAuthenticated = AuthService.loggedIn();
   const user = isAuthenticated ? AuthService.getProfile() : null;
+
+  const handleCreateClick = () => {
+    navigate("/createsnippet");
+    onClose();
+  };
+
+  const handleProfileClick = () => {
+    navigate(`/user-snippets/${user.data.username}`);
+    onClose();
+  };
 
   const handleSignUpClick = () => {
     navigate("/signup");
@@ -148,6 +158,7 @@ const Header = () => {
                 }
                 variant="ghost"
                 justifyContent="start"
+                onClick={handleCreateClick}
               >
                 Create
               </Button>
@@ -157,6 +168,7 @@ const Header = () => {
                 }
                 variant="ghost"
                 justifyContent="start"
+                onClick={handleProfileClick}
               >
                 Profile
               </Button>
