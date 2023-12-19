@@ -244,7 +244,7 @@ export default function CreateSnippetPage() {
             cols={40}
           />
         </Box>
-        
+
         {/*Dropdown menu for syntax highlighting*/}
         <FormLabel color="codex.accents">Choose Language:</FormLabel>
         <Select
@@ -308,6 +308,38 @@ export default function CreateSnippetPage() {
             onChange={handleCustomLanguageChange}
           />
         )}
+        <Box w="full">
+          {/* Toggle Resource Fields button */}
+          <Button
+            variant="secondary"
+            onClick={handleToggleResourceFields}
+            size="sm"
+          >
+            {showResourceFields ? "Hide Resource Fields" : "Add Resource"}
+          </Button>
+          {showResourceFields && (
+            <VStack mt={4} spacing={4}>
+              <Box w="full">
+                <Input
+                  bg="codex.darkest"
+                  type="text"
+                  placeholder="Resource Title"
+                  value={resourceTitle}
+                  onChange={handleResourceTitleChange}
+                />
+              </Box>
+              <Box w="full">
+                <Input
+                  bg="codex.darkest"
+                  type="text"
+                  placeholder="Resource Link"
+                  value={resourceLink}
+                  onChange={handleResourceLinkChange}
+                />
+              </Box>
+            </VStack>
+          )}
+        </Box>
         {/* Toggle Tags Section */}
         <Box w="full">
           <Button variant="secondary" onClick={handleToggleTags} size="sm">
