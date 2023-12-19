@@ -29,6 +29,22 @@ export const GET_ALL_USERS = gql`
   }
 `;
 
+export const GET_USER_SNIPPETS = gql`
+query UserSnippets($username: String!, $tags: [String])
+{
+  userSnippets(username: $username, tags: $tags)
+  {
+    _id
+    username
+    snippetTitle
+    snippetText
+    tags
+    overallProps
+    formattedCreationDate
+    formattedEditDate
+  }
+}`;
+
 export const GET_ALL_SNIPPETS = gql`
   query Query {
     allSnippets {
