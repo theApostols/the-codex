@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import React from "react";
 import SnippetPreview from "../components/Snippet/SnippetPreview.jsx";
 import { GET_USER_SNIPPETS } from "../utils/queries";
+import { Box } from "@chakra-ui/react";
 
 export default function UserSnippets() {
   const paragraphStyle = {
@@ -29,9 +30,11 @@ export default function UserSnippets() {
   return (
     <>
       <p style={paragraphStyle}>UserPage is rendering</p>
+      <Box color="codex.text">
       {snippets.map((snippet) => (
         <SnippetPreview key={snippet._id} snippet={snippet}/>
       ))}
+      </Box>
     </>
   );
 }
