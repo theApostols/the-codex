@@ -7,9 +7,9 @@ type User
   username: String!
   email: String!
   password: String!
-  snippets: [ID]
+  snippets: [Snippet]
   savedSnippets: [ID]
-  comments: [ID]
+  comments: [Comment]
 }
 
 type JWTAuth
@@ -79,9 +79,10 @@ type Snippet
 
 type Query
 {
-  allSnippets: [Snippet]
+  allUsers: [User]
+  allSnippets(tags: [String]): [Snippet]
+  userSnippets(username: String!, tags: [String]): [Snippet]
   oneSnippet(snippetId: ID!): Snippet
-  userSnippets(username: String!): [Snippet]
   oneComment(commentId: ID!): Comment
 }
 

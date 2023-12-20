@@ -14,6 +14,9 @@ import Signup from "./components/Login-Signup/SignupForm.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import CreateSnippetPage from "./pages/CreateSnippetPage.jsx";
 import UserPage from "./pages/UserPage.jsx";
+import UserSnippets from "./pages/UserSnippets.jsx";
+import MainSnippets from "./pages/MainSnippets.jsx";
+import IndividualSnippets from "./pages/IndividualSnippet.jsx";
 
 // routes and corresponding components
 const router = createBrowserRouter([
@@ -41,6 +44,18 @@ const router = createBrowserRouter([
       {
         path: "/userpage",
         element: <UserPage />,
+      },
+      {
+        path: "/user-snippets/:username",
+        element: <UserSnippets />,
+      },
+      {
+        path: "/main-snippets",
+        element: <MainSnippets />,
+      },
+      {
+        path: "/individual-snippets/:snippetId",
+        element: <IndividualSnippets />,
       },
     ],
   },
