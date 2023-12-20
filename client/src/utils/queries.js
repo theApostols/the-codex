@@ -10,6 +10,7 @@ export const GET_ALL_USERS = gql`
         snippetText
         snippetCode {
           code
+          language
         }
         formattedCreationDate
         formattedEditDate
@@ -38,6 +39,10 @@ query UserSnippets($username: String!, $tags: [String])
     username
     snippetTitle
     snippetText
+    snippetCode {
+      code
+      language
+    }
     tags
     overallProps
     formattedCreationDate
@@ -51,6 +56,7 @@ export const GET_ALL_SNIPPETS = gql`
       _id
       snippetCode {
         code
+        language
       }
     }
   }
@@ -62,6 +68,7 @@ query OneSnippet($snippetId: ID!) {
     snippetText
     snippetCode {
       code
+      language
     }
     comments {
       _id

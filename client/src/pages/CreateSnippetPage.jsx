@@ -17,8 +17,10 @@ import {
 import { BiSave } from "react-icons/bi";
 import { CREATE_SNIPPET } from "../utils/mutations";
 import customTheme from "../utils/theme";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import Auth from "../utils/auth";
+import { GET_USER_SNIPPETS } from "../utils/queries";
+import SnippetDisplay from "../components/Snippet/Snippet2";
 
 export default function CreateSnippetPage() {
   const [snippetTitle, setSnippetTitle] = useState("");
@@ -44,9 +46,6 @@ export default function CreateSnippetPage() {
   const [selectedTags, setSelectedTags] = useState([]);
   // sample tags
   const availableTags = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
-
-  // add multiple codeblocks to a snippet
-  // const [codeBlocks, setCodeBlocks] = useState([{ language: "javascript", code: "" }]);
 
   //////////////////Handlers//////////////////////
 
@@ -109,30 +108,6 @@ export default function CreateSnippetPage() {
     }
   };
 
-  //Code block handlers
-  // const handleCodeChange = (value, index, field) => {
-  //   setCodeBlocks((prevCodeBlocks) => {
-  //     const updatedCodeBlocks = [...prevCodeBlocks];
-  //     updatedCodeBlocks[index][field] = value;
-  //     return updatedCodeBlocks;
-  //   });
-  // };
-
-  // const handleAddCodeBlock = () => {
-  //   setCodeBlocks((prevCodeBlocks) => [
-  //     ...prevCodeBlocks,
-  //     { language: "javascript", code: "" },
-  //   ]);
-  // };
-
-  // const handleRemoveCodeBlock = (index) => {
-  //   setCodeBlocks((prevCodeBlocks) =>
-  //     prevCodeBlocks.filter((_, i) => i !== index)
-  //   );
-  // };
-
-
-
   ///////////CREATE SNIPPET BLOCK////////////////////
 
   const [createSnippet] = useMutation(CREATE_SNIPPET);
@@ -156,8 +131,7 @@ export default function CreateSnippetPage() {
       username: getUsername,
       snippetTitle: snippetTitle,
       snippetText: snippetText,
-      snippetCode: [{ language: selectedLanguage, code: code }],
-      // snippetCode: codeBlocks,
+      snippetCode: [{ language: language, code: code }],
       resources: showResourceFields
         ? [{ title: resourceTitle, link: resourceLink }]
         : [],
@@ -210,6 +184,8 @@ export default function CreateSnippetPage() {
       console.log("Tags:", selectedTags);
     }
   };
+
+
   ////////////////////////////////////////////////
 
   useEffect(() => {
@@ -221,6 +197,20 @@ export default function CreateSnippetPage() {
       return () => clearTimeout(timer);
     }
   }, [createMessage]);
+
+  ////////GET USER SNIPPETS////////////////////
+  //////// DELETE THIS BLOCK LATER ///////////
+  const { loading, error, data } = useQuery(GET_USER_SNIPPETS, {
+    variables: { username: Auth.getProfile().data.username },
+  });
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+  console.log("data:", data);
+
+  const userSnippets = data.userSnippets || [];
+
+  ////////////////////////////////////////////
 
   return (
     <Box p="50" d="flex" alignItems="center" justifyContent="center">
@@ -371,6 +361,14 @@ export default function CreateSnippetPage() {
             </Text>
           )}
         </Box>
+        {/* DELETE THIS LATER */}
+        <Box w="full">
+          {/* Display user's snippets */}
+          {userSnippets.map((snippet) => (
+            <SnippetDisplay key={snippet._id} snippet={snippet} />
+          ))}
+        </Box>
+        {/* END OF DELETE BLOCK */}
       </VStack>
     </Box>
   );
