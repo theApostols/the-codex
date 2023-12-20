@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CodeEditor from "../components/CodeEditor";
 import LanguageSelector from "../components/LanguageSelector";
+import CodeBlock from "../components/CodeBlock";
 import {
   Box,
   Textarea,
@@ -47,7 +48,7 @@ export default function CreateSnippetPage() {
 
   // add multiple codeblocks to a snippet
   // const [codeBlocks, setCodeBlocks] = useState([{ language: "javascript", code: "" }]);
-  
+
   //////////////////Handlers//////////////////////
 
   const handleSnippetTitleChange = (e) => {
@@ -110,21 +111,28 @@ export default function CreateSnippetPage() {
   };
 
   //Code block handlers
-  // const handleAddCodeBlock = () => {
-  //   setCodeBlocks((prevCodeBlocks) => [...prevCodeBlocks, { language: "javascript", code: "" }]);
-  // };
-
-  // const handleRemoveCodeBlock = (index) => {
-  //   setCodeBlocks((prevCodeBlocks) => prevCodeBlocks.filter((_, i) => i !== index));
-  // };
-
-  // const handleCodeChange = (newCode, index) => {
+  // const handleCodeChange = (value, index, field) => {
   //   setCodeBlocks((prevCodeBlocks) => {
   //     const updatedCodeBlocks = [...prevCodeBlocks];
-  //     updatedCodeBlocks[index].code = newCode;
+  //     updatedCodeBlocks[index][field] = value;
   //     return updatedCodeBlocks;
   //   });
   // };
+
+  // const handleAddCodeBlock = () => {
+  //   setCodeBlocks((prevCodeBlocks) => [
+  //     ...prevCodeBlocks,
+  //     { language: "javascript", code: "" },
+  //   ]);
+  // };
+
+  // const handleRemoveCodeBlock = (index) => {
+  //   setCodeBlocks((prevCodeBlocks) =>
+  //     prevCodeBlocks.filter((_, i) => i !== index)
+  //   );
+  // };
+
+
 
   ///////////CREATE SNIPPET BLOCK////////////////////
 
@@ -150,6 +158,7 @@ export default function CreateSnippetPage() {
       snippetTitle: snippetTitle,
       snippetText: snippetText,
       snippetCode: [{ language: selectedLanguage, code: code }],
+      // snippetCode: codeBlocks,
       resources: showResourceFields
         ? [{ title: resourceTitle, link: resourceLink }]
         : [],
@@ -193,7 +202,7 @@ export default function CreateSnippetPage() {
     console.log("Snippet Text:", snippetText);
     console.log("Code saved:", code);
     // console.log("Selected language:", language);
-    console.log("Final language:", selectedLanguage);
+    console.log("Selected language:", selectedLanguage);
     if (showResourceFields) {
       console.log("Resource Title:", resourceTitle);
       console.log("Resource Link:", resourceLink);
@@ -267,9 +276,14 @@ export default function CreateSnippetPage() {
         </Box>
         <Box w="full">
           {/* Language dropdown */}
-          <LanguageSelector value={language} onChange={(value) => handleLanguageChange(value)} />
+          <LanguageSelector
+            value={language}
+            onChange={(value) => handleLanguageChange(value)}
+          />
         </Box>
-  
+        {/*MORE code blocks*/}
+
+
         <Box w="full">
           {/* Toggle Resource Fields button */}
           <Button
@@ -328,20 +342,6 @@ export default function CreateSnippetPage() {
         <Box w="full">
           {/*Code editor component for syntax highlighting*/}
           <CodeEditor code={code} language={language} />
-
-          {/*Code editor for multiple code blocks*/}
-          {/* <Box w="full"> */}
-            {/* {codeBlocks.map((block, index) => (
-              <VStack key={index} mt={4} spacing={4}>
-                <Box w="full">
-                  {/*Dropdown menu for syntax highlighting*/}
-                  {/* <FormLabel color="codex.accents"> */}
-                    {/* Choose Language:
-                  </FormLabel>
-
-
-            ))} */}
-
 
           {/*Save button*/}
           <Box pt="5">
