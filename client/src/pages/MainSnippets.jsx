@@ -1,20 +1,26 @@
-import { useQuery, useMutation } from "@apollo/client";
-import { useParams } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { Link, useParams } from "react-router-dom";
+import {
+  Box,
+  VStack,
+  Text,
+  Button,
+  Icon,
+  HStack,
+  Heading,
+  Avatar,
+  Flex,
+} from "@chakra-ui/react";
 import React from "react";
 import { GET_ALL_SNIPPETS } from "../utils/queries";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
+import { BiBookmarkAltMinus, BiBookmarkAltPlus } from "react-icons/bi";
 
 export default function UserSnippets() {
-  const paragraphStyle = {
-    fontSize: "18px",
-    color: "white",
-    fontWeight: "bold",
-  };
+  // Retrieve user route parameter
+   const { username } = useParams();
 
-  //retrieve user route parameter
-  // const { username } = useParams();
-
-  // Use the useQuery hook to execute the GET_USER_SNIPPETS query
+  // Use the useQuery hook to execute the GET_ALL_SNIPPETS query
   const { loading, error, data } = useQuery(GET_ALL_SNIPPETS);
 
   if (loading) return <p>Loading...</p>;
@@ -26,11 +32,56 @@ export default function UserSnippets() {
 
   return (
     <>
-      <p style={paragraphStyle}>Hello</p>
-      <p style={paragraphStyle}>UserPage is rendering</p>
-      {snippets.map((snippet) => (
-        <MainSnippetPreview key={snippet._id} snippet={snippet} />
-      ))}
+      <Box p="50" d="flex" alignItems="center" justifyContent="center" color="white">
+      <Flex direction={{ base: "column", md: "row" }} w="full" maxW="5xl" mx="auto" p="8" alignItems="start">
+        {/* Profile Section on the Left */}
+        {/* <VStack spacing="4" align="center" mr={{ md: "8" }}>
+          <Avatar src="/path-to-avatar-image.jpg" size="xl" />
+          <Heading as="h3">Username</Heading>
+        </VStack> */}
+        <VStack
+          spacing="4"
+          w="full"
+          maxW="5xl"
+          mx="auto"
+          p="8"
+          color="codex.accents"
+        >
+          <Box
+            w="full"
+            border="1px solid"
+            borderColor="codex.borders" 
+            borderRadius="lg"
+            bg="codex.darkest"
+          >
+            {snippets.map((snippet) => (
+              <Box
+                key={snippet._id}
+                pb="5"
+                w="full"
+                borderBottom="1px solid"
+                borderColor="codex.borders"
+              >
+                <Link to={`/snippet/${snippet._id}`}>
+                  <MainSnippetPreview snippet={snippet} />
+                </Link>
+                <HStack color="codex.text">
+                  <Button variant="icon" size="sm">
+                    <Icon as={BiBookmarkAltMinus} w={8} h={8} mr="2" />
+                  </Button>
+                  <Text color="codex.highlights" fontSize="sm">
+                    Props:
+                  </Text>
+                  <Button variant="icon" size="sm">
+                    <Icon as={BiBookmarkAltPlus} w={8} h={8} mr="2" />
+                  </Button>
+                </HStack>
+              </Box>
+            ))}
+          </Box>
+        </VStack>
+        </Flex>
+      </Box>
     </>
   );
 }
