@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CodeEditor from "../components/CodeEditor";
 import LanguageSelector from "../components/LanguageSelector";
-import CodeBlock from "../components/CodeBlock";
 import {
   Box,
   Textarea,

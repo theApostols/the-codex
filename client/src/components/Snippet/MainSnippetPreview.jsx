@@ -6,7 +6,7 @@ import CodeEditor from "../CodeEditor";
 const SnippetPreview = (snippet) => {
   // console.log(snippet);
   const snippetData = snippet.snippet;
-  // console.log(snippetData.snippetCode[0].code);
+  console.log(snippetData.snippetCode[0].code);
   return (
     <>
       <Box p={4} borderRadius="md" borderWidth="1px">
