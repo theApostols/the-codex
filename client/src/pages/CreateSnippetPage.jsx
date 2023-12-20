@@ -185,8 +185,6 @@ export default function CreateSnippetPage() {
     }
   };
 
-  // console.log('snippetCode:', snippetCode);
-  // console.log('snippetCode[0]:', snippetCode[0]);
 
   ////////////////////////////////////////////////
 
@@ -201,6 +199,7 @@ export default function CreateSnippetPage() {
   }, [createMessage]);
 
   ////////GET USER SNIPPETS////////////////////
+  //////// DELETE THIS BLOCK LATER ///////////
   const { loading, error, data } = useQuery(GET_USER_SNIPPETS, {
     variables: { username: Auth.getProfile().data.username },
   });
@@ -210,8 +209,7 @@ export default function CreateSnippetPage() {
   console.log("data:", data);
 
   const userSnippets = data.userSnippets || [];
-  // console.log("userSnippets:", userSnippets);
-    // console.log('snippetCode[0]:', snippetCode[0]);
+
   ////////////////////////////////////////////
 
   return (
@@ -363,12 +361,14 @@ export default function CreateSnippetPage() {
             </Text>
           )}
         </Box>
+        {/* DELETE THIS LATER */}
         <Box w="full">
           {/* Display user's snippets */}
           {userSnippets.map((snippet) => (
             <SnippetDisplay key={snippet._id} snippet={snippet} />
           ))}
         </Box>
+        {/* END OF DELETE BLOCK */}
       </VStack>
     </Box>
   );
