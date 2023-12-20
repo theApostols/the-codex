@@ -229,12 +229,12 @@ const resolvers =
       }
     },
     //mutation to create a new comment
-    createComment: async (parent, {parentSnippetId, username, commentText, commentCode, resources}) =>
+    createComment: async (parent, {parentSnippetId, username, commentText}) =>
     {
       try
       {
         //attempts to create a new comment using the data provided by the arguments
-        const newComment = await Comment.create({parentSnippetId, username, commentText, commentCode, resources});
+        const newComment = await Comment.create({parentSnippetId, username, commentText});
 
         //finds & adds the objectId of the new comment to the appropriate user's and snippet's 'comments' array
         await User.findOneAndUpdate({username},
@@ -256,7 +256,7 @@ const resolvers =
       }
     },
     //mutation to edit a comment
-    editComment: async (parent, {commentId, commentText, commentCode, resources}) =>
+    editComment: async (parent, {commentId, commentText}) =>
     {
       try
       {
@@ -267,8 +267,6 @@ const resolvers =
         const updatedComment = await Comment.findOneAndUpdate({_id: commentId},
         {
           commentText,
-          commentCode,
-          resources,
           editDate
         }, {new: true}); //returns the updated data
 

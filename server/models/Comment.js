@@ -29,9 +29,6 @@ const commentSchema = new Schema(
     type: String,
     required: true
   },
-  //comment text is an array of code block subdocuments
-  commentCode: [codeBlockSchema],
-  resources: [resourceSchema],
   //creationDate is a date, default value set to the current timestamp
   creationDate:
   {
