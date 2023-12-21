@@ -211,32 +211,35 @@ function SnippetCard({ title, category }) {
 }
 
 function FeaturedSnippets() {
+  // Adjust grid columns based on the current breakpoint
+  const columns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+
   return (
     <MotionBox
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true }}
-    transition={{ duration: 0.8, ease: "easeInOut" }}
-    variants={snippetsVariants}
-    p={10}
-    m='5'
-    textAlign="center"
-  >
-    <Box p={10}>
-      <Heading color='codex.accents' mb={6}>Featured Snippets</Heading>
-      <SimpleGrid color='codex.text200' columns={3} spacing={10}>
-        <SnippetCard title="React Components" category="Web Development" />
-        <SnippetCard title="Unity Scripts" category="Game Development" />
-        <SnippetCard
-          title="Algorithm Implementations"
-          category="Data Structures"
-        />
-      </SimpleGrid>
-      <Button variant='secondary' mt={4}>
-        View More Snippets
-      </Button>
-    </Box>
-  </MotionBox>
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, ease: "easeInOut" }}
+      variants={snippetsVariants}
+      p={10}
+      m="5"
+      textAlign="center"
+    >
+      <Box p={10}>
+        <Heading color='codex.accents' mb={6}>Featured Snippets</Heading>
+        <SimpleGrid color='codex.text200' columns={columns} spacing={10}>
+          <SnippetCard title="React Components" category="Web Development" />
+          <SnippetCard title="Unity Scripts" category="Game Development" />
+          <SnippetCard
+            title="Algorithm Implementations"
+            category="Data Structures"
+          />
+        </SimpleGrid>
+        <Button variant='secondary' mt={4}>
+          View More Snippets
+        </Button>
+      </Box>
+    </MotionBox>
   );
 }
 
@@ -260,7 +263,7 @@ function HowItWorks() {
     textAlign="center"
   >
     <Box p={10}>
-      <Heading color='codex.accents200' mb={6}>How It Works</Heading>
+      <Heading color='codex.accents' mb={6}>How It Works</Heading>
       <Text color='codex.text200' mb={3}>
         "This platform has transformed the way I manage my code snippets."
       </Text>

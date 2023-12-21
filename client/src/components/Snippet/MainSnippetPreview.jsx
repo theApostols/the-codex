@@ -14,7 +14,6 @@ import {
   BiEdit,
   BiTrash,
 } from "react-icons/bi";
-import theme from "../../utils/theme";
 import CodeEditor from "../CodeEditor";
 
 //==================OLD CODE FOR WESLEY'S REFERENCE======================

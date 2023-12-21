@@ -11,12 +11,10 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import {
-  BiBookmarkAltMinus,
-  BiBookmarkAltPlus,
   BiEdit,
   BiTrash,
 } from "react-icons/bi";
-import theme from "../../utils/theme";
+import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 
 // Added default value to the snippet renders on the userpage
 const Snippet = (snippet) => {
@@ -133,13 +131,13 @@ const Snippet = (snippet) => {
               <Flex justifyContent="space-between" w="full">
                 <HStack spacing={2}>
                   <Button variant="icon" size="sm">
-                    <Icon as={BiBookmarkAltMinus} w={8} h={8} mr="2" />
+                    <Icon as={FaAngleDoubleDown} w={8} h={8} mr="2" />
                   </Button>
                   <Text color="codex.highlights" fontSize="sm">
                     Props: {snippetUsers.snippets[0].overallProps}
                   </Text>
                   <Button variant="icon" size="sm">
-                    <Icon as={BiBookmarkAltPlus} w={8} h={8} mr="2" />
+                    <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
                   </Button>
                 </HStack>
                 <HStack spacing={2}>

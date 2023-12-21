@@ -1,5 +1,4 @@
 import { Box, Text, Button, VStack, Code } from "@chakra-ui/react";
-import theme from "../../utils/theme";
 import CodeEditor from "../CodeEditor";
 
 // Added default value to the snippet renders on the userpage
