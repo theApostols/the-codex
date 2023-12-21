@@ -27,6 +27,8 @@ export default function UserSnippets() {
   // Extract snippets from the data
   const snippets = data.userSnippets;
 
+  // console.log(snippets)
+
   return (
     <>
       <p style={paragraphStyle}>UserPage is rendering</p>
