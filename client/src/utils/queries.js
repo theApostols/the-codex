@@ -60,13 +60,12 @@ export const GET_ALL_USERS = gql`
 `;
 
 export const GET_ONE_USER = gql`
-query oneUser($username: String!)
-{
-  oneUser(username: $username)
-  {
-    image
+  query oneUser($username: String!) {
+    oneUser(username: $username) {
+      image
+    }
   }
-}`;
+`;
 
 export const GET_USER_SNIPPETS = gql`
   query UserSnippets($username: String!, $tags: [String]) {
@@ -104,55 +103,26 @@ export const GET_ALL_SNIPPETS = gql`
   }
 `;
 
-//OLD QUERY GET_INDIVIDUAL_SNIPPET
-// export const GET_INDIVIDUAL_SNIPPET = gql`
-//   query OneSnippet($snippetId: ID!) {
-//     oneSnippet(snippetId: $snippetId) {
-//       snippetText
-//       snippetCode {
-//         code
-//         language
-//       }
-//       comments {
-//         _id
-//         parentSnippetId
-//         username
-//         commentText
-//         commentCode {
-//           code
-//           _id
-//           language
-//         }
-//         resources {
-//           link
-//           title
-//           _id
-//         }
-//         creationDate
-//         editDate
-//         formattedCreationDate
-//         formattedEditDate
-//       }
-//     }
-//   }
-// `;
-
-//GET_INDIVIDUAL_SNIPPET QUERY WITHOUT COMMENT CODE AND RESOURCES
 export const GET_INDIVIDUAL_SNIPPET = gql`
-  query OneSnippet($snippetId: ID!) {
+  query Query($snippetId: ID!) {
     oneSnippet(snippetId: $snippetId) {
       snippetText
+      snippetTitle
       snippetCode {
         code
         language
       }
+      creationDate
+      editDate
+      formattedCreationDate
+      formattedEditDate
+      props
+      drops
+      overallProps
+      tags
       comments {
-        _id
-        parentSnippetId
         username
         commentText
-        creationDate
-        editDate
         formattedCreationDate
         formattedEditDate
       }
