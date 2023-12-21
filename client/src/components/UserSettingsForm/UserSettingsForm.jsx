@@ -13,8 +13,6 @@ const UserSettingsForm = () =>
   //retrieves the username of the currently logged-in user via the JWT
   const currentUser = Auth.getProfile().data.username;
 
-  console.log(currentUser);
-
   const {loading: userLoading, error: userError, data: userData} = useQuery(GET_ONE_USER,
   {
     variables: {username: currentUser}
@@ -37,7 +35,6 @@ const UserSettingsForm = () =>
   //clears the chose profile picture file
   const handleClearImage = () =>
   {
-    console.log('clearing image');
     const profileImageInput = document.getElementById('profileImageInput'); //gets a reference to the profile image input
     profileImageInput.value = ''; //clears the chosen file in the input
     profileImage = ''; //resets the profile image variable to an empty string
@@ -50,14 +47,11 @@ const UserSettingsForm = () =>
   //update profile image value when a file is selected
   const handleFileSelection = (event) =>
   {
-    console.log('file selected');
     //gets a reference to preview image element for the profile picture
     const profileImagePreviewElement = document.getElementById('profile-image-preview');
 
     //retrieves the file stored in the profile image input
     profileImage = event.target.files[0];
-
-    console.log(profileImage);
 
     const uploadConverter = new FileReader(); //creates a new FileReader instance to read the above file
     uploadConverter.readAsDataURL(profileImage); //convert the upload to a usable URL for an 'src' attribute
@@ -86,15 +80,15 @@ const UserSettingsForm = () =>
       return;
     }
 
-    console.log('submitting data');
-
     try
     {
-      let image = 'default-profile'; //variable to hold file name of profile image, set to 'default-profile' by default
+      //gets a reference to preview image element for the profile picture
+      const profileImagePreviewElement = document.getElementById('profile-image-preview');
 
-      console.log(profileImage);
+      //variable to hold file name of profile image, set to the file name of the profile image preview element's src
+      let image = profileImagePreviewElement.getAttribute('src').split('/')[3];
 
-      //checks if a file was uploaded to the profile image input
+      //checks if a file exists in the profile image input
       if (profileImage)
       {
         //constructs a new FormData instance & appends the uploaded file to it
@@ -127,8 +121,6 @@ const UserSettingsForm = () =>
       {
         userFormData.password = userFormData.currentPassword;
       }
-
-      console.log(image);
 
       //updates the user's data using the form data & uploaded image name
       const {data} = await editUser(

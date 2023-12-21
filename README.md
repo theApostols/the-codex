@@ -25,6 +25,9 @@ https://git.bootcampcontent.com/University-of-Toronto/UTOR-VIRT-FSF-PT-07-2023-U
 multer setup (./server/server.js);
 https://github.com/UofTTeam2/TravIS/blob/main/controllers/api/trips-controller.js
 
+Profile picture preview setup (./client/src/components/UserSettingsForm/UserSettingsForm.jsx);
+https://github.com/UofTTeam2/TravIS/blob/main/public/js/editItinerary.js
+
 ### Wesley's Links
 
 
