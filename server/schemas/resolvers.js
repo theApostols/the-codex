@@ -1,11 +1,11 @@
-//importing models
+//importing models & multer
 //==============================================================
 const {User, Snippet, Comment} = require('../models');
 const {signToken, AuthenticationError} = require("../utils/auth");
 //==============================================================
 
 //defining resolvers
-//==============================================================
+//=============================================================
 const resolvers =
 {
   Query:
@@ -151,6 +151,67 @@ const resolvers =
       {
         console.error(error);
         throw new Error('Failed to create a new user;', error);
+      }
+    },
+    //mutation to update a user's data
+    editUser: async (parent, {currentUser, username, password, image, currentPassword}) =>
+    {
+      try 
+      {
+        console.log('about to find user');
+        const userToUpdate = await User.findOne({username: currentUser});
+
+        console.log('about to compare passwords');
+        const passwordComparisonResult = await userToUpdate.comparePassword(currentPassword);
+
+        console.log(passwordComparisonResult);
+
+        //if the passwords do not match, throw an authentication error
+        if (!passwordComparisonResult)
+        {
+          throw new AuthenticationError('Invalid details provided');
+        }
+
+        console.log('about to update user');
+        const updatedUser = await User.findOneAndUpdate({username: currentUser},
+        {
+          username,
+          password,
+          image
+        }, {new: true});
+
+        console.log('about to save user');
+
+        updatedUser.markModified('password');
+        await updatedUser.save();
+
+        if (currentUser !== username);
+        {
+          await Snippet.updateMany({username: currentUser},
+          {
+            $set: {username}
+          });
+          await Comment.updateMany({username: currentUser},
+          {
+            $set: {username}
+          });
+        }
+
+        console.log(updatedUser);
+
+        //sign a new JWT using the user's updated data
+        const token = signToken(updatedUser);
+
+        console.log('logging token;');
+        console.log(token);
+
+        //return the newly-signed JWT & the user that was logged in to
+        return {token, updatedUser};
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error('Failed to update user;', error);
       }
     },
     //mutation to create a new snippet
