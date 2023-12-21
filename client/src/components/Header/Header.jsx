@@ -42,6 +42,11 @@ const Header = () => {
     onClose();
   };
 
+  const handleSettingsClick = () => {
+    navigate(`/user-settings/`);
+    onClose();
+  };
+
   const handleSignUpClick = () => {
     navigate("/signup");
   };
@@ -178,6 +183,7 @@ const Header = () => {
                 }
                 variant="ghost"
                 justifyContent="start"
+                onClick={handleSettingsClick}
               >
                 User Settings
               </Button>
