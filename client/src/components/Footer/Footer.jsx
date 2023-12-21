@@ -1,4 +1,4 @@
-import { Box, Container, Stack, Text, Link, Heading, SimpleGrid, Icon, Image } from '@chakra-ui/react';
+import { Box, Container, Stack, Text, Link, Heading, SimpleGrid, Icon, Image, Button } from '@chakra-ui/react';
 import { FaTwitter, FaInstagram, FaGithub, FaEnvelope } from 'react-icons/fa';
 
 const Footer = () => {
@@ -54,17 +54,18 @@ const Footer = () => {
           mt="10"
           flexWrap="wrap"
           borderTop="1px solid #413C66"
+          color="codex.text200"
         >
-          <Text color='codex.accents300' fontSize="sm">
+          <Text fontSize="sm">
             © {new Date().getFullYear()} The CodeX. All rights reserved.
           </Text>
           {/* Social media icons with links. */}
-          <Stack color='codex.accents300' direction="row" spacing={6} mt={{ base: '4', md: '0' }} pt='5px'>
-            <Link href="#" isExternal><Icon as={FaGithub} /></Link>
+          <Stack direction="row" spacing={6} mt={{ base: '4', md: '0' }} >
+            <Button variant="ghost" href="#" isExternal><Icon as={FaGithub} w="6" h="6"/></Button>
             {/* Additional social media icons... */}
-            <Link href="mailto:theapostolsofveronica@outlook.com" isExternal>
-              <FaEnvelope />
-            </Link>
+            <Button variant="ghost" href="mailto:theapostolsofveronica@outlook.com" isExternal>
+            <Icon as={FaEnvelope} w="6" h="6"/>
+            </Button>
           </Stack>
         </Box>
       </Container>
