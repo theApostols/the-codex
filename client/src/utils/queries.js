@@ -30,6 +30,15 @@ export const GET_ALL_USERS = gql`
   }
 `;
 
+export const GET_ONE_USER = gql`
+query oneUser($username: String!)
+{
+  oneUser(username: $username)
+  {
+    image
+  }
+}`;
+
 export const GET_USER_SNIPPETS = gql`
 query UserSnippets($username: String!, $tags: [String])
 {
