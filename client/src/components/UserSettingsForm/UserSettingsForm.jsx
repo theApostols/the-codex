@@ -4,13 +4,25 @@ import React, {useState} from 'react';
 import { useQuery } from '@apollo/client';
 import { useMutation } from '@apollo/client';
 import { VStack, Text, Spinner, Button, FormControl, FormLabel, Input } from '@chakra-ui/react';
-import {EDIT_USER} from '../../utils/mutations';
+import {EDIT_USER} from '../../utils/mutations.js';
+import {GET_ONE_USER} from '../../utils/queries.js';
 import Auth from '../../utils/auth.js';
 
 const UserSettingsForm = () =>
 {
+  //retrieves the username of the currently logged-in user via the JWT
+  const currentUser = Auth.getProfile().data.username;
+
+  console.log(currentUser);
+
   let profileImage; //variable to hold profile image file
-  const [editUser, {loading, error, data}] = useMutation(EDIT_USER);
+
+  const {loading, error, data} = useQuery(GET_ONE_USER,
+  {
+    variables: {username: currentUser}
+  });
+
+  const [editUser, {loading: editLoading, error: editError, data: editData}] = useMutation(EDIT_USER);
   const [userFormData, setUserFormData] = useState(
   {
     username: '',
@@ -18,8 +30,10 @@ const UserSettingsForm = () =>
     currentPassword: ''
   });
 
-  if (loading) return <Spinner/>;
-  if (error) return <Text>Error loading user settings</Text>;
+  if (editLoading || loading) return <Spinner/>;
+  if (editError) return <Text>Error loading user settings page</Text>;
+  if (error) return <Text>Error loading user data</Text>;
+
 
   //update profile image value when a file is selected
   const handleFileSelection = (event) =>
@@ -69,9 +83,6 @@ const UserSettingsForm = () =>
         image = await response.json();
       }
 
-      //retrieves the username of the currently logged-in user via the JWT
-      const currentUser = Auth.getProfile().data.username;
-
       //if the user did not fill out the new username field, update the form data value to their current username
       if (!userFormData.username)
       {
@@ -104,6 +115,11 @@ const UserSettingsForm = () =>
     <VStack align = 'stretch' spacing={4} p={4}>
       
       <form encType = 'multipart/form-data' onSubmit = {handleFormSubmit}>
+
+        {/* <img src = {`/images/${data.oneUser.image}`}></img> */}
+
+        <img src = {`https://i.guim.co.uk/img/media/fbb1974c1ebbb6bf4c4beae0bb3d9cb93901953c/10_7_2380_1428/master/2380.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=223c0e9582e77253911be07c8cad564f`}></img>
+        <Button>Clear Image</Button>
 
         <FormControl id = 'username'>
           <FormLabel htmlFor = 'username'>New Username</FormLabel>
