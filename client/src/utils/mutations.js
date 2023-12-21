@@ -43,6 +43,19 @@ export const CREATE_USER = gql`
   }
 `;
 
+export const EDIT_USER = gql`
+  mutation editUser($currentUser: String!, $username: String, $password: String, $image: String, $currentPassword: String!)
+  {
+    editUser(currentUser: $currentUser, username: $username, password: $password, image: $image, currentPassword: $currentPassword)
+    {
+      token
+      user {
+        _id
+      }
+    }
+  }
+`;
+
 export const CREATE_SNIPPET = gql`
   mutation CreateSnippet(
     $username: String!

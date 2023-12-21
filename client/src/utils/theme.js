@@ -1,7 +1,7 @@
 import { extendTheme } from '@chakra-ui/react';
 
-// Define your color palette
-const colors = {
+// Dark mode colors
+const darkColors = {
   codex: {
     darkest: '#181726',
     dark: '#211E33',
@@ -13,11 +13,26 @@ const colors = {
     text200: "#E0E0E0",
     accents200: '#87cac3',
     accents300: "#448780",
-    // Asegúrate de agregar cualquier otro color que necesites aquí
   },
 };
 
-// Define button styles variants
+// Light mode colors
+const lightColors = {
+  codex: {
+    darkest: '#f0f0f3',
+    dark: '#dadada',
+    main: '#ffffff',
+    borders: '#cccccc',
+    highlights: '#b5aedd',
+    accents: '#413C66',
+    text: '#1d1c1c',
+    text200: '#313d44',
+    accents200: '#a0e0dd',
+    accents300: '#211E33',
+  },
+};
+
+// Button styles
 const buttonStyles = {
   Button: {
     variants: {
@@ -37,10 +52,10 @@ const buttonStyles = {
       },
       ghost: {
         bg: 'transparent',
-        color: 'codex.text',
+        color: 'codex.accents',
         _hover: {
           bg: 'codex.dark',
-          color: 'codex.text',
+          color: 'codex.highlights',
         },
       },
       outline: {
@@ -88,6 +103,7 @@ const buttonStyles = {
   },
 };
 
+// Link styles
 const linkStyles = {
   Link: {
     variants: {
@@ -106,7 +122,8 @@ const linkStyles = {
   },
 };
 
-const globalStyles = {
+// Global styles for dark mode
+const globalDarkStyles = {
   styles: {
     global: {
       'html, body': {
@@ -120,13 +137,39 @@ const globalStyles = {
   },
 };
 
-const customTheme = extendTheme({
-  colors,
+// Global styles for light mode
+const globalLightStyles = {
+  styles: {
+    global: {
+      'html, body': {
+        fontSize: '16px',
+        fontFamily: 'Helvetica, sans-serif',
+        lineHeight: '1.6',
+        backgroundColor: 'codex.main',
+        color: 'codex.text',
+      },
+    },
+  },
+};
+
+// Dark mode theme
+const darkTheme = extendTheme({
+  colors: darkColors,
   components: {
     ...buttonStyles,
     ...linkStyles,
   },
-  ...globalStyles,
+  ...globalDarkStyles,
 });
 
-export default customTheme;
+// Light mode theme
+const lightTheme = extendTheme({
+  colors: lightColors,
+  components: {
+    ...buttonStyles,
+    ...linkStyles,
+  },
+  ...globalLightStyles,
+});
+
+export { darkTheme, lightTheme };
