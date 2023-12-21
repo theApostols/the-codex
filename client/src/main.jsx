@@ -14,6 +14,7 @@ import Signup from "./components/Login-Signup/SignupForm.jsx";
 import ErrorPage from "./pages/ErrorPage.jsx";
 import CreateSnippetPage from "./pages/CreateSnippetPage.jsx";
 import UserPage from "./pages/UserPage.jsx";
+import UserSettings from "./pages/UserSettings.jsx";
 import UserSnippets from "./pages/UserSnippets.jsx";
 import MainSnippets from "./pages/MainSnippets.jsx";
 import IndividualSnippets from "./pages/IndividualSnippet.jsx";
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "/userpage",
         element: <UserPage />,
+      },
+      {
+        path: "/user-settings",
+        element: <UserSettings/>
       },
       {
         path: "/user-snippets/:username",
