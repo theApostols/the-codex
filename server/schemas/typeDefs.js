@@ -7,6 +7,7 @@ type User
   username: String!
   email: String!
   password: String!
+  image: String
   snippets: [Snippet]
   savedSnippets: [ID]
   comments: [Comment]
@@ -88,6 +89,7 @@ type Mutation
 {
   loginUser(email: String!, password: String!): JWTAuth
   createUser(username: String!, email: String!, password: String!): JWTAuth
+  editUser(currentUser: String!, username: String, password: String, image: String, currentPassword: String!): JWTAuth
   createSnippet(username: String!, snippetTitle: String!, snippetText: String!, snippetCode: [CodeBlockInput]!, resources: [ResourceInput], tags: [String]): Snippet
   editSnippet(snippetId: ID!, snippetTitle: String!, snippetText: String!, snippetCode: [CodeBlockInput]!, resources: [ResourceInput], tags: [String]): Snippet
   deleteSnippet(snippetId: ID!): Snippet
