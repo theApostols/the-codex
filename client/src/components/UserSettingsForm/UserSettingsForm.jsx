@@ -15,9 +15,7 @@ const UserSettingsForm = () =>
 
   console.log(currentUser);
 
-  let profileImage; //variable to hold profile image file
-
-  const {loading, error, data} = useQuery(GET_ONE_USER,
+  const {loading: userLoading, error: userError, data: userData} = useQuery(GET_ONE_USER,
   {
     variables: {username: currentUser}
   });
@@ -30,15 +28,47 @@ const UserSettingsForm = () =>
     currentPassword: ''
   });
 
-  if (editLoading || loading) return <Spinner/>;
+  if (editLoading || userLoading) return <Spinner/>;
   if (editError) return <Text>Error loading user settings page</Text>;
-  if (error) return <Text>Error loading user data</Text>;
+  if (userError) return <Text>Error loading user data</Text>;
 
+  let profileImage; //variable to hold profile image file
+
+  //clears the chose profile picture file
+  const handleClearImage = () =>
+  {
+    const profileImageInput = document.getElementById('profileImageInput');
+    profileImageInput.value = '';
+
+    //simulates a file change event to update the preview image element
+    const fileChangeEvent = new Event('input');
+    profileImageInput.dispatchEvent(fileChangeEvent);
+  }
 
   //update profile image value when a file is selected
   const handleFileSelection = (event) =>
   {
+    //gets a reference to preview image element for the profile picture
+    const profileImagePreviewElement = document.getElementById('profile-image-preview');
+
+    //retrieves the file stored in the profile image input
     profileImage = event.target.files[0];
+
+    //if there is no file, set the profile image preview src to an empty string
+    if (!profileImage)
+    {
+      profileImagePreviewElement.setAttribute('src', '');
+    }
+
+    const uploadConverter = new FileReader(); //creates a new FileReader instance to read the above file
+    uploadConverter.readAsDataURL(profileImage); //convert the upload to a usable URL for an 'src' attribute
+
+    //upon the above conversion completing, set the 'src' attribute of the preview image element to the resulting URL
+    //i.e. renders a preview of the uploaded file to the page
+    uploadConverter.addEventListener('load', () =>
+    {
+      profileImagePreviewElement.setAttribute('src', uploadConverter.result);
+    });
   }
 
   //update user form data upon a text input being changed
@@ -95,6 +125,8 @@ const UserSettingsForm = () =>
         userFormData.password = userFormData.currentPassword;
       }
 
+      console.log(image);
+
       //updates the user's data using the form data & uploaded image name
       const {data} = await editUser(
       {
@@ -116,10 +148,9 @@ const UserSettingsForm = () =>
       
       <form encType = 'multipart/form-data' onSubmit = {handleFormSubmit}>
 
-        {/* <img src = {`/images/${data.oneUser.image}`}></img> */}
+        <img id = 'profile-image-preview' src = {`/images/file-uploads/${userData.oneUser.image}`}></img>
 
-        <img src = {`https://i.guim.co.uk/img/media/fbb1974c1ebbb6bf4c4beae0bb3d9cb93901953c/10_7_2380_1428/master/2380.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=223c0e9582e77253911be07c8cad564f`}></img>
-        <Button>Clear Image</Button>
+        <Button onClick = {handleClearImage}>Clear Image</Button>
 
         <FormControl id = 'username'>
           <FormLabel htmlFor = 'username'>New Username</FormLabel>
