@@ -15,9 +15,17 @@ import React from "react";
 import { GET_ALL_SNIPPETS } from "../utils/queries";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+import { useState } from "react";
 
 export default function UserSnippets() {
-  const { loading, error, data } = useQuery(GET_ALL_SNIPPETS);
+  // const { loading, error, data } = useQuery(GET_ALL_SNIPPETS);
+
+  //SEARCH BAR
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const { loading, error, data } = useQuery(GET_ALL_SNIPPETS, {
+    variables: { searchTerm },
+  });
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -27,6 +35,16 @@ export default function UserSnippets() {
 
   return (
     <>
+      <Box>
+        {/* Search Bar */}
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        {/* Search Bar */}
+      </Box>
       <Box
         p="50"
         d="flex"
