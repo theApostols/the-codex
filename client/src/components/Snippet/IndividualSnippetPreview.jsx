@@ -1,52 +1,98 @@
-import { Box, Text, Button, VStack, Code } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Button,
+  VStack,
+  Code,
+  Icon,
+  HStack,
+  Flex,
+} from "@chakra-ui/react";
+import {
+  BiBookmarkAltMinus,
+  BiBookmarkAltPlus,
+  BiEdit,
+  BiTrash,
+} from "react-icons/bi";
 import CodeEditor from "../CodeEditor";
 
 // Added default value to the snippet renders on the userpage
-const SnippetPreview = (snippet) => {
-  // console.log(snippet);
-  const snippetData = snippet.snippet;
-  // console.log(snippetData.snippetCode[0].code);
-  return (
-    <>
-      <Box p={4} borderRadius="md" borderWidth="1px">
-        <Text fontSize="xl" fontWeight="bold">
-          {snippetData.snippetTitle}
+const IndividualSnippetPreview = ({ snippet }) => {
+  // Check if snippetData and snippetCode exist before accessing
+  console.log("This is the snippetData", snippet);
+  if (snippet && snippet.snippetCode && snippet.snippetCode.length > 0) {
+    const snippetData = snippet;
+
+    return (
+      <Box p={4} borderRadius="md">
+        <Text fontSize="sm" color="codex.accents300">
+          Created on {snippetData.formattedCreationDate}
         </Text>
-        <Text fontSize="sm" color="codex.accents">
-          Created by {snippetData.username} on{" "}
-          {snippetData.formattedCreationDate}
-        </Text>
-        {/* if there is an edit date, display it */}
-        {snippetData.formattedEditDate && (
-          <Text fontSize="sm" color="codex.accents">
-            Last edited on {snippetData.formattedEditDate}
+        <VStack
+          align={["center", "flex-start"]}
+          spacing="4"
+          w="full"
+          maxW="5xl"
+          mx="auto"
+          p="4"
+          borderRadius="lg"
+          boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
+          bg="rgba(45, 55, 72, 0.8)"
+          backdropFilter="saturate(100%) blur(10px)"
+          color="codex.text"
+        >
+          <Text fontSize="xl" fontWeight="bold">
+            {snippetData.snippetTitle}
           </Text>
-        )}
 
-        <Text>{snippetData.snippetText}</Text>
+          {/* if there is an edit date, display it */}
+          {snippetData.formattedEditDate && (
+            <Text fontSize="sm" color="codex.accents">
+              Last edited on {snippetData.formattedEditDate}
+            </Text>
+          )}
 
-        {
-          <CodeEditor
-          // code={snippetCode.length > 0 ? snippetCode.code : ""}
-          // language={snippetCode.length > 0 ? snippetCode.language : ""}
-          />
-        }
+          <Text>{snippetData.snippetText}</Text>
 
-        <VStack mt={4} align="start" spacing={2}>
-          {/* add a button to drop (dislike) */}
-          <Button variant="secondary" size="sm">
-            Drop
-          </Button>
-          {/* display total props */}
-          <Text fontSize="sm">Props: {snippetData.overallProps}</Text>
-          {/* add a button to prop */}
-          <Button variant="outline" size="sm">
-            Prop
-          </Button>
+          <Box w="full">
+            {/* Map through all code blocks and render CodeEditor for each */}
+            {snippetData.snippetCode.map((codeBlock, index) => (
+              <CodeEditor
+                key={index}
+                code={codeBlock.code}
+                // Assuming you also have a property like codeBlock.language
+                // language={codeBlock.language}
+              />
+            ))}
+          </Box>
+          {/*           <Box w="full">
+            {snippetData.comments.map((comment, index) => (
+              <Text key={index}>{comment.commentText}</Text>
+            ))}
+          </Box> */}
+          <Box w="full">
+            {snippetData.comments.map((comment, index) => (
+              <Box key={index} mb="4">
+                <Text>{comment.commentText}</Text>
+                <Text fontSize="sm" color="codex.accents300">
+                  Posted by {comment.username} on{" "}
+                  {comment.formattedCreationDate}
+                </Text>
+                {comment.formattedEditDate && (
+                  <Text fontSize="sm" color="codex.accents">
+                    Last edited on {comment.formattedEditDate}
+                  </Text>
+                )}
+              </Box>
+            ))}
+          </Box>
         </VStack>
       </Box>
-    </>
-  );
+    );
+  } else {
+    // Render nothing or a placeholder for when snippetData.snippetCode doesn't exist or is empty
+    return null;
+  }
 };
 
-export default SnippetPreview;
+export default IndividualSnippetPreview;
