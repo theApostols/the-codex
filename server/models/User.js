@@ -31,12 +31,16 @@ const userSchema = new Schema(
       message: 'The provided email is invalid', //if the validation fails, return this error message
     },
   },
-  //password is a string, required, with a minimum length of eight characters
+  //password is a required string
   password:
   {
     type: String,
     required: true,
-    minLength: 8,
+  },
+  //image is a string, specifically, the name of an file they've uploaded to be their profile avatar
+  image:
+  {
+    type: String
   },
   //snippets is an array of objectIDs of each code snippet created by this user
   snippets: 
@@ -65,16 +69,23 @@ const userSchema = new Schema(
 });
 //==============================================================
 
-//creates pre-save middleware to hash a user's password upon creation
+//creates pre-save middleware to hash a user's password upon creation / change
 //==============================================================
 userSchema.pre('save', async function(next)
 {
-  if (this.isNew)
+  try
   {
-    this.password = await bcrypt.hash(this.password, 12);
+    if (this.isNew)
+    {
+      this.password = await bcrypt.hash(this.password, 12);
+    }
+    next();
   }
-
-  next();
+  catch (error)
+  {
+    console.log(error);
+    next(error);
+  }
 });
 //==============================================================
 
