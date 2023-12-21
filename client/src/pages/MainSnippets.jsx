@@ -14,7 +14,7 @@ import {
 import React from "react";
 import { GET_ALL_SNIPPETS } from "../utils/queries";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
-import { BiBookmarkAltMinus, BiBookmarkAltPlus } from "react-icons/bi";
+import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 
 export default function UserSnippets() {
   const { loading, error, data } = useQuery(GET_ALL_SNIPPETS);
@@ -75,13 +75,13 @@ export default function UserSnippets() {
                   </Link>
                   <HStack color="codex.text">
                     <Button variant="icon" size="sm">
-                      <Icon as={BiBookmarkAltMinus} w={8} h={8} mr="2" />
+                      <Icon as={FaAngleDoubleDown} w={8} h={8} mr="2" />
                     </Button>
                     <Text color="codex.highlights" fontSize="sm">
                       Props:
                     </Text>
                     <Button variant="icon" size="sm">
-                      <Icon as={BiBookmarkAltPlus} w={8} h={8} mr="2" />
+                      <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
                     </Button>
                   </HStack>
                 </Box>

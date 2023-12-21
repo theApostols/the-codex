@@ -16,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 import { BiSave } from "react-icons/bi";
 import { CREATE_SNIPPET } from "../utils/mutations";
-import customTheme from "../utils/theme";
 import { useMutation, useQuery } from "@apollo/client";
 import Auth from "../utils/auth";
 import { GET_USER_SNIPPETS } from "../utils/queries";
