@@ -9,6 +9,7 @@ import {
   createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { ThemeContext } from "./main.jsx";
 
 //creating a new http link to the website's graphQL URI to act as the data endpoint
 const graphQLLink = createHttpLink({ uri: "/graphql" });
@@ -32,11 +33,11 @@ const client = new ApolloClient({
 });
 
 //initialize our react application with an apollo provider defined as per the above client settings
-function App() {
+function App({ isDarkMode, toggleTheme }) {
   return (
     <ApolloProvider client={client}>
       <Box display="flex" flexDirection="column" minHeight="100vh">
-        <Header />
+        <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme}/>
         <Box
           flex="1"
           display="flex"

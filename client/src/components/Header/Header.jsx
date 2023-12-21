@@ -26,9 +26,12 @@ import {
 } from "@chakra-ui/react";
 import { BiLogOut, BiMenu, BiPlus, BiUser, BiCog } from "react-icons/bi";
 import AuthService from "../../utils/auth";
+import { ThemeContext } from "../../main.jsx";
 import { BsFillSunFill, BsMoonFill } from "react-icons/bs";
 
+
 const Header = () => {
+  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
   const navigate = useNavigate();
   const isAuthenticated = AuthService.loggedIn();
@@ -89,15 +92,15 @@ const Header = () => {
             </MenuList>
           </Menu>
           {/* Button to toggle dark or light mode */}
-          <Button variant="ghost">
-            <Icon as={BsFillSunFill} w={8} h={8} color="codex.text" />
-          </Button>
+          <Button onClick={toggleTheme} variant="ghost">
+                  {isDarkMode ? <BsFillSunFill w={8} h={8}/> : <BsMoonFill w={8} h={8}/>}
+                </Button>
 
-          <Image
-            src="/images/logo_dark.png"
-            alt="Logo"
-            boxSize="50px"
-          />
+          <Image 
+        src={isDarkMode ? "/images/logo_dark.png" : "/images/logo_light.png"} 
+        alt="Logo" 
+        boxSize="50px" 
+      />
 
           {isAuthenticated ? (
             <Avatar
@@ -116,19 +119,19 @@ const Header = () => {
       ) : (
         <>
           <Flex align="center">
-            <Image
-              src= "/images/logo_dark.png"
-              alt="Logo"
-              boxSize="50px"
-            />
-            <Text fontSize="xl" fontWeight="bold" ml="2" mr="6">
+          <Image 
+        src={isDarkMode ? "/images/logo_dark.png" : "/images/logo_light.png"} 
+        alt="Logo" 
+        boxSize="50px" 
+      />
+            <Text fontSize="xl" fontWeight="bold" ml="2" mr='6'>
               The Codex
             </Text>
 
-            {/* Button to toggle dark or light mode */}
-            <Button variant="ghost">
-              <Icon as={BsFillSunFill} w={8} h={8} color="codex.text" />
-            </Button>
+                {/* Button to toggle dark or light mode */}
+                <Button onClick={toggleTheme} variant="ghost">
+                  {isDarkMode ? <BsFillSunFill w={8} h={8}/> : <BsMoonFill w={8} h={8}/>}
+                </Button>
           </Flex>
 
           <Stack direction="row" spacing={4}>
