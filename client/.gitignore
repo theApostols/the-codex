@@ -23,4 +23,4 @@ dist-ssr
 *.sln
 *.sw?
 
-file-uploads
+/public/images/file-uploads/file-*
