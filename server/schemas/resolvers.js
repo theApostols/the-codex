@@ -28,6 +28,21 @@ const resolvers =
         throw new Error('Failed to retrieve users: ' + error.message);
       }
     },
+    oneUser: async (parent, {username}) =>
+    {
+      try 
+      {
+        //attempts to find & return one user by their username
+        const user = await User.findOne({username})
+        return user;
+      } 
+      catch (error) 
+      {
+        // Log the error and throw a new error
+        console.error(error);
+        throw new Error('Failed to retrieve user data;', error);
+      }
+    },
     //query to retrieve all snippets, filtering by provided tags
     allSnippets: async (parent, {tags}) =>
     {
