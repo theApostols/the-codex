@@ -37,28 +37,27 @@ const UserSettingsForm = () =>
   //clears the chose profile picture file
   const handleClearImage = () =>
   {
-    const profileImageInput = document.getElementById('profileImageInput');
-    profileImageInput.value = '';
+    console.log('clearing image');
+    const profileImageInput = document.getElementById('profileImageInput'); //gets a reference to the profile image input
+    profileImageInput.value = ''; //clears the chosen file in the input
+    profileImage = ''; //resets the profile image variable to an empty string
 
-    //simulates a file change event to update the preview image element
-    const fileChangeEvent = new Event('input');
-    profileImageInput.dispatchEvent(fileChangeEvent);
+    //gets a reference to preview image element for the profile picture & sets the src to an empty string
+    const profileImagePreviewElement = document.getElementById('profile-image-preview');
+    profileImagePreviewElement.setAttribute('src', '/images/file-uploads/default-profile');
   }
 
   //update profile image value when a file is selected
   const handleFileSelection = (event) =>
   {
+    console.log('file selected');
     //gets a reference to preview image element for the profile picture
     const profileImagePreviewElement = document.getElementById('profile-image-preview');
 
     //retrieves the file stored in the profile image input
     profileImage = event.target.files[0];
 
-    //if there is no file, set the profile image preview src to an empty string
-    if (!profileImage)
-    {
-      profileImagePreviewElement.setAttribute('src', '');
-    }
+    console.log(profileImage);
 
     const uploadConverter = new FileReader(); //creates a new FileReader instance to read the above file
     uploadConverter.readAsDataURL(profileImage); //convert the upload to a usable URL for an 'src' attribute
@@ -87,9 +86,13 @@ const UserSettingsForm = () =>
       return;
     }
 
+    console.log('submitting data');
+
     try
     {
-      let image = ''; //variable to hold file name of profile image
+      let image = 'default-profile'; //variable to hold file name of profile image, set to 'default-profile' by default
+
+      console.log(profileImage);
 
       //checks if a file was uploaded to the profile image input
       if (profileImage)
