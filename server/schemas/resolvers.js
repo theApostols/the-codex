@@ -79,6 +79,21 @@ const resolvers =
         throw new Error("Failed to retrieve the user's snippets;", error);
       }
     },
+    //query to return all snippets saved by a specific user
+    userSavedSnippets: async (parent, {username}) =>
+    {
+      try
+      {
+        //finds a user by username & returns all the populated data of their saved snippets
+        const user = await User.findOne({username}).populate('savedSnippets');
+        return user;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error("Failed to retrieve the user's saved snippets;", error);
+      }
+    },
     //query to retrieve a specific snippet by ID
     oneSnippet: async (parent, {snippetId}) =>
     {

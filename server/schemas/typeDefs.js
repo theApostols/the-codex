@@ -9,7 +9,7 @@ type User
   password: String!
   image: String
   snippets: [Snippet]
-  savedSnippets: [ID]
+  savedSnippets: [Snippet]
   comments: [Comment]
 }
 
@@ -82,6 +82,7 @@ type Query
   oneUser(username: String!): User
   allSnippets(tags: [String]): [Snippet]
   userSnippets(username: String!, tags: [String]): [Snippet]
+  userSavedSnippets(username: String!): User
   oneSnippet(snippetId: ID!): Snippet
   oneComment(commentId: ID!): Comment
 }
