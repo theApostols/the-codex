@@ -79,6 +79,7 @@ type Snippet
 type Query
 {
   allUsers: [User]
+  oneUser(username: String!): User
   allSnippets(tags: [String]): [Snippet]
   userSnippets(username: String!, tags: [String]): [Snippet]
   oneSnippet(snippetId: ID!): Snippet
