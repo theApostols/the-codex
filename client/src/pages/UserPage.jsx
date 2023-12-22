@@ -23,9 +23,9 @@ export default function UserPage() {
   return (
     <>
       <p style={paragraphStyle}>UserPage is rendering</p>
-      {users.map((user) => (
+      {/* {users.map((user) => (
         <Snippet key={user._id} snippet={user} />
-      ))}
+      ))} */}
     </>
   );
 }

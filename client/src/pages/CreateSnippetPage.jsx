@@ -44,7 +44,44 @@ export default function CreateSnippetPage() {
   // const [tags, setTags] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
   // sample tags
-  const availableTags = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j"];
+  const availableTags = [
+    "3D Printing",
+    "AI Markup Language (AIML)",
+    "Assembly",
+    "Augmented Reality (AR)",
+    "Blockchain",
+    "Cloud Computing",
+    "Concurrent",
+    "Configuration Management",
+    "Containerization and Orchestration",
+    "Data Science",
+    "Database Query",
+    "Desktop App",
+    "Distributed Systems",
+    "Domain-Specific Language (DSL)",
+    "Educational",
+    "Embedded Systems",
+    "Framework",
+    "Functional Programming",
+    "Game Dev",
+    "Graph Query",
+    "Hardware Description Language (HDL)",
+    "IoT Programming",
+    "Logic",
+    "Machine Learning",
+    "Markup",
+    "Mobile App Dev",
+    "Networking",
+    "Parallel",
+    "Robotics",
+    "Scientific Computing",
+    "Scripting",
+    "Serverless Computing",
+    "Virtual Reality (VR)",
+    "Web API",
+    "Web Dev",
+    "Web Security",
+  ];
 
   //////////////////Handlers//////////////////////
 
@@ -184,7 +221,6 @@ export default function CreateSnippetPage() {
     }
   };
 
-
   ////////////////////////////////////////////////
 
   useEffect(() => {
@@ -285,7 +321,6 @@ export default function CreateSnippetPage() {
           />
         </Box>
         {/*MORE code blocks*/}
-
 
         <Box w="full">
           {/* Toggle Resource Fields button */}
