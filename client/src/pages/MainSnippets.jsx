@@ -15,7 +15,6 @@ import React from "react";
 import { GET_ALL_SNIPPETS } from "../utils/queries";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
-import { useState } from "react";
 
 export default function UserSnippets() {
   const { loading, error, data } = useQuery(GET_ALL_SNIPPETS);
