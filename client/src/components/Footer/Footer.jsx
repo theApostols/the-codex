@@ -61,11 +61,11 @@ const Footer = () => {
           </Text>
           {/* Social media icons with links. */}
           <Stack direction="row" spacing={6} mt={{ base: '4', md: '0' }} >
-            <Button variant="ghost" href="#" isExternal><Icon as={FaGithub} w="6" h="6"/></Button>
+            <Link variant="link" href="#" isExternal><Icon as={FaGithub} w="6" h="6"/></Link>
             {/* Additional social media icons... */}
-            <Button variant="ghost" href="mailto:theapostolsofveronica@outlook.com" isExternal>
+            <Link variant="link" href="mailto:theapostolsofveronica@outlook.com" isExternal>
             <Icon as={FaEnvelope} w="6" h="6"/>
-            </Button>
+            </Link>
           </Stack>
         </Box>
       </Container>
