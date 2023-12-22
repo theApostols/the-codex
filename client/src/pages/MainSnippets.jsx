@@ -19,6 +19,12 @@ import { ADD_PROPS, ADD_DROPS, REMOVE_PROPS, REMOVE_DROPS} from "../utils/mutati
 import Auth from "../utils/auth";
 
 export default function UserSnippets() {
+    //PROPS AND DROPS MUTATIONS
+    const [addProps] = useMutation(ADD_PROPS);
+    const [addDrops] = useMutation(ADD_DROPS);
+    const [removeProps] = useMutation(REMOVE_PROPS);
+    const [removeDrops] = useMutation(REMOVE_DROPS);
+
   const { loading, error, data } = useQuery(GET_ALL_SNIPPETS);
 
   if (loading) return <p>Loading...</p>;
@@ -26,11 +32,11 @@ export default function UserSnippets() {
 
   const snippets = data.allSnippets;
 
-  //PROPS AND DROPS MUTATIONS
-  const [addProps] = useMutation(ADD_PROPS);
-  const [addDrops] = useMutation(ADD_DROPS);
-  const [removeProps] = useMutation(REMOVE_PROPS);
-  const [removeDrops] = useMutation(REMOVE_DROPS);
+  // //PROPS AND DROPS MUTATIONS
+  // const [addProps] = useMutation(ADD_PROPS);
+  // const [addDrops] = useMutation(ADD_DROPS);
+  // const [removeProps] = useMutation(REMOVE_PROPS);
+  // const [removeDrops] = useMutation(REMOVE_DROPS);
 
 
   // GET USERNAME FROM TOKEN
@@ -41,6 +47,9 @@ export default function UserSnippets() {
   //PROPS AND DROPS HANDLERS
   const handleAddProps = async (snippetId) => {
     try {
+      // was getting undefined error, chatgpt suggested this fix
+      const snippet = snippets.find((s) => s._id === snippetId);
+
       if (snippet.props.includes(username)) {
         throw new Error("You Already Prop'd This Snippet!");
       }
@@ -57,6 +66,8 @@ export default function UserSnippets() {
 
   const handleAddDrops = async (snippetId) => {
     try {
+      const snippet = snippets.find((s) => s._id === snippetId);
+      
       if (snippet.props.includes(username)) {
         throw new Error("You Already Dropped This Snippet!");
       }

@@ -40,6 +40,8 @@ https://github.com/UofTTeam2/TravIS/blob/main/public/js/editItinerary.js
 React Syntax Highlighter  
 * https://github.com/react-syntax-highlighter/react-syntax-highlighter/tree/b0d771441590ff06eda265488bbf011a0140fbf4
 * https://www.npmjs.com/package/react-syntax-highlighter
+React
+* https://react.dev/warnings/invalid-hook-call-warning
 
 
 
