@@ -15,6 +15,8 @@ import React from "react";
 import { GET_ALL_SNIPPETS } from "../utils/queries";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+import { ADD_PROPS, ADD_DROPS, } from "../utils/mutations";
+import Auth from "../utils/auth";
 
 export default function UserSnippets() {
   const { loading, error, data } = useQuery(GET_ALL_SNIPPETS);
@@ -24,6 +26,48 @@ export default function UserSnippets() {
 
   const snippets = data.allSnippets;
   // console.log("these are the snippets", snippets)
+
+  //PROPS AND DROPS MUTATIONS
+  // const [addProps] = useMutation(ADD_PROPS);
+  // const [addDrops] = useMutation(ADD_DROPS);
+
+  // GET USERNAME FROM TOKEN
+  const username = Auth.getProfile().data.username;
+  // console.log("this is the username:", username);
+
+
+  //PROPS AND DROPS HANDLERS
+  const handleAddProps = async (snippetId) => {
+    try {
+      if (snippet.props.includes(username)) {
+        throw new Error("You Already Prop'd This Snippet!");
+      }
+      await addProps({
+        variables: {
+          username: username,
+          snippetId: snippetId,
+        },
+      });
+    } catch (err) {
+      console.error('Error propping snippet', err);
+    }
+  };
+
+  const handleAddDrops = async (snippetId) => {
+    try {
+      if (snippet.props.includes(username)) {
+        throw new Error("You Already Dropped This Snippet!");
+      }
+      await addDrops({
+        variables: {
+          username: username,
+          snippetId: snippetId,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <>
@@ -74,13 +118,17 @@ export default function UserSnippets() {
                     <MainSnippetPreview snippet={snippet} />
                   </Link>
                   <HStack color="codex.text">
-                    <Button variant="icon" size="sm">
+                    <Button variant="icon" size="sm"
+                    onClick={() => handleAddDrops(snippet._id)}
+                    >
                       <Icon as={FaAngleDoubleDown} w={8} h={8} mr="2" />
                     </Button>
                     <Text color="codex.highlights" fontSize="sm">
-                      Props:
+                      Props: {snippet.props.length}
                     </Text>
-                    <Button variant="icon" size="sm">
+                    <Button variant="icon" size="sm"
+                    onClick={() => handleAddProps(snippet._id)}
+                    >
                       <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
                     </Button>
                   </HStack>
