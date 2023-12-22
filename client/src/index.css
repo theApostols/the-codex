@@ -78,3 +78,7 @@ html {
   display: block;
   margin-right: 30px;
 }
+
+.hidden-input {
+  display: none;
+}
