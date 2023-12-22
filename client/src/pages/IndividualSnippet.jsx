@@ -10,8 +10,9 @@ import {
   Heading,
   Avatar,
   Flex,
+  Textarea,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { GET_INDIVIDUAL_SNIPPET } from "../utils/queries";
 import IndividualSnippetPreview from "../components/Snippet/IndividualSnippetPreview";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
@@ -22,6 +23,29 @@ export default function UserSnippets() {
     fontSize: "18px",
     color: "white",
     fontWeight: "bold",
+  };
+
+  // State for comment input
+  const [commentInput, setCommentInput] = useState("");
+  const [commentInputVisible, setCommentInputVisible] = useState(false);
+
+  // Event handler for comment input change
+  const handleCommentInputChange = (e) => {
+    setCommentInput(e.target.value);
+  };
+
+  // Event handler for toggling comment input visibility
+  const toggleCommentInputVisibility = () => {
+    setCommentInputVisible(!commentInputVisible);
+  };
+
+  // Event handler for submitting a comment
+  const handleAddComment = async () => {
+    //NEED TO ADD LOGIC TO SUBMIT THE COMMENT
+
+    // Clear the comment input and hide the input box
+    setCommentInput("");
+    setCommentInputVisible(false);
   };
 
   const currentUser = Auth.getProfile().data.username;
@@ -109,8 +133,27 @@ export default function UserSnippets() {
                       </Button>
                     </Link>
                   )}
+                  {/* Button to toggle comment input */}
+                  <Button
+                    variant="icon"
+                    size="sm"
+                    onClick={toggleCommentInputVisibility}
+                  >
+                    Add Comment
+                  </Button>
                 </HStack>
               </Box>
+              {/* Comment input */}
+              {commentInputVisible && (
+                <Box>
+                  <Textarea
+                    placeholder="Type your comment here..."
+                    value={commentInput}
+                    onChange={handleCommentInputChange}
+                  />
+                  <Button onClick={handleAddComment}>Submit Comment</Button>
+                </Box>
+              )}
             </Box>
           </VStack>
         </Flex>
