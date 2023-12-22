@@ -48,7 +48,6 @@ import { gql } from "@apollo/client";
 //     }
 //   }
 // `;
-
 // export const GET_ALL_SNIPPETS = gql`
 //   query Query {
 //     allSnippets {
@@ -65,7 +64,6 @@ import { gql } from "@apollo/client";
 //     }
 //   }
 // `;
-
 // export const GET_INDIVIDUAL_SNIPPET = gql`
 //   query Query($snippetId: ID!) {
 //     oneSnippet(snippetId: $snippetId) {
