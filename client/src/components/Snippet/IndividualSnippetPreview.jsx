@@ -26,7 +26,8 @@ const IndividualSnippetPreview = ({ snippet }) => {
     return (
       <Box p={4} borderRadius="md">
         <Text fontSize="sm" color="codex.accents300">
-          Created on {snippetData.formattedCreationDate}
+          Created by {snippetData.username} Created on{" "}
+          {snippetData.formattedCreationDate}
         </Text>
         <VStack
           align={["center", "flex-start"]}
