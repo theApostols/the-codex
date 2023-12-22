@@ -32,13 +32,6 @@ export default function UserSnippets() {
 
   const snippets = data.allSnippets;
 
-  // //PROPS AND DROPS MUTATIONS
-  // const [addProps] = useMutation(ADD_PROPS);
-  // const [addDrops] = useMutation(ADD_DROPS);
-  // const [removeProps] = useMutation(REMOVE_PROPS);
-  // const [removeDrops] = useMutation(REMOVE_DROPS);
-
-
   // GET USERNAME FROM TOKEN
   const username = Auth.getProfile().data.username;
   // console.log("this is the username:", username);
@@ -67,7 +60,7 @@ export default function UserSnippets() {
   const handleAddDrops = async (snippetId) => {
     try {
       const snippet = snippets.find((s) => s._id === snippetId);
-      
+
       if (snippet.props.includes(username)) {
         throw new Error("You Already Dropped This Snippet!");
       }
