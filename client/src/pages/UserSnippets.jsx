@@ -25,9 +25,9 @@ export default function UserSnippets() {
   if (error) return <p>Error: {error.message}</p>;
 
   // Extract snippets from the data
-  const snippets = data.userSnippets;
+  const snippets = data.userSnippets.snippets;
 
-  // console.log(snippets)
+  console.log(snippets)
 
   return (
     <>
