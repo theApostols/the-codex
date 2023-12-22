@@ -151,7 +151,7 @@ export default function UserSnippets() {
                   </Link>
                   <HStack color="codex.text">
                     <Button variant="icon" size="sm"
-                    onClick={() => handleAddDrops(snippet._id)}
+                    onClick={() => handleAddDrops(snippet._id) && handleRemoveProps(snippet._id)}
                     >
                       <Icon as={FaAngleDoubleDown} w={8} h={8} mr="2" />
                     </Button>
@@ -159,7 +159,7 @@ export default function UserSnippets() {
                       Props: {snippet.overallProps}
                     </Text>
                     <Button variant="icon" size="sm"
-                    onClick={() => handleAddProps(snippet._id)}
+                    onClick={() => handleAddProps(snippet._id) && handleRemoveDrops(snippet._id)}
                     >
                       <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
                     </Button>

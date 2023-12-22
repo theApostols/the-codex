@@ -192,6 +192,7 @@ mutation AddProps($username: String!, $snippetId: ID!)
   addProps(username: $username, snippetId: $snippetId)
   {
     _id
+    props
   }
 }`;
 
@@ -208,6 +209,7 @@ mutation RemoveProps($username: String!, $snippetId: ID!)
   removeProps(username: $username, snippetId: $snippetId)
   {
     _id
+    props
   }
 }`;
 
@@ -224,6 +226,7 @@ mutation AddDrops($username: String!, $snippetId: ID!)
   addDrops(username: $username, snippetId: $snippetId)
   {
     _id
+    drops
   }
 }`;
 
@@ -240,6 +243,7 @@ mutation RemoveDrops($username: String!, $snippetId: ID!)
   removeDrops(username: $username, snippetId: $snippetId)
   {
     _id
+    drops
   }
 }`;
 
