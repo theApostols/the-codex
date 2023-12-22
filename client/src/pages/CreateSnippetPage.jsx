@@ -360,14 +360,6 @@ export default function CreateSnippetPage() {
             </Text>
           )}
         </Box>
-        {/* DELETE THIS LATER */}
-        <Box w="full">
-          {/* Display user's snippets */}
-          {userSnippets.map((snippet) => (
-            <SnippetDisplay key={snippet._id} snippet={snippet} />
-          ))}
-        </Box>
-        {/* END OF DELETE BLOCK */}
       </VStack>
     </Box>
   );

@@ -23,7 +23,6 @@ export default function UserSnippets() {
   if (error) return <p>Error: {error.message}</p>;
 
   const snippets = data.allSnippets;
-  // console.log("these are the snippets", snippets)
 
   return (
     <>
@@ -70,7 +69,7 @@ export default function UserSnippets() {
                   borderBottom="1px solid"
                   borderColor="codex.borders"
                 >
-                  <Link to={`/snippet/${snippet._id}`}>
+                  <Link to={`/individual-snippets/${snippet._id}`}>
                     <MainSnippetPreview snippet={snippet} />
                   </Link>
                   <HStack color="codex.text">
@@ -78,7 +77,7 @@ export default function UserSnippets() {
                       <Icon as={FaAngleDoubleDown} w={8} h={8} mr="2" />
                     </Button>
                     <Text color="codex.highlights" fontSize="sm">
-                      Props:
+                      Props: {snippet.overallProps}
                     </Text>
                     <Button variant="icon" size="sm">
                       <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />

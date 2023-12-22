@@ -69,14 +69,64 @@ const resolvers =
         //create a tags filter if any tags were provided, otherwise use a filter to just search by username
         const filter = tags ? {tags: {$all: tags}, username: username} : {username};
 
-        //finds and returns all snippets created by a specific user, filter by tags if applicable
+        //finds all snippets created by a specific user, filtering by tags if applicable
         const snippets = await Snippet.find(filter);
+
+        //retrieves user that created the above snippets
+        const user = await User.findOne({username});
+
+        //returns the user & snippets data
+        return {user, snippets};
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error("Failed to retrieve the user's snippets;", error);
+      }
+    },
+    //query to return all snippets created by you
+    mySnippets: async (parent, {username}) =>
+    {
+      try
+      {
+        //finds all snippets created by a specific user
+        const snippets = await Snippet.find({username});
         return snippets;
       }
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
         throw new Error("Failed to retrieve the user's snippets;", error);
+      }
+    },
+    //query to return all snippets saved by a specific user
+    userSavedSnippets: async (parent, {username}) =>
+    {
+      try
+      {
+        //finds a user by username & returns all the populated data of their saved snippets
+        const user = await User.findOne({username}).populate('savedSnippets');
+        return user;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error("Failed to retrieve the user's saved snippets;", error);
+      }
+    },
+    //query to return all comments created by a specific user
+    userComments: async (parent, {username}) =>
+    {
+      try
+      {
+        //finds and returns all comments made by a specific user, plus their parent snippet
+        const comments = await Comment.find({username}).populate('parentSnippetId');
+        return comments;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error("Failed to retrieve the user's comments;", error);
       }
     },
     //query to retrieve a specific snippet by ID
