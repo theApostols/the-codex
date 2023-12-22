@@ -1,9 +1,10 @@
 import { useQuery, useMutation } from "@apollo/client";
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import React from "react";
-import SnippetPreview from "../components/Snippet/SnippetPreview.jsx";
+import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
 import { GET_USER_SNIPPETS } from "../utils/queries";
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, VStack, HStack, Button, Icon, Text } from "@chakra-ui/react";
+import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 
 export default function UserSnippets() {
   const paragraphStyle = {
@@ -27,16 +28,68 @@ export default function UserSnippets() {
   // Extract snippets from the data
   const snippets = data.userSnippets.snippets;
 
-  console.log(snippets)
+  console.log(snippets);
 
   return (
     <>
-      <p style={paragraphStyle}>UserPage is rendering</p>
-      <Box color="codex.text">
-      {snippets.map((snippet) => (
-        <SnippetPreview key={snippet._id} snippet={snippet}/>
-      ))}
-      </Box>
-    </>
+    <Box
+      p="50"
+      d="flex"
+      alignItems="center"
+      justifyContent="center"
+      color="white"
+    >
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        w="full"
+        maxW="5xl"
+        mx="auto"
+        p="8"
+        alignItems="start"
+      >
+        <VStack
+          spacing="4"
+          w="full"
+          maxW="5xl"
+          mx="auto"
+          p="8"
+          color="codex.accents"
+        >
+          <Box
+            w="full"
+            border="1px solid"
+            borderColor="codex.borders"
+            borderRadius="lg"
+            bg="codex.darkest"
+          >
+            {snippets.map((snippet, index) => (
+              <Box
+                key={index}
+                pb="5"
+                w="full"
+                borderBottom="1px solid"
+                borderColor="codex.borders"
+              >
+                <Link to={`/individual-snippets/${snippet._id}`}>
+                  <MainSnippetPreview snippet={snippet} />
+                </Link>
+                <HStack color="codex.text">
+                  <Button variant="icon" size="sm">
+                    <Icon as={FaAngleDoubleDown} w={8} h={8} mr="2" />
+                  </Button>
+                  <Text color="codex.highlights" fontSize="sm">
+                    Props: {snippet.overallProps}
+                  </Text>
+                  <Button variant="icon" size="sm">
+                    <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
+                  </Button>
+                </HStack>
+              </Box>
+            ))}
+          </Box>
+        </VStack>
+      </Flex>
+    </Box>
+  </>
   );
 }
