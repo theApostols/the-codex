@@ -76,12 +76,19 @@ type Snippet
   formattedEditDate: String
 }
 
+type UserAndSnippets
+{
+  user: User
+  snippets: [Snippet]
+}
+
 type Query
 {
   allUsers: [User]
   oneUser(username: String!): User
   allSnippets(tags: [String]): [Snippet]
-  userSnippets(username: String!, tags: [String]): [Snippet]
+  userSnippets(username: String!, tags: [String]): UserAndSnippets
+  mySnippets(username: String!): [Snippet]
   userSavedSnippets(username: String!): User
   userComments(username: String!): [Comment]
   oneSnippet(snippetId: ID!): Snippet
