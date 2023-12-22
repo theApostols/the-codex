@@ -15,7 +15,7 @@ import React from "react";
 import { GET_ALL_SNIPPETS } from "../utils/queries";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
-import { ADD_PROPS, ADD_DROPS, } from "../utils/mutations";
+import { ADD_PROPS, ADD_DROPS, REMOVE_PROPS, REMOVE_DROPS} from "../utils/mutations";
 import Auth from "../utils/auth";
 
 export default function UserSnippets() {
@@ -27,8 +27,11 @@ export default function UserSnippets() {
   const snippets = data.allSnippets;
 
   //PROPS AND DROPS MUTATIONS
-  // const [addProps] = useMutation(ADD_PROPS);
-  // const [addDrops] = useMutation(ADD_DROPS);
+  const [addProps] = useMutation(ADD_PROPS);
+  const [addDrops] = useMutation(ADD_DROPS);
+  const [removeProps] = useMutation(REMOVE_PROPS);
+  const [removeDrops] = useMutation(REMOVE_DROPS);
+
 
   // GET USERNAME FROM TOKEN
   const username = Auth.getProfile().data.username;
@@ -58,6 +61,32 @@ export default function UserSnippets() {
         throw new Error("You Already Dropped This Snippet!");
       }
       await addDrops({
+        variables: {
+          username: username,
+          snippetId: snippetId,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleRemoveProps = async (snippetId) => {
+    try{
+      await removeProps({
+        variables: {
+          username: username,
+          snippetId: snippetId,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleRemoveDrops = async (snippetId) => {
+    try{
+      await removeDrops({
         variables: {
           username: username,
           snippetId: snippetId,
