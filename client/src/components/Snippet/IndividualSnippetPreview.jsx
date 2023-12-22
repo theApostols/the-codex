@@ -15,11 +15,55 @@ import {
   BiTrash,
 } from "react-icons/bi";
 import CodeEditor from "../CodeEditor";
+import { DELETE_COMMENT } from "../../utils/mutations";
+import Auth from "../../utils/auth";
+import { useMutation } from "@apollo/client";
+import { GET_INDIVIDUAL_SNIPPET } from "../../utils/queries";
 
 // Added default value to the snippet renders on the userpage
 const IndividualSnippetPreview = ({ snippet }) => {
   // Check if snippetData and snippetCode exist before accessing
   // console.log("This is the snippetData", snippet);
+  const currentUser = Auth.getProfile().data.username;
+
+  // Define your DELETE_COMMENT mutation
+  const [deleteComment] = useMutation(DELETE_COMMENT);
+
+  // Define the handleDeleteComment function
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const result = await deleteComment({
+        variables: { commentId },
+        update: (cache) => {
+          // Update the cache to remove the deleted comment
+          // Adjust this based on your cache structure
+          const existingData = cache.readQuery({
+            query: GET_INDIVIDUAL_SNIPPET,
+            variables: { snippetId: snippet._id },
+          });
+
+          cache.writeQuery({
+            query: GET_INDIVIDUAL_SNIPPET,
+            variables: { snippetId: snippet._id },
+            data: {
+              oneSnippet: {
+                ...existingData.oneSnippet,
+                comments: existingData.oneSnippet.comments.filter(
+                  (c) => c._id !== commentId
+                ),
+              },
+            },
+          });
+        },
+      });
+
+      // Handle the result if needed
+      console.log("Comment deleted:", result);
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+      // Handle error if needed
+    }
+  };
   if (snippet && snippet.snippetCode && snippet.snippetCode.length > 0) {
     const snippetData = snippet;
 
@@ -83,6 +127,13 @@ const IndividualSnippetPreview = ({ snippet }) => {
                   <Text fontSize="sm" color="codex.accents">
                     Last edited on {comment.formattedEditDate}
                   </Text>
+                )}
+
+                {/* Render delete button for comments created by the logged-in user */}
+                {currentUser === comment.username && (
+                  <Button onClick={() => handleDeleteComment(comment._id)}>
+                    Delete Comment
+                  </Button>
                 )}
               </Box>
             ))}

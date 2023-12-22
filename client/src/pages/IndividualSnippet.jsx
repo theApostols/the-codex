@@ -149,7 +149,7 @@ export default function UserSnippets() {
                 borderBottom="1px solid"
                 borderColor="codex.borders"
               >
-                <Link to={`/snippet/${snippets._id}`}>
+                <Link>
                   <IndividualSnippetPreview snippet={snippets} />
                 </Link>
                 <HStack color="codex.text">
