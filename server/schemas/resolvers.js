@@ -94,6 +94,21 @@ const resolvers =
         throw new Error("Failed to retrieve the user's saved snippets;", error);
       }
     },
+    //query to return all comments created by a specific user
+    userComments: async (parent, {username}) =>
+    {
+      try
+      {
+        //finds and returns all comments made by a specific user, plus their parent snippet
+        const comments = await Comment.find({username}).populate('parentSnippetId');
+        return comments;
+      }
+      catch (error) //catches any errors that occur, log it to console, & throw it as a new error
+      {
+        console.error(error);
+        throw new Error("Failed to retrieve the user's comments;", error);
+      }
+    },
     //query to retrieve a specific snippet by ID
     oneSnippet: async (parent, {snippetId}) =>
     {

@@ -48,7 +48,7 @@ input ResourceInput
 type Comment
 {
   _id: ID!
-  parentSnippetId: ID
+  parentSnippetId: Snippet
   username: String!
   commentText: String
   creationDate: String!
@@ -83,6 +83,7 @@ type Query
   allSnippets(tags: [String]): [Snippet]
   userSnippets(username: String!, tags: [String]): [Snippet]
   userSavedSnippets(username: String!): User
+  userComments(username: String!): [Comment]
   oneSnippet(snippetId: ID!): Snippet
   oneComment(commentId: ID!): Comment
 }
