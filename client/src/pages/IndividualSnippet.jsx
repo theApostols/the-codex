@@ -17,6 +17,7 @@ import { GET_INDIVIDUAL_SNIPPET } from "../utils/queries";
 import IndividualSnippetPreview from "../components/Snippet/IndividualSnippetPreview";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 import Auth from "../utils/auth";
+import { CREATE_COMMENT } from "../utils/mutations";
 
 export default function UserSnippets() {
   const paragraphStyle = {
@@ -28,6 +29,7 @@ export default function UserSnippets() {
   // State for comment input
   const [commentInput, setCommentInput] = useState("");
   const [commentInputVisible, setCommentInputVisible] = useState(false);
+  const [createComment] = useMutation(CREATE_COMMENT);
 
   // Event handler for comment input change
   const handleCommentInputChange = (e) => {
@@ -39,13 +41,49 @@ export default function UserSnippets() {
     setCommentInputVisible(!commentInputVisible);
   };
 
-  // Event handler for submitting a comment
   const handleAddComment = async () => {
-    //NEED TO ADD LOGIC TO SUBMIT THE COMMENT
+    try {
+      // Execute the mutation
+      const result = await createComment({
+        variables: {
+          parentSnippetId: snippetId,
+          username: currentUser,
+          commentText: commentInput,
+        },
+        // Update the cache after the mutation is successful
+        update: (cache, { data }) => {
+          // Read the existing data from the cache
+          const existingData = cache.readQuery({
+            query: GET_INDIVIDUAL_SNIPPET,
+            variables: { snippetId },
+          });
 
-    // Clear the comment input and hide the input box
-    setCommentInput("");
-    setCommentInputVisible(false);
+          // Add the new comment to the existing data
+          const newComment = data.createComment;
+
+          cache.writeQuery({
+            query: GET_INDIVIDUAL_SNIPPET,
+            variables: { snippetId },
+            data: {
+              oneSnippet: {
+                ...existingData.oneSnippet,
+                comments: [...existingData.oneSnippet.comments, newComment],
+              },
+            },
+          });
+        },
+      });
+
+      // Handle the result if needed
+      console.log("Comment created:", result);
+
+      // Clear the comment input and hide the input box
+      setCommentInput("");
+      setCommentInputVisible(false);
+    } catch (error) {
+      console.error("Error creating comment:", error);
+      // Handle error if needed
+    }
   };
 
   const currentUser = Auth.getProfile().data.username;
