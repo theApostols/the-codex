@@ -15,6 +15,7 @@ import React from "react";
 import { GET_INDIVIDUAL_SNIPPET } from "../utils/queries";
 import IndividualSnippetPreview from "../components/Snippet/IndividualSnippetPreview";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+import Auth from "../utils/auth";
 
 export default function UserSnippets() {
   const paragraphStyle = {
@@ -22,6 +23,8 @@ export default function UserSnippets() {
     color: "white",
     fontWeight: "bold",
   };
+
+  const currentUser = Auth.getProfile().data.username;
 
   //retrieve user route parameter
   const { snippetId } = useParams();
@@ -36,7 +39,10 @@ export default function UserSnippets() {
 
   // Extract snippets from the data
   const snippets = data.oneSnippet;
-  console.log("This is the snippets", snippets);
+  const snippetUser = snippets.username;
+  // console.log("This is the snippets", snippets);
+  console.log(snippetUser);
+  console.log(currentUser);
 
   return (
     <>
@@ -94,6 +100,15 @@ export default function UserSnippets() {
                   <Button variant="icon" size="sm">
                     <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
                   </Button>
+                  {/* Conditionally render the edit button */}
+                  {currentUser && snippetUser === currentUser && (
+                    <Link to={`/edit-snippet/${snippets._id}`}>
+                      <Button variant="icon" size="sm">
+                        {/* PLEASE EDIT THIS TO LOOK BETTER =D I SUCK AT THIS */}
+                        Edit
+                      </Button>
+                    </Link>
+                  )}
                 </HStack>
               </Box>
             </Box>

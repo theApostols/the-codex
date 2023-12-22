@@ -19,7 +19,7 @@ import CodeEditor from "../CodeEditor";
 // Added default value to the snippet renders on the userpage
 const IndividualSnippetPreview = ({ snippet }) => {
   // Check if snippetData and snippetCode exist before accessing
-  console.log("This is the snippetData", snippet);
+  // console.log("This is the snippetData", snippet);
   if (snippet && snippet.snippetCode && snippet.snippetCode.length > 0) {
     const snippetData = snippet;
 
