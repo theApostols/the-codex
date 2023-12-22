@@ -20,7 +20,7 @@ import CodeEditor from "../CodeEditor";
 const SnippetPreview = ({ snippet }) => {
   // Check if snippetData and snippetCode exist before accessing
   console.log("This is the snippetData", snippet);
-  if (snippet && snippet.snippetCode && snippet.snippetCode.length > 0) {
+  if (snippet) {
     const snippetData = snippet;
 
     return (
@@ -56,17 +56,17 @@ const SnippetPreview = ({ snippet }) => {
 
             <Text>{snippetData.snippetText}</Text>
 
-            <Box w="full">
-              {/* Map through all code blocks and render CodeEditor for each */}
-              {snippetData.snippetCode.map((codeBlock, index) => (
-                <CodeEditor
-                  key={index}
-                  code={codeBlock.code}
-                  // Assuming you also have a property like codeBlock.language
-                  // language={codeBlock.language}
-                />
-              ))}
-            </Box>
+          {/* <Box w="full">
+            { Map through all code blocks and render CodeEditor for each }
+            {snippetData.snippetCode.map((codeBlock, index) => (
+              <CodeEditor
+                key={index}
+                code={codeBlock.code}
+                // Assuming you also have a property like codeBlock.language
+                // language={codeBlock.language}
+              />
+            ))}
+          </Box> */}
 
             {/* Add your other components or elements here */}
           </VStack>

@@ -37,10 +37,11 @@ const userSchema = new Schema(
     type: String,
     required: true,
   },
-  //image is a string, specifically, the name of an file they've uploaded to be their profile avatar
+  //image is a string, specifically, the name of an file they've uploaded to be their profile avatar, default set to 'default-profile'
   image:
   {
-    type: String
+    type: String,
+    default: 'default-profile'
   },
   //snippets is an array of objectIDs of each code snippet created by this user
   snippets: 
