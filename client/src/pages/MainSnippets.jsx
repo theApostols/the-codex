@@ -61,7 +61,7 @@ export default function UserSnippets() {
     try {
       const snippet = snippets.find((s) => s._id === snippetId);
 
-      if (snippet.props.includes(username)) {
+      if (snippet.drops.includes(username)) {
         throw new Error("You Already Dropped This Snippet!");
       }
       await addDrops({

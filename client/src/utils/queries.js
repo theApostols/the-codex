@@ -141,6 +141,8 @@ query AllSnippets {
     snippetTitle
     snippetText
     overallProps
+    props
+    drops
     formattedCreationDate
     formattedEditDate
   }
