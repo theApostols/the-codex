@@ -184,6 +184,39 @@ const UserSettingsForm = () => {
             alignItems="center"
           >
             <VStack spacing="4" alignItems="center">
+              {/* Don't delete this part */}
+              {/* <Box
+                borderWidth="2px"
+                borderRadius="lg"
+                overflow="hidden"
+                p={5}
+                textAlign="center"
+                borderStyle="dashed"
+                cursor="pointer"
+                bg={userData?.oneUser?.image ? "transparent" : "gray.100"}
+              >
+                {userData?.oneUser?.image ? (
+                  <Image
+                    src={`/images/file-uploads/${userData?.oneUser?.image}`}
+                    alt="Uploaded image"
+                    maxH="400px"
+                    mx="auto"
+                  />
+                ) : (
+                  "Click to upload image"
+                )}
+                <Input
+                  type="file"
+                  onChange={handleFileSelection}
+                  opacity="0"
+                  position="absolute"
+                  top="0"
+                  left="0"
+                  width="100%"
+                  height="100%"
+                  cursor="pointer"
+                />
+              </Box> */}
 
               <Image
                 id="profile-image-preview"
