@@ -49,77 +49,97 @@ export default function UserSnippets() {
 
   const snippets = data.allSnippets;
 
-  // GET USERNAME FROM TOKEN
-  const username = Auth.getProfile().data.username;
+  let username; //variable to hold user's username
+
+  //attempts to retrieve username from JWT
+  try
+  {
+    //gets current user's username
+    username = Auth.getProfile().data.username;
+  }
+  catch (error) //empty error block (this is just here to ensure the page still renders even if a user is not logged in)
+  {}
 
   //PROPS AND DROPS HANDLERS
 
   //PROP A SNIPPET
   const handleAddProps = async (snippetId) => {
-    try {
-      // was getting undefined error, chatgpt suggested this fix
-      // find the snippet based on the snippetId
-      const snippet = snippets.find((s) => s._id === snippetId);
-      //check if the user has already propped the snippet
-      if (snippet.props.includes(username)) {
-        throw new Error("You Already Prop'd This Snippet!");
+    if (username)
+    {
+      try {
+        // was getting undefined error, chatgpt suggested this fix
+        // find the snippet based on the snippetId
+        const snippet = snippets.find((s) => s._id === snippetId);
+        //check if the user has already propped the snippet
+        if (snippet.props.includes(username)) {
+          throw new Error("You Already Prop'd This Snippet!");
+        }
+        // preform the addProps mutation
+        await addProps({
+          variables: {
+            username: username,
+            snippetId: snippetId,
+          },
+        });
+      } catch (err) {
+        console.error("Error propping snippet", err);
       }
-      // preform the addProps mutation
-      await addProps({
-        variables: {
-          username: username,
-          snippetId: snippetId,
-        },
-      });
-    } catch (err) {
-      console.error("Error propping snippet", err);
     }
   };
 
   //DROP A SNIPPET
   const handleAddDrops = async (snippetId) => {
-    try {
-      const snippet = snippets.find((s) => s._id === snippetId);
+    if (username)
+    {
+      try {
+        const snippet = snippets.find((s) => s._id === snippetId);
 
-      if (snippet.drops.includes(username)) {
-        throw new Error("You Already Dropped This Snippet!");
+        if (snippet.drops.includes(username)) {
+          throw new Error("You Already Dropped This Snippet!");
+        }
+        await addDrops({
+          variables: {
+            username: username,
+            snippetId: snippetId,
+          },
+        });
+      } catch (err) {
+        console.error(err);
       }
-      await addDrops({
-        variables: {
-          username: username,
-          snippetId: snippetId,
-        },
-      });
-    } catch (err) {
-      console.error(err);
     }
   };
 
   //REMOVE PROPS FROM A SNIPPET WHEN DROPPED
   const handleRemoveProps = async (snippetId) => {
-    try {
-      await removeProps({
-        variables: {
-          username: username,
-          snippetId: snippetId,
-        },
-      });
-    } catch (err) {
-      console.error(err);
+    if (username)
+    {
+      try {
+        await removeProps({
+          variables: {
+            username: username,
+            snippetId: snippetId,
+          },
+        });
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
   //REMOVE DROPS FROM A SNIPPET WHEN PROPPED
   const handleRemoveDrops = async (snippetId) => {
-    try {
-      await removeDrops({
-        variables: {
-          username: username,
-          snippetId: snippetId,
-        },
-      });
-    } catch (err) {
-      console.error(err);
+    if (username)
+    {
+      try {
+        await removeDrops({
+          variables: {
+            username: username,
+            snippetId: snippetId,
+          },
+        });
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
