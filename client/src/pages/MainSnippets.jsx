@@ -25,15 +25,23 @@ import Auth from "../utils/auth";
 
 export default function UserSnippets() {
   //PROPS AND DROPS MUTATIONS
+  //mutation to add props, with refetch to update cache to reflect new props
   const [addProps] = useMutation(ADD_PROPS, {
     refetchQueries: [{ query: GET_ALL_SNIPPETS }],
   });
+
+  //mutation to add drops, with refetch to update cache to reflect new drops
   const [addDrops] = useMutation(ADD_DROPS, {
     refetchQueries: [{ query: GET_ALL_SNIPPETS }],
   });
+
+  //mutation to remove props, to calculate overall props when snippet is dropped
   const [removeProps] = useMutation(REMOVE_PROPS);
+
+  //mutation to remove drops, to calculate overall props when snippet is propped
   const [removeDrops] = useMutation(REMOVE_DROPS);
 
+  //QUERY TO GET ALL SNIPPETS
   const { loading, error, data } = useQuery(GET_ALL_SNIPPETS);
 
   if (loading) return <p>Loading...</p>;
@@ -43,17 +51,20 @@ export default function UserSnippets() {
 
   // GET USERNAME FROM TOKEN
   const username = Auth.getProfile().data.username;
-  // console.log("this is the username:", username);
 
   //PROPS AND DROPS HANDLERS
+
+  //PROP A SNIPPET
   const handleAddProps = async (snippetId) => {
     try {
       // was getting undefined error, chatgpt suggested this fix
+      // find the snippet based on the snippetId
       const snippet = snippets.find((s) => s._id === snippetId);
-
+      //check if the user has already propped the snippet
       if (snippet.props.includes(username)) {
         throw new Error("You Already Prop'd This Snippet!");
       }
+      // preform the addProps mutation
       await addProps({
         variables: {
           username: username,
@@ -65,6 +76,7 @@ export default function UserSnippets() {
     }
   };
 
+  //DROP A SNIPPET
   const handleAddDrops = async (snippetId) => {
     try {
       const snippet = snippets.find((s) => s._id === snippetId);
@@ -83,6 +95,7 @@ export default function UserSnippets() {
     }
   };
 
+  //REMOVE PROPS FROM A SNIPPET WHEN DROPPED
   const handleRemoveProps = async (snippetId) => {
     try {
       await removeProps({
@@ -96,6 +109,7 @@ export default function UserSnippets() {
     }
   };
 
+  //REMOVE DROPS FROM A SNIPPET WHEN PROPPED
   const handleRemoveDrops = async (snippetId) => {
     try {
       await removeDrops({
