@@ -1,5 +1,5 @@
 import React, { useRef, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Flex,
   Text,
@@ -145,12 +145,12 @@ const Header = () => {
           <Stack direction="row" spacing={4}>
             {isAuthenticated ? (null) : 
             (
-              <Button variant="link">
+              <Button as={Link} to="/" variant="link">
               Home
               </Button>
             )}
-            <Button variant="link">Snippets</Button>
-            <Button variant="link">Dashboard</Button>
+            <Button as={Link} to="/main-snippets" variant="link">Snippets</Button>
+            <Button as={Link} to="/dashboard" variant="link">Dashboard</Button>
             <Button variant="link">Button04</Button>
 
             {isAuthenticated ? (
