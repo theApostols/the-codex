@@ -141,6 +141,8 @@ query AllSnippets {
     snippetTitle
     snippetText
     overallProps
+    props
+    drops
     formattedCreationDate
     formattedEditDate
   }
@@ -280,6 +282,8 @@ query OneSnippet($snippetId: ID!) {
     }
     tags
     overallProps
+    props
+    drops
     formattedCreationDate
     formattedEditDate
   }

@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { Link, useParams } from "react-router-dom";
 import {
   Box,
@@ -15,14 +15,113 @@ import React from "react";
 import { GET_ALL_SNIPPETS } from "../utils/queries";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+import {
+  ADD_PROPS,
+  ADD_DROPS,
+  REMOVE_PROPS,
+  REMOVE_DROPS,
+} from "../utils/mutations";
+import Auth from "../utils/auth";
 
 export default function UserSnippets() {
+  //PROPS AND DROPS MUTATIONS
+  //mutation to add props, with refetch to update cache to reflect new props
+  const [addProps] = useMutation(ADD_PROPS, {
+    refetchQueries: [{ query: GET_ALL_SNIPPETS }],
+  });
+
+  //mutation to add drops, with refetch to update cache to reflect new drops
+  const [addDrops] = useMutation(ADD_DROPS, {
+    refetchQueries: [{ query: GET_ALL_SNIPPETS }],
+  });
+
+  //mutation to remove props, to calculate overall props when snippet is dropped
+  const [removeProps] = useMutation(REMOVE_PROPS);
+
+  //mutation to remove drops, to calculate overall props when snippet is propped
+  const [removeDrops] = useMutation(REMOVE_DROPS);
+
+  //QUERY TO GET ALL SNIPPETS
   const { loading, error, data } = useQuery(GET_ALL_SNIPPETS);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   const snippets = data.allSnippets;
+
+  // GET USERNAME FROM TOKEN
+  const username = Auth.getProfile().data.username;
+
+  //PROPS AND DROPS HANDLERS
+
+  //PROP A SNIPPET
+  const handleAddProps = async (snippetId) => {
+    try {
+      // was getting undefined error, chatgpt suggested this fix
+      // find the snippet based on the snippetId
+      const snippet = snippets.find((s) => s._id === snippetId);
+      //check if the user has already propped the snippet
+      if (snippet.props.includes(username)) {
+        throw new Error("You Already Prop'd This Snippet!");
+      }
+      // preform the addProps mutation
+      await addProps({
+        variables: {
+          username: username,
+          snippetId: snippetId,
+        },
+      });
+    } catch (err) {
+      console.error("Error propping snippet", err);
+    }
+  };
+
+  //DROP A SNIPPET
+  const handleAddDrops = async (snippetId) => {
+    try {
+      const snippet = snippets.find((s) => s._id === snippetId);
+
+      if (snippet.drops.includes(username)) {
+        throw new Error("You Already Dropped This Snippet!");
+      }
+      await addDrops({
+        variables: {
+          username: username,
+          snippetId: snippetId,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  //REMOVE PROPS FROM A SNIPPET WHEN DROPPED
+  const handleRemoveProps = async (snippetId) => {
+    try {
+      await removeProps({
+        variables: {
+          username: username,
+          snippetId: snippetId,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  //REMOVE DROPS FROM A SNIPPET WHEN PROPPED
+  const handleRemoveDrops = async (snippetId) => {
+    try {
+      await removeDrops({
+        variables: {
+          username: username,
+          snippetId: snippetId,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <>
@@ -73,13 +172,27 @@ export default function UserSnippets() {
                     <MainSnippetPreview snippet={snippet} />
                   </Link>
                   <HStack color="codex.text">
-                    <Button variant="icon" size="sm">
+                    <Button
+                      variant="icon"
+                      size="sm"
+                      onClick={() =>
+                        handleAddDrops(snippet._id) &&
+                        handleRemoveProps(snippet._id)
+                      }
+                    >
                       <Icon as={FaAngleDoubleDown} w={8} h={8} mr="2" />
                     </Button>
                     <Text color="codex.highlights" fontSize="sm">
                       Props: {snippet.overallProps}
                     </Text>
-                    <Button variant="icon" size="sm">
+                    <Button
+                      variant="icon"
+                      size="sm"
+                      onClick={() =>
+                        handleAddProps(snippet._id) &&
+                        handleRemoveDrops(snippet._id)
+                      }
+                    >
                       <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
                     </Button>
                   </HStack>

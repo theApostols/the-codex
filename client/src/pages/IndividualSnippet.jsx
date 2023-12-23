@@ -17,7 +17,13 @@ import { GET_INDIVIDUAL_SNIPPET } from "../utils/queries";
 import IndividualSnippetPreview from "../components/Snippet/IndividualSnippetPreview";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 import Auth from "../utils/auth";
-import { CREATE_COMMENT } from "../utils/mutations";
+import {
+  CREATE_COMMENT,
+  ADD_PROPS,
+  ADD_DROPS,
+  REMOVE_PROPS,
+  REMOVE_DROPS,
+} from "../utils/mutations";
 
 export default function UserSnippets() {
   const paragraphStyle = {
@@ -91,6 +97,23 @@ export default function UserSnippets() {
   //retrieve user route parameter
   const { snippetId } = useParams();
 
+  //PROPS AND DROPS MUTATIONS
+  //mutation to add props, with refetch to update cache to reflect new props
+  const [addProps] = useMutation(ADD_PROPS, {
+    refetchQueries: [{ query: GET_INDIVIDUAL_SNIPPET }],
+  });
+
+  //mutation to add drops, with refetch to update cache to reflect new drops
+  const [addDrops] = useMutation(ADD_DROPS, {
+    refetchQueries: [{ query: GET_INDIVIDUAL_SNIPPET }],
+  });
+
+  //mutation to remove props, to calculate overall props when snippet is dropped
+  const [removeProps] = useMutation(REMOVE_PROPS);
+
+  //mutation to remove drops, to calculate overall props when snippet is propped
+  const [removeDrops] = useMutation(REMOVE_DROPS);
+
   // Use the useQuery hook to execute the GET_USER_SNIPPETS query
   const { loading, error, data } = useQuery(GET_INDIVIDUAL_SNIPPET, {
     variables: { snippetId },
@@ -105,6 +128,65 @@ export default function UserSnippets() {
   // console.log("This is the snippets", snippets);
   console.log(snippetUser);
   console.log(currentUser);
+
+  //props and drops handlers
+  const handleAddProps = async (snippetId) => {
+    try {
+      if (snippets.props.includes(currentUser)) {
+        throw new Error("You Already Prop'd This Snippet!");
+      }
+      await addProps({
+        variables: {
+          username: currentUser,
+          snippetId: snippetId,
+        },
+      });
+    } catch (err) {
+      console.error("Error propping snippet", err);
+    }
+  };
+
+  const handleAddDrops = async (snippetId) => {
+    try {
+      if (snippets.drops.includes(currentUser)) {
+        throw new Error("You Already Dropped This Snippet!");
+      }
+      await addDrops({
+        variables: {
+          username: currentUser,
+          snippetId: snippetId,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleRemoveProps = async (snippetId) => {
+    try {
+      await removeProps({
+        variables: {
+          username: currentUser,
+          snippetId: snippetId,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleRemoveDrops = async (snippetId) => {
+    try {
+      await removeDrops({
+        variables: {
+          username: currentUser,
+          snippetId: snippetId,
+        },
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <>
@@ -153,13 +235,31 @@ export default function UserSnippets() {
                   <IndividualSnippetPreview snippet={snippets} />
                 </Link>
                 <HStack color="codex.text">
-                  <Button variant="icon" size="sm">
+                  <Button
+                    variant="icon"
+                    size="sm"
+                    onClick={() =>{
+                      if (snippets) {
+                        handleAddDrops(snippets._id) &&
+                        handleRemoveProps(snippets._id)
+                      }
+                    }}
+                  >
                     <Icon as={FaAngleDoubleDown} w={8} h={8} mr="2" />
                   </Button>
                   <Text color="codex.highlights" fontSize="sm">
-                    Props:
+                    Props: {snippets.overallProps}
                   </Text>
-                  <Button variant="icon" size="sm">
+                  <Button
+                    variant="icon"
+                    size="sm"
+                    onClick={() =>{
+                      if (snippets) {
+                        handleAddProps(snippets._id) &&
+                        handleRemoveDrops(snippets._id)
+                      }
+                    }}
+                  >
                     <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
                   </Button>
                   {/* Conditionally render the edit button */}
@@ -183,13 +283,14 @@ export default function UserSnippets() {
               </Box>
               {/* Comment input */}
               {commentInputVisible && (
-                <Box>
+                <Box p="4">
                   <Textarea
                     placeholder="Type your comment here..."
                     value={commentInput}
                     onChange={handleCommentInputChange}
                   />
-                  <Button onClick={handleAddComment}>Submit Comment</Button>
+                  <Button mt="4" variant="secondary" size="sm"
+                  onClick={handleAddComment}>Submit Comment</Button>
                 </Box>
               )}
             </Box>
