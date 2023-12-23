@@ -283,13 +283,14 @@ export default function UserSnippets() {
               </Box>
               {/* Comment input */}
               {commentInputVisible && (
-                <Box>
+                <Box p="4">
                   <Textarea
                     placeholder="Type your comment here..."
                     value={commentInput}
                     onChange={handleCommentInputChange}
                   />
-                  <Button onClick={handleAddComment}>Submit Comment</Button>
+                  <Button mt="4" variant="secondary" size="sm"
+                  onClick={handleAddComment}>Submit Comment</Button>
                 </Box>
               )}
             </Box>
