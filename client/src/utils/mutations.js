@@ -193,6 +193,7 @@ mutation AddProps($username: String!, $snippetId: ID!)
   {
     _id
     props
+    overallProps
   }
 }`;
 
@@ -227,6 +228,7 @@ mutation AddDrops($username: String!, $snippetId: ID!)
   {
     _id
     drops
+    overallProps
   }
 }`;
 

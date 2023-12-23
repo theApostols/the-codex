@@ -258,6 +258,8 @@ query OneSnippet($snippetId: ID!) {
     }
     tags
     overallProps
+    props
+    drops
     formattedCreationDate
     formattedEditDate
   }
