@@ -261,6 +261,9 @@ export default function CreateSnippetPage() {
 
       // Reset snippetList to initial state
       setSnippetList([{ language: "javascript", code: "" }]);
+      window.location.assign(
+        `/individual-snippets/${response.data.createSnippet._id}`
+      );
     } catch (error) {
       console.error("Error creating snippet:", error);
     }
