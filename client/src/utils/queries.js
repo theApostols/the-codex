@@ -151,6 +151,26 @@ query AllSnippets {
 //retrieves all snippet data necessary to render each snippet preview
 //username argument is retrieved from route parameter
 //tags argument is provided by checkboxes on the page (provide 'null' if no checkboxes are ticked)
+// export const GET_USER_SNIPPETS = gql`
+// query UserSnippets($username: String!, $tags: [String]) {
+//   userSnippets(username: $username, tags: $tags) {
+//     user {
+//       username
+//       image
+//     }
+//     snippets {
+//       _id
+//       username
+//       snippetTitle
+//       snippetText
+//       overallProps
+//       formattedCreationDate
+//       formattedEditDate
+//     }
+//   }
+// }`;
+
+//TEST GET_USER_SNIPPETS
 export const GET_USER_SNIPPETS = gql`
 query UserSnippets($username: String!, $tags: [String]) {
   userSnippets(username: $username, tags: $tags) {
@@ -166,6 +186,10 @@ query UserSnippets($username: String!, $tags: [String]) {
       overallProps
       formattedCreationDate
       formattedEditDate
+      resources {
+        title
+        link
+      }
     }
   }
 }`;
