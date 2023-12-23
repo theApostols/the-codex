@@ -22,11 +22,19 @@ import { GET_USER_SNIPPETS } from "../utils/queries";
 import SnippetDisplay from "../components/Snippet/Snippet2";
 
 export default function CreateSnippetPage() {
+  // State to manage an array of snippet data
+  const [snippetList, setSnippetList] = useState([
+    { language: "javascript", code: "" },
+  ]);
+
+  const [resources, setResources] = useState([]);
+
   const [snippetTitle, setSnippetTitle] = useState("");
   const [snippetText, setSnippetText] = useState("");
-  const [code, setCode] = useState("");
+  const [code, setCode] = useState([""]);
 
-  const [language, setLanguage] = useState("javascript"); // default language is javascript
+  const [language, setLanguage] = useState(["javascript"]);
+
   // give user an option to enter a custom language if their language is not listed
   const [customLanguage, setCustomLanguage] = useState("");
   const selectedLanguage = customLanguage || language;
@@ -85,6 +93,23 @@ export default function CreateSnippetPage() {
 
   //////////////////Handlers//////////////////////
 
+  // Function to add a new snippet box
+  const handleAddSnippetBox = () => {
+    setSnippetList((prevList) => [
+      ...prevList,
+      { language: "javascript", code: "" },
+    ]);
+  };
+
+  // Function to remove a snippet box by index
+  const handleRemoveSnippetBox = (index) => {
+    setSnippetList((prevList) => {
+      const newList = [...prevList];
+      newList.splice(index, 1);
+      return newList;
+    });
+  };
+
   const handleSnippetTitleChange = (e) => {
     setSnippetTitle(e.target.value);
   };
@@ -93,12 +118,20 @@ export default function CreateSnippetPage() {
     setSnippetText(e.target.value);
   };
 
-  const handleCodeChange = (newCode) => {
-    setCode(newCode);
+  const handleCodeChange = (newCode, index) => {
+    setCode((prevCode) => {
+      const newCodeArray = [...prevCode];
+      newCodeArray[index] = newCode;
+      return newCodeArray;
+    });
   };
 
-  const handleLanguageChange = (selectedLanguage) => {
-    setLanguage(selectedLanguage);
+  const handleLanguageChange = (selectedLanguage, index) => {
+    setLanguage((prevLanguages) => {
+      const newLanguages = [...prevLanguages];
+      newLanguages[index] = selectedLanguage;
+      return newLanguages;
+    });
     // clear customLanguage when a predefined language is selected
     setCustomLanguage("");
   };
@@ -114,16 +147,36 @@ export default function CreateSnippetPage() {
     );
   };
 
-  const handleResourceTitleChange = (e) => {
-    setResourceTitle(e.target.value);
+  const handleResourceTitleChange = (e, index) => {
+    const newResources = [...resources];
+    newResources[index].title = e.target.value;
+    setResources(newResources);
   };
 
-  const handleResourceLinkChange = (e) => {
-    setResourceLink(e.target.value);
+  const handleResourceLinkChange = (e, index) => {
+    const newResources = [...resources];
+    newResources[index].link = e.target.value;
+    setResources(newResources);
   };
 
-  const handleToggleResourceFields = () => {
-    setShowResourceFields(!showResourceFields);
+  const handleAddResource = () => {
+    // Check if there are no resources, then add the first one
+    if (resources.length === 0) {
+      setResources([{ title: "", link: "" }]);
+    } else {
+      // If there are already resources, add a new empty resource
+      setResources((prevResources) => [
+        ...prevResources,
+        { title: "", link: "" },
+      ]);
+    }
+    setShowResourceFields(true); // Set showResourceFields to true when adding a new resource
+  };
+
+  const handleRemoveResource = (index) => {
+    const newResources = [...resources];
+    newResources.splice(index, 1);
+    setResources(newResources);
   };
 
   const handleToggleTags = () => {
@@ -168,9 +221,7 @@ export default function CreateSnippetPage() {
       snippetTitle: snippetTitle,
       snippetText: snippetText,
       snippetCode: [{ language: language, code: code }],
-      resources: showResourceFields
-        ? [{ title: resourceTitle, link: resourceLink }]
-        : [],
+      resources: showResourceFields ? resources : [],
       tags: selectedTags,
     });
   }, [
@@ -178,15 +229,20 @@ export default function CreateSnippetPage() {
     snippetText,
     code,
     showResourceFields,
-    resourceTitle,
-    resourceLink,
+    resources,
     selectedTags,
   ]);
 
   const handleCreateSnippet = async () => {
     try {
       const response = await createSnippet({
-        variables: snippetData,
+        variables: {
+          ...snippetData,
+          snippetCode: code.map((snippetCode, index) => ({
+            language: language[index] || "javascript", // Default to "javascript" if language is not provided
+            code: snippetCode,
+          })),
+        },
       });
       console.log("Snippet created:", response.data.createSnippet);
 
@@ -196,28 +252,20 @@ export default function CreateSnippetPage() {
       // Reset form data once snippet is created
       setSnippetTitle("");
       setSnippetText("");
-      setCode("");
-      setLanguage("javascript");
+      setCode([""]);
+      setLanguage(["javascript"]);
       setCustomLanguage("");
       setShowResourceFields(false);
-      setResourceTitle("");
-      setResourceLink("");
+      setResources([]);
       setSelectedTags([]);
+
+      // Reset snippetList to initial state
+      setSnippetList([{ language: "javascript", code: "" }]);
+      window.location.assign(
+        `/individual-snippets/${response.data.createSnippet._id}`
+      );
     } catch (error) {
       console.error("Error creating snippet:", error);
-    }
-
-    console.log("Snippet Title:", snippetTitle);
-    console.log("Snippet Text:", snippetText);
-    console.log("Code saved:", code);
-    // console.log("Selected language:", language);
-    console.log("Selected language:", selectedLanguage);
-    if (showResourceFields) {
-      console.log("Resource Title:", resourceTitle);
-      console.log("Resource Link:", resourceLink);
-    }
-    if (showTagsSection) {
-      console.log("Tags:", selectedTags);
     }
   };
 
@@ -296,63 +344,75 @@ export default function CreateSnippetPage() {
             cols={40}
           />
         </Box>
-        <Box w="full">
-          {/*Text area for code snippet input*/}
-          <Textarea
-            borderLeft="4px"
-            borderColor="codex.accents"
-            borderRight="0"
-            borderTop="0"
-            borderBottom="0"
-            bg="codex.darkest"
-            color="codex.text"
-            value={code}
-            onChange={(e) => handleCodeChange(e.target.value)}
-            placeholder="Enter your code snippet here"
-            rows={10}
-            cols={40}
-          />
-        </Box>
-        <Box w="full">
-          {/* Language dropdown */}
-          <LanguageSelector
-            value={language}
-            onChange={(value) => handleLanguageChange(value)}
-          />
-        </Box>
+        {snippetList.map((snippet, index) => (
+          <Box key={index} w="full">
+            {/* Text area for code snippet input */}
+            <Textarea
+              borderLeft="4px"
+              borderColor="codex.accents"
+              borderRight="0"
+              borderTop="0"
+              borderBottom="0"
+              bg="codex.darkest"
+              color="codex.text"
+              value={code[index]}
+              onChange={(e) => handleCodeChange(e.target.value, index)}
+              placeholder="Enter your code snippet here"
+              rows={10}
+              cols={40}
+            />
+            {/* Language dropdown */}
+            <LanguageSelector
+              value={language[index]} // Update this line
+              onChange={(value) => handleLanguageChange(value, index)}
+            />
+            {/* Button to remove the snippet box */}
+            <Button
+              variant="secondary"
+              onClick={() => handleRemoveSnippetBox(index)}
+              size="sm"
+            >
+              Remove Snippet
+            </Button>
+          </Box>
+        ))}
+        <Button variant="secondary" onClick={handleAddSnippetBox} size="sm">
+          Add Snippet
+        </Button>
         {/*MORE code blocks*/}
-
+        {/* Add resources section */}
         <Box w="full">
-          {/* Toggle Resource Fields button */}
-          <Button
-            variant="secondary"
-            onClick={handleToggleResourceFields}
-            size="sm"
-          >
-            {showResourceFields ? "Hide Resource Fields" : "Add Resource"}
-          </Button>
-          {showResourceFields && (
-            <VStack mt={4} spacing={4}>
-              <Box w="full">
-                <Input
-                  bg="codex.darkest"
-                  type="text"
-                  placeholder="Resource Title"
-                  value={resourceTitle}
-                  onChange={handleResourceTitleChange}
-                />
-              </Box>
-              <Box w="full">
-                <Input
-                  bg="codex.darkest"
-                  type="text"
-                  placeholder="Resource Link"
-                  value={resourceLink}
-                  onChange={handleResourceLinkChange}
-                />
-              </Box>
-            </VStack>
-          )}
+          <VStack mt={4} spacing={4}>
+            {showResourceFields &&
+              resources.map((resource, index) => (
+                <Box key={index} w="full">
+                  <Input
+                    bg="codex.darkest"
+                    type="text"
+                    placeholder="Resource Title"
+                    value={resource.title}
+                    onChange={(e) => handleResourceTitleChange(e, index)}
+                  />
+                  <Input
+                    bg="codex.darkest"
+                    type="text"
+                    placeholder="Resource Link"
+                    value={resource.link}
+                    onChange={(e) => handleResourceLinkChange(e, index)}
+                  />
+                  <Button
+                    variant="secondary"
+                    onClick={() => handleRemoveResource(index)}
+                    size="sm"
+                  >
+                    Remove Resource
+                  </Button>
+                </Box>
+              ))}
+            <Button variant="secondary" onClick={handleAddResource} size="sm">
+              Add Resource
+            </Button>
+          </VStack>
         </Box>
         {/* Toggle Tags Section */}
         <Box w="full">
@@ -378,10 +438,17 @@ export default function CreateSnippetPage() {
           )}
         </Box>
         <Box w="full">
-          {/*Code editor component for syntax highlighting*/}
-          <CodeEditor code={code} language={language} />
-
-          {/*Save button*/}
+          <Box w="full">
+            {/*Code editor component for syntax highlighting*/}
+            {snippetList.map((snippet, index) => (
+              <CodeEditor
+                key={index}
+                code={code[index]}
+                language={language[index] || "javascript"}
+                activeSnippetIndex={index}
+              />
+            ))}
+          </Box>
           <Box pt="5">
             <Button variant="secondary" onClick={handleCreateSnippet}>
               <Icon as={BiSave} w={6} h={8} mr="2" color="codex.text" />
