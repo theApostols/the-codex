@@ -82,9 +82,12 @@ const Header = () => {
               variant="outline"
             />
             <MenuList bg="codex.main" border="1px solid teal">
-              <MenuItem bg="transparent" color="codex.text">
+              {isAuthenticated ? (null) : 
+              (
+                <MenuItem bg="transparent" color="codex.text">
                 Home
-              </MenuItem>
+                </MenuItem>
+              )}
               <MenuItem bg="codex.main" color="codex.text">
                 Snippets
               </MenuItem>
@@ -140,9 +143,14 @@ const Header = () => {
           </Flex>
 
           <Stack direction="row" spacing={4}>
-            <Button variant="link">Home</Button>
+            {isAuthenticated ? (null) : 
+            (
+              <Button variant="link">
+              Home
+              </Button>
+            )}
             <Button variant="link">Snippets</Button>
-            <Button variant="link">Button03</Button>
+            <Button variant="link">Dashboard</Button>
             <Button variant="link">Button04</Button>
 
             {isAuthenticated ? (
