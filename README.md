@@ -40,9 +40,11 @@ https://github.com/UofTTeam2/TravIS/blob/main/public/js/editItinerary.js
 React Syntax Highlighter  
 * https://github.com/react-syntax-highlighter/react-syntax-highlighter/tree/b0d771441590ff06eda265488bbf011a0140fbf4
 * https://www.npmjs.com/package/react-syntax-highlighter
-React
+React Errors
 * https://react.dev/warnings/invalid-hook-call-warning
-
+Update Cache after Mutation
+* https://www.apollographql.com/docs/react/caching/cache-interaction/#updating-the-cache-after-a-mutation
+* https://www.youtube.com/watch?v=lQ7t20gFR14
 
 
 ### Stavros's Links

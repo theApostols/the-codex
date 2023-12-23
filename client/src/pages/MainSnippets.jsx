@@ -15,15 +15,24 @@ import React from "react";
 import { GET_ALL_SNIPPETS } from "../utils/queries";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
-import { ADD_PROPS, ADD_DROPS, REMOVE_PROPS, REMOVE_DROPS} from "../utils/mutations";
+import {
+  ADD_PROPS,
+  ADD_DROPS,
+  REMOVE_PROPS,
+  REMOVE_DROPS,
+} from "../utils/mutations";
 import Auth from "../utils/auth";
 
 export default function UserSnippets() {
-    //PROPS AND DROPS MUTATIONS
-    const [addProps] = useMutation(ADD_PROPS);
-    const [addDrops] = useMutation(ADD_DROPS);
-    const [removeProps] = useMutation(REMOVE_PROPS);
-    const [removeDrops] = useMutation(REMOVE_DROPS);
+  //PROPS AND DROPS MUTATIONS
+  const [addProps] = useMutation(ADD_PROPS, {
+    refetchQueries: [{ query: GET_ALL_SNIPPETS }],
+  });
+  const [addDrops] = useMutation(ADD_DROPS, {
+    refetchQueries: [{ query: GET_ALL_SNIPPETS }],
+  });
+  const [removeProps] = useMutation(REMOVE_PROPS);
+  const [removeDrops] = useMutation(REMOVE_DROPS);
 
   const { loading, error, data } = useQuery(GET_ALL_SNIPPETS);
 
@@ -35,7 +44,6 @@ export default function UserSnippets() {
   // GET USERNAME FROM TOKEN
   const username = Auth.getProfile().data.username;
   // console.log("this is the username:", username);
-
 
   //PROPS AND DROPS HANDLERS
   const handleAddProps = async (snippetId) => {
@@ -53,7 +61,7 @@ export default function UserSnippets() {
         },
       });
     } catch (err) {
-      console.error('Error propping snippet', err);
+      console.error("Error propping snippet", err);
     }
   };
 
@@ -76,7 +84,7 @@ export default function UserSnippets() {
   };
 
   const handleRemoveProps = async (snippetId) => {
-    try{
+    try {
       await removeProps({
         variables: {
           username: username,
@@ -89,7 +97,7 @@ export default function UserSnippets() {
   };
 
   const handleRemoveDrops = async (snippetId) => {
-    try{
+    try {
       await removeDrops({
         variables: {
           username: username,
@@ -150,16 +158,26 @@ export default function UserSnippets() {
                     <MainSnippetPreview snippet={snippet} />
                   </Link>
                   <HStack color="codex.text">
-                    <Button variant="icon" size="sm"
-                    onClick={() => handleAddDrops(snippet._id) && handleRemoveProps(snippet._id)}
+                    <Button
+                      variant="icon"
+                      size="sm"
+                      onClick={() =>
+                        handleAddDrops(snippet._id) &&
+                        handleRemoveProps(snippet._id)
+                      }
                     >
                       <Icon as={FaAngleDoubleDown} w={8} h={8} mr="2" />
                     </Button>
                     <Text color="codex.highlights" fontSize="sm">
                       Props: {snippet.overallProps}
                     </Text>
-                    <Button variant="icon" size="sm"
-                    onClick={() => handleAddProps(snippet._id) && handleRemoveDrops(snippet._id)}
+                    <Button
+                      variant="icon"
+                      size="sm"
+                      onClick={() =>
+                        handleAddProps(snippet._id) &&
+                        handleRemoveDrops(snippet._id)
+                      }
                     >
                       <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
                     </Button>
