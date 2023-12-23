@@ -24,7 +24,16 @@ import { GET_INDIVIDUAL_SNIPPET } from "../../utils/queries";
 const IndividualSnippetPreview = ({ snippet }) => {
   // Check if snippetData and snippetCode exist before accessing
   // console.log("This is the snippetData", snippet);
-  const currentUser = Auth.getProfile().data.username;
+  let currentUser; //variable to hold user's username
+
+  //attempts to retrieve username from JWT
+  try
+  {
+    //gets current user's username
+    currentUser = Auth.getProfile().data.username;
+  }
+  catch (error) //empty error block (this is just here to ensure the page still renders even if a user is not logged in)
+  {}
 
   // Define your DELETE_COMMENT mutation
   const [deleteComment] = useMutation(DELETE_COMMENT);
