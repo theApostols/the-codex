@@ -71,8 +71,6 @@ const UserSettingsForm = () => {
     //retrieves the file uploaded to the profile image input
     const profileImageUpload = profileImageInput.files[0];
 
-    console.log(profileImageUpload);
-
     //if the uploaded file is not an image, clear the file & display an appropriate error message
     if (!profileImageUpload.type.match('image.*')) 
     {
@@ -170,8 +168,6 @@ const UserSettingsForm = () => {
         image = await response.json();
       }
 
-      console.log(image);
-
       //if the user did not fill out the new username field, update the form data value to their current username
       if (!userFormData.username) {
         userFormData.username = currentUser;
@@ -182,14 +178,10 @@ const UserSettingsForm = () => {
         userFormData.password = userFormData.currentPassword;
       }
 
-      console.log('about to update user');
-
       //updates the user's data using the form data & uploaded image name
       const { data } = await editUser({
         variables: { currentUser, ...userFormData, image },
       });
-
-      console.log('updated user');
 
       //extracts the JWT returned from the mutation & updates the JWT in the client's local storage with it
       const { token, updatedUser } = data.editUser;
