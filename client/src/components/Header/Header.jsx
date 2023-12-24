@@ -1,5 +1,6 @@
 import React, { useRef, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Flex,
   Text,
@@ -23,19 +24,32 @@ import {
   VStack,
   Divider,
   Icon,
+  HStack,
+  Heading
 } from "@chakra-ui/react";
 import { BiLogOut, BiMenu, BiPlus, BiUser, BiCog } from "react-icons/bi";
 import AuthService from "../../utils/auth";
 import { ThemeContext } from "../../main.jsx";
 import { BsFillSunFill, BsMoonFill } from "react-icons/bs";
-
+import { GET_ONE_USER } from "../../utils/queries.js";
 
 const Header = () => {
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
   const navigate = useNavigate();
   const isAuthenticated = AuthService.loggedIn();
-  const user = isAuthenticated ? AuthService.getProfile() : null;
+  const user = isAuthenticated ? AuthService.getProfile().data.username : null;
+
+  const {
+    loading: userLoading,
+    error: userError,
+    data: userData,
+  } = useQuery(GET_ONE_USER, {
+    variables: { username: user },
+  });
+
+  console.log(user);
+  console.log(userData);
 
   const handleCreateClick = () => {
     navigate("/createsnippet");
@@ -43,7 +57,7 @@ const Header = () => {
   };
 
   const handleProfileClick = () => {
-    navigate(`/user-snippets/${user.data.username}`);
+    navigate(`/user-snippets/${user}`);
     onClose();
   };
 
@@ -82,9 +96,12 @@ const Header = () => {
               variant="outline"
             />
             <MenuList bg="codex.main" border="1px solid teal">
-              <MenuItem bg="transparent" color="codex.text">
+              {isAuthenticated ? (null) : 
+              (
+                <MenuItem bg="transparent" color="codex.text">
                 Home
-              </MenuItem>
+                </MenuItem>
+              )}
               <MenuItem bg="codex.main" color="codex.text">
                 Snippets
               </MenuItem>
@@ -110,7 +127,7 @@ const Header = () => {
           {isAuthenticated ? (
             <Avatar
               size="sm"
-              src={user.avatar}
+              src={`/images/file-uploads/${userData?.oneUser?.image}`}
               ref={btnRef}
               onClick={onOpen}
               cursor="pointer"
@@ -130,7 +147,7 @@ const Header = () => {
         boxSize="50px" 
       />
             <Text fontSize="xl" fontWeight="bold" ml="2" mr='6'>
-              The Codex
+              The CodeX
             </Text>
 
                 {/* Button to toggle dark or light mode */}
@@ -140,15 +157,21 @@ const Header = () => {
           </Flex>
 
           <Stack direction="row" spacing={4}>
-            <Button variant="link">Home</Button>
-            <Button variant="link">Snippets</Button>
-            <Button variant="link">Button03</Button>
+            {isAuthenticated ? (null) : 
+            (
+              <Button as={Link} to="/" variant="link">
+              Home
+              </Button>
+            )}
+            <Button as={Link} to="/main-snippets" variant="link">Snippets</Button>
+            <Button as={Link} to="/dashboard" variant="link">Dashboard</Button>
             <Button variant="link">Button04</Button>
 
             {isAuthenticated ? (
               <Avatar
+                id="profile-image-avatar"
+                src={`/images/file-uploads/${userData?.oneUser?.image}`}
                 size="sm"
-                src={user.avatar}
                 ref={btnRef}
                 onClick={onOpen}
                 cursor="pointer"
@@ -179,6 +202,13 @@ const Header = () => {
           <DrawerHeader color="codex.accents">{user?.name}</DrawerHeader>
           <DrawerBody>
             <VStack align="stretch" spacing={4}>
+              <HStack spacing = {4}>
+                <Avatar
+                  size="lg"
+                  src={`/images/file-uploads/${userData?.oneUser?.image}`}
+                />
+                <Heading color="codex.accents" size = "lg" isTruncated>{user}</Heading>
+              </HStack>
               <Button
                 leftIcon={
                   <Icon as={BiPlus} w={8} h={8} color="codex.highlights" />

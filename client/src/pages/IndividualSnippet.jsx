@@ -47,6 +47,17 @@ export default function UserSnippets() {
     setCommentInputVisible(!commentInputVisible);
   };
 
+  let currentUser; //variable to hold user's username
+
+  //attempts to retrieve username from JWT
+  try
+  {
+    //gets current user's username
+    currentUser = Auth.getProfile().data.username;
+  }
+  catch (error) //empty error block (this is just here to ensure the page still renders even if a user is not logged in)
+  {}
+
   const handleAddComment = async () => {
     try {
       // Execute the mutation
@@ -92,8 +103,6 @@ export default function UserSnippets() {
     }
   };
 
-  const currentUser = Auth.getProfile().data.username;
-
   //retrieve user route parameter
   const { snippetId } = useParams();
 
@@ -131,60 +140,66 @@ export default function UserSnippets() {
 
   //props and drops handlers
   const handleAddProps = async (snippetId) => {
-    try {
-      if (snippets.props.includes(currentUser)) {
-        throw new Error("You Already Prop'd This Snippet!");
+    if (currentUser)
+    {
+      try {
+        await addProps({
+          variables: {
+            username: currentUser,
+            snippetId: snippetId,
+          },
+        });
+      } catch (err) {
+        console.error("Error propping snippet", err);
       }
-      await addProps({
-        variables: {
-          username: currentUser,
-          snippetId: snippetId,
-        },
-      });
-    } catch (err) {
-      console.error("Error propping snippet", err);
     }
   };
 
   const handleAddDrops = async (snippetId) => {
-    try {
-      if (snippets.drops.includes(currentUser)) {
-        throw new Error("You Already Dropped This Snippet!");
+    if (currentUser)
+    {
+      try {
+        await addDrops({
+          variables: {
+            username: currentUser,
+            snippetId: snippetId,
+          },
+        });
+      } catch (err) {
+        console.error(err);
       }
-      await addDrops({
-        variables: {
-          username: currentUser,
-          snippetId: snippetId,
-        },
-      });
-    } catch (err) {
-      console.error(err);
     }
   };
 
   const handleRemoveProps = async (snippetId) => {
-    try {
-      await removeProps({
-        variables: {
-          username: currentUser,
-          snippetId: snippetId,
-        },
-      });
-    } catch (err) {
-      console.error(err);
+    if (currentUser)
+    {
+      try {
+        await removeProps({
+          variables: {
+            username: currentUser,
+            snippetId: snippetId,
+          },
+        });
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
   const handleRemoveDrops = async (snippetId) => {
-    try {
-      await removeDrops({
-        variables: {
-          username: currentUser,
-          snippetId: snippetId,
-        },
-      });
-    } catch (err) {
-      console.error(err);
+    if (currentUser)
+    {
+      try {
+        await removeDrops({
+          variables: {
+            username: currentUser,
+            snippetId: snippetId,
+          },
+        });
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
@@ -240,8 +255,7 @@ export default function UserSnippets() {
                     size="sm"
                     onClick={() =>{
                       if (snippets) {
-                        handleAddDrops(snippets._id) &&
-                        handleRemoveProps(snippets._id)
+                        handleAddDrops(snippets._id)
                       }
                     }}
                   >
@@ -255,8 +269,7 @@ export default function UserSnippets() {
                     size="sm"
                     onClick={() =>{
                       if (snippets) {
-                        handleAddProps(snippets._id) &&
-                        handleRemoveDrops(snippets._id)
+                        handleAddProps(snippets._id)
                       }
                     }}
                   >
@@ -272,13 +285,15 @@ export default function UserSnippets() {
                     </Link>
                   )}
                   {/* Button to toggle comment input */}
-                  <Button
-                    variant="icon"
-                    size="sm"
-                    onClick={toggleCommentInputVisibility}
-                  >
-                    Add Comment
-                  </Button>
+                  {currentUser ? 
+                    <Button
+                      variant="icon"
+                      size="sm"
+                      onClick={toggleCommentInputVisibility}
+                    >
+                      Add Comment
+                    </Button> : null
+                  }
                 </HStack>
               </Box>
               {/* Comment input */}
@@ -291,8 +306,7 @@ export default function UserSnippets() {
                   />
                   <Button mt="4" variant="secondary" size="sm"
                   onClick={handleAddComment}>Submit Comment</Button>
-                </Box>
-              )}
+                </Box>)}
             </Box>
           </VStack>
         </Flex>

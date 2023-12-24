@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import {
   Box, VStack, FormControl, FormLabel, Input, Checkbox, Button, Text, Link,
-  Heading, Container,
+  Heading, Modal, ModalOverlay, ModalContent, ModalHeader,
+  ModalFooter, ModalBody, useDisclosure, Container,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
@@ -12,8 +13,10 @@ import Auth from "../../utils/auth";
 const MotionContainer = motion(Container);
 
 function LoginForm() {
+  const { isOpen: isOpenError, onOpen: onOpenError, onClose: onCloseError } = useDisclosure();
   const [userFormData, setUserFormData] = useState({ email: "", password: "" });
   const [showAlert, setShowAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   
   const [loginUser, { error, data }] = useMutation(LOGIN_USER);
   const navigate = useNavigate();
@@ -22,6 +25,26 @@ function LoginForm() {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
+
+  //function to handle displaying an error modal
+  const handleErrorMessage = async (error) =>
+  {
+    let errorDetails; //variable to hold detailed error message
+
+    //provides additional error details for specific errors
+    if (error.message === 'Failed to log in; Unable to log in using the provided details. Please try again.')
+    {
+      errorDetails = 'Unable to log in using the provided details. Please try again.'
+    }
+    else
+    {
+      errorDetails = error.message;
+    }
+
+    //sets error message & opens error modal
+    setErrorMessage(errorDetails);
+    onOpenError();
+  }
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -35,6 +58,7 @@ function LoginForm() {
       Auth.login(token);
     } catch (err) {
       console.error("Login failed. Error:", err);
+      handleErrorMessage(err);
       setShowAlert(true);
     }
 
@@ -115,6 +139,24 @@ function LoginForm() {
               >
                 Login
               </Button>
+
+              {/* Error message modal */}
+              <Modal isOpen={isOpenError} onClose={onCloseError}>
+                <ModalOverlay />
+                <ModalContent bg="codex.accents" color="codex.darkest">
+                  <ModalHeader>Oops! An error occured.</ModalHeader>
+                  <ModalBody>
+                    <Text>
+                      {errorMessage}
+                    </Text>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button variant="secondary" mr={3} onClick={onCloseError}>
+                      Close
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
 
               <Text mt="6">
                 Don't have an account?{" "}

@@ -13,6 +13,7 @@ import { CREATE_USER } from "../../utils/mutations";
 const MotionContainer = motion(Container);
 
 function SignupForm() {
+  const { isOpen: isOpenError, onOpen: onOpenError, onClose: onCloseError } = useDisclosure();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [userFormData, setUserFormData] = useState({
@@ -21,6 +22,7 @@ function SignupForm() {
     password: "",
   });
   const [showAlert, setShowAlert] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const [createUser, { error, data }] = useMutation(CREATE_USER);
   const navigate = useNavigate();
@@ -31,6 +33,34 @@ function SignupForm() {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
+
+  //function to handle displaying an error modal
+  const handleErrorMessage = async (error) =>
+  {
+    let errorDetails; //variable to hold detailed error message
+
+    //provides additional error details for specific errors
+    if (error.message === 'ValidationError: email: The provided email is invalid')
+    {
+      errorDetails = 'Provided email is invalid. Please try again.';
+    }
+    else if (error.message.match(/MongoServerError: E11000 duplicate key error collection: codexDB.users index: username_1 dup key: \{ username: ".*" \}/))
+    {
+      errorDetails = 'Provided username is already in use. Please try again.';
+    }
+    else if (error.message.match(/MongoServerError: E11000 duplicate key error collection: codexDB.users index: email_1 dup key: \{ email: ".*" \}/))
+    {
+      errorDetails = 'Provided email is already in use. Please try again.';
+    }
+    else
+    {
+      errorDetails = error.message;
+    }
+
+    //sets error message & opens error modal
+    setErrorMessage(errorDetails);
+    onOpenError();
+  }
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -44,6 +74,7 @@ function SignupForm() {
       Auth.login(token);
     } catch (err) {
       console.error(`Signup failed. Error: ${err.message}`);
+      handleErrorMessage(err);
       setShowAlert(true);
     }
 
@@ -171,6 +202,24 @@ function SignupForm() {
               </ModalBody>
               <ModalFooter>
                 <Button variant="secondary" mr={3} onClick={onClose}>
+                  Close
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+
+          {/* Error message modal */}
+          <Modal isOpen={isOpenError} onClose={onCloseError}>
+            <ModalOverlay />
+            <ModalContent bg="codex.accents" color="codex.darkest">
+              <ModalHeader>Oops! An error occured.</ModalHeader>
+              <ModalBody>
+                <Text>
+                  {errorMessage}
+                </Text>
+              </ModalBody>
+              <ModalFooter>
+                <Button variant="secondary" mr={3} onClick={onCloseError}>
                   Close
                 </Button>
               </ModalFooter>

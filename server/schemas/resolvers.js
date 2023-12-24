@@ -40,7 +40,7 @@ const resolvers =
       {
         // Log the error and throw a new error
         console.error(error);
-        throw new Error('Failed to retrieve user data;', error);
+        throw new Error('Failed to retrieve user data; ' + error.message);
       }
     },
     //query to retrieve all snippets, filtering by provided tags
@@ -51,14 +51,14 @@ const resolvers =
         //create a tags filter if any tags were provided, otherwise use an empty filter
         const filter = tags ? {tags: {$all: tags}} : {};
 
-        //retrieves & returns all snippets, filtering by tags if applicable
-        const snippets = await Snippet.find(filter);
+        //retrieves & returns all snippets, filtering by tags if applicable & sorting by newest
+        const snippets = await Snippet.find(filter).sort({creationDate: -1});
         return snippets;
       }
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to retrieve snippets;', error);
+        throw new Error('Failed to retrieve snippets; ' + error.message);
       }
     },
     //query to return all snippets created by a specific user
@@ -69,8 +69,8 @@ const resolvers =
         //create a tags filter if any tags were provided, otherwise use a filter to just search by username
         const filter = tags ? {tags: {$all: tags}, username: username} : {username};
 
-        //finds all snippets created by a specific user, filtering by tags if applicable
-        const snippets = await Snippet.find(filter);
+        //finds all snippets created by a specific user, filtering by tags if applicable & sorting by newest
+        const snippets = await Snippet.find(filter).sort({creationDate: -1});
 
         //retrieves user that created the above snippets
         const user = await User.findOne({username});
@@ -81,7 +81,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error("Failed to retrieve the user's snippets;", error);
+        throw new Error("Failed to retrieve the user's snippets; " + error.message);
       }
     },
     //query to return all snippets created by you
@@ -96,7 +96,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error("Failed to retrieve the user's snippets;", error);
+        throw new Error("Failed to retrieve the user's snippets; " + error.message);
       }
     },
     //query to return all snippets saved by a specific user
@@ -111,7 +111,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error("Failed to retrieve the user's saved snippets;", error);
+        throw new Error("Failed to retrieve the user's saved snippets; " + error.message);
       }
     },
     //query to return all comments created by a specific user
@@ -126,7 +126,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error("Failed to retrieve the user's comments;", error);
+        throw new Error("Failed to retrieve the user's comments; " + error.message);
       }
     },
     //query to retrieve a specific snippet by ID
@@ -141,7 +141,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error("Failed to retrieve the snippet;", error);
+        throw new Error("Failed to retrieve the snippet; " + error.message);
       }
     },
     //query to retrieve a specific comment by ID
@@ -156,7 +156,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error("Failed to retrieve the user's snippets;", error);
+        throw new Error("Failed to retrieve the user's snippets; " + error.message);
       }
     }
   },
@@ -194,7 +194,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to log in;', error);
+        throw new Error('Failed to log in; ' + error.message);
       }
     },
     //mutation to create a new user
@@ -215,7 +215,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to create a new user;', error);
+        throw new Error(error);
       }
     },
     //mutation to update a user's data
@@ -247,10 +247,11 @@ const resolvers =
 
         console.log('about to save user');
 
+        //marks the user's password as modified, & save again to cause the updated password to be hashed
         updatedUser.markModified('password');
         await updatedUser.save();
 
-        if (currentUser !== username);
+        if (currentUser !== username)
         {
           await Snippet.updateMany({username: currentUser},
           {
@@ -276,7 +277,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to update user;', error);
+        throw new Error('Failed to update user; ' + error.message);
       }
     },
     //mutation to create a new snippet
@@ -300,7 +301,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to create new snippet;', error);
+        throw new Error('Failed to create new snippet; ' + error.message);
       }
     },
     //mutation to edit a snippet
@@ -328,7 +329,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to edit snippet;', error);
+        throw new Error('Failed to edit snippet; ' + error.message);
       }
     },
     //mutation to delete a snippet
@@ -351,7 +352,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to delete snippet;', error);
+        throw new Error('Failed to delete snippet; ' + error.message);
       }
     },
     //mutation to create a new comment
@@ -365,11 +366,11 @@ const resolvers =
         //finds & adds the objectId of the new comment to the appropriate user's and snippet's 'comments' array
         await User.findOneAndUpdate({username},
         {
-          $addToSet:{comments: newComment._id},
+          $addToSet: {comments: newComment._id},
         });
         await Snippet.findOneAndUpdate({_id: parentSnippetId},
         {
-          $addToSet:{comments: newComment._id},
+          $addToSet: {comments: newComment._id},
         });
     
         //return the newly-created comment
@@ -378,7 +379,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to create new comment;', error);
+        throw new Error('Failed to create new comment; ' + error.message);
       }
     },
     //mutation to edit a comment
@@ -402,7 +403,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to edit comment;', error);
+        throw new Error('Failed to edit comment; ' + error.message);
       }
     },
     //mutation to delete a comment
@@ -429,18 +430,14 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to delete comment;', error);
+        throw new Error('Failed to delete comment; ' + error.message);
       }
     },
     //mutation to add props to a snippet
     addProps: async (parent, {username, snippetId}) =>
     {
-      try {
-        //check if user has already given props to this snippet
-        const snippet = await Snippet.findOne({_id: snippetId, props: username});
-        if (snippet) {
-          throw new Error('You have already given props to this snippet');
-        }
+      try
+      {
         //attempts to find a snippet by the objectId given in the arguments
         const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
         {
@@ -454,7 +451,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to add props;', error);
+        throw new Error('Failed to add props; ' + error.message);
       }
     },
     //mutation to remove props from a snippet
@@ -474,7 +471,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to remove props;', error);
+        throw new Error('Failed to remove props; ' + error.message);
       }
     },
     //mutation to add drops to a snippet
@@ -482,12 +479,6 @@ const resolvers =
     {
       try
       {
-        //check if user has already dropped this snippet
-        const snippet = await Snippet.findOne({_id: snippetId, drops: username});
-        if (snippet) {
-          throw new Error('You have already dropped this snippet');
-        }
-
         //attempts to find a snippet by the objectId given in the arguments
         const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
         {
@@ -501,7 +492,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to add drops;', error);
+        throw new Error('Failed to add drops; ' + error.message);
       }
     },
     //mutation to remove drops from a snippet
@@ -521,7 +512,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to remove drops;', error);
+        throw new Error('Failed to remove drops; ' + error.message);
       }
     },
     //mutation to save a snippet to a user's personal list
@@ -541,7 +532,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to save snippet;', error);
+        throw new Error('Failed to save snippet; ' + error.message);
       }
     },
     //mutation to remove a snippet from a user's personal list
@@ -561,7 +552,7 @@ const resolvers =
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
       {
         console.error(error);
-        throw new Error('Failed to unsave snippet;', error);
+        throw new Error('Failed to unsave snippet; ' + error.message);
       }
     }
   }

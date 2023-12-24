@@ -15,6 +15,8 @@ import {
   Image,
   Heading,
   Flex,
+  Modal, ModalOverlay, ModalContent, ModalHeader,
+  ModalFooter, ModalBody, useDisclosure,
 } from "@chakra-ui/react";
 import { EDIT_USER } from "../../utils/mutations.js";
 import { GET_ONE_USER } from "../../utils/queries.js";
@@ -33,25 +35,20 @@ const UserSettingsForm = () => {
     variables: { username: currentUser },
   });
 
-  const [editUser, { loading: editLoading, error: editError, data: editData }] =
+  const { isOpen: isOpenError, onOpen: onOpenError, onClose: onCloseError } = useDisclosure();
+  const [editUser, { loading, error, data }] =
     useMutation(EDIT_USER);
   const [userFormData, setUserFormData] = useState({
     username: "",
     password: "",
     currentPassword: "",
   });
-
-  if (editLoading || userLoading) return <Spinner />;
-  if (editError) return <Text>Error loading user settings page</Text>;
-  if (userError) return <Text>Error loading user data</Text>;
-
-  let profileImage; //variable to hold profile image file
+  const [errorMessage, setErrorMessage] = useState('');
 
   //clears the chose profile picture file
   const handleClearImage = () => {
     const profileImageInput = document.getElementById("profileImageInput"); //gets a reference to the profile image input
     profileImageInput.value = ""; //clears the chosen file in the input
-    profileImage = ""; //resets the profile image variable to an empty string
 
     //gets a reference to preview image element for the profile picture & sets the src to an empty string
     const profileImagePreviewElement = document.getElementById(
@@ -64,17 +61,34 @@ const UserSettingsForm = () => {
   };
 
   //update profile image value when a file is selected
-  const handleFileSelection = (event) => {
+  const handleFileSelection = () => {
     //gets a reference to preview image element for the profile picture
     const profileImagePreviewElement = document.getElementById(
       "profile-image-preview"
     );
+    const profileImageInput = document.getElementById("profileImageInput");
 
-    //retrieves the file stored in the profile image input
-    profileImage = event.target.files[0];
+    //retrieves the file uploaded to the profile image input
+    const profileImageUpload = profileImageInput.files[0];
+
+    //if the uploaded file is not an image, clear the file & display an appropriate error message
+    if (!profileImageUpload.type.match('image.*')) 
+    {
+      handleClearImage();
+      handleErrorMessage({message: 'File must be an image'});
+      return;
+    }
+
+    //if the uploaded file is larger than 10 MB, clear the file & display an appropriate error message
+    if (profileImageUpload.size > 10485760)
+    {
+      handleClearImage();
+      handleErrorMessage({message: 'File must be smaller than 10 MB.'});
+      return;
+    }
 
     const uploadConverter = new FileReader(); //creates a new FileReader instance to read the above file
-    uploadConverter.readAsDataURL(profileImage); //convert the upload to a usable URL for an 'src' attribute
+    uploadConverter.readAsDataURL(profileImageUpload); //convert the upload to a usable URL for an 'src' attribute
 
     //upon the above conversion completing, set the 'src' attribute of the preview image element to the resulting URL
     //i.e. renders a preview of the uploaded file to the page
@@ -88,6 +102,30 @@ const UserSettingsForm = () => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
+
+  //function to handle displaying an error modal
+  const handleErrorMessage = async (error) =>
+  {
+    let errorDetails; //variable to hold detailed error message
+
+    //provides additional error details for specific errors
+    if (error.message === 'Failed to update user; Invalid details provided')
+    {
+      errorDetails = 'Provided value for current password is invalid. Please try again.';
+    }
+    else if (error.message.match(/Failed to update user; Plan executor error during findAndModify :: caused by :: E11000 duplicate key error collection: codexDB.users index: username_1 dup key: \{ username: ".*" \}/))
+    {
+      errorDetails = 'Provided username is already in use. Please try again.';
+    }
+    else
+    {
+      errorDetails = error.message;
+    }
+
+    //sets error message & opens error modal
+    setErrorMessage(errorDetails);
+    onOpenError();
+  }
 
   const handleFormSubmit = async (event) => {
     event.preventDefault(); //prevent default form submission behaviour
@@ -105,12 +143,13 @@ const UserSettingsForm = () => {
 
       //variable to hold file name of profile image, set to the file name of the profile image preview element's src
       let image = profileImagePreviewElement.getAttribute("src").split("/")[3];
+      const profileImageInput = document.getElementById("profileImageInput");
 
       //checks if a file exists in the profile image input
-      if (profileImage) {
+      if (profileImageInput.files[0]) {
         //constructs a new FormData instance & appends the uploaded file to it
         const formData = new FormData();
-        formData.append("file", profileImage);
+        formData.append("file", profileImageInput.files[0]);
 
         //if the node environment is set to 'production', set the server host to the render address
         //otherwise, set the server host to the localhost address
@@ -146,12 +185,24 @@ const UserSettingsForm = () => {
 
       //extracts the JWT returned from the mutation & updates the JWT in the client's local storage with it
       const { token, updatedUser } = data.editUser;
+
+      //resets user form data to their default states
+
       Auth.login(token);
     } catch (
       error //logs any errors to console
     ) {
-      console.error("Failed to update user data;", error);
+      handleErrorMessage(error);
+      console.error("Failed to update user data; " + error);
     }
+
+    //resets user form data back to default state
+    setUserFormData(
+    {
+      username: "",
+      email: "",
+      password: "",
+    });
   };
 
   return (
@@ -268,6 +319,7 @@ const UserSettingsForm = () => {
                 <Input
                   autoComplete="new-password"
                   name="password"
+                  type="password"
                   onChange={handleInputChange}
                   value={userFormData.password}
                 />
@@ -277,11 +329,36 @@ const UserSettingsForm = () => {
                 <Input
                   autoComplete="current-password"
                   name="currentPassword"
+                  type="password"
                   onChange={handleInputChange}
                   value={userFormData.currentPassword}
                 />
               </FormControl>
-              <Button variant="secondary" type="submit">
+
+              {/* Error message modal */}
+              <Modal isOpen={isOpenError} onClose={onCloseError}>
+                <ModalOverlay />
+                <ModalContent bg="codex.accents" color="codex.darkest">
+                  <ModalHeader>Oops! An error occured.</ModalHeader>
+                  <ModalBody>
+                    <Text>
+                      {errorMessage}
+                    </Text>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button variant="secondary" mr={3} onClick={onCloseError}>
+                      Close
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+
+              <Button
+                type="submit"
+                w="full"
+                mt="4"
+                variant="secondary"
+              >
                 Update Data
               </Button>
             </VStack>
