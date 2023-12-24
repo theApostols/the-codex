@@ -15,6 +15,8 @@ import {
   Image,
   Heading,
   Flex,
+  Modal, ModalOverlay, ModalContent, ModalHeader,
+  ModalFooter, ModalBody, useDisclosure,
 } from "@chakra-ui/react";
 import { EDIT_USER } from "../../utils/mutations.js";
 import { GET_ONE_USER } from "../../utils/queries.js";
@@ -33,17 +35,15 @@ const UserSettingsForm = () => {
     variables: { username: currentUser },
   });
 
-  const [editUser, { loading: editLoading, error: editError, data: editData }] =
+  const { isOpen: isOpenError, onOpen: onOpenError, onClose: onCloseError } = useDisclosure();
+  const [editUser, { loading, error, data }] =
     useMutation(EDIT_USER);
   const [userFormData, setUserFormData] = useState({
     username: "",
     password: "",
     currentPassword: "",
   });
-
-  if (editLoading || userLoading) return <Spinner />;
-  if (editError) return <Text>Error loading user settings page</Text>;
-  if (userError) return <Text>Error loading user data</Text>;
+  const [errorMessage, setErrorMessage] = useState('');
 
   let profileImage; //variable to hold profile image file
 
@@ -88,6 +88,30 @@ const UserSettingsForm = () => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
+
+  //function to handle displaying an error modal
+  const handleErrorMessage = async (error) =>
+  {
+    let errorDetails; //variable to hold detailed error message
+
+    //provides additional error details for specific errors
+    if (error.message === 'Failed to update user; Invalid details provided')
+    {
+      errorDetails = 'Provided value for current password is invalid. Please try again.';
+    }
+    else if (error.message.match(/Failed to update user; Plan executor error during findAndModify :: caused by :: E11000 duplicate key error collection: codexDB.users index: username_1 dup key: \{ username: ".*" \}/))
+    {
+      errorDetails = 'Provided username is already in use. Please try again.';
+    }
+    else
+    {
+      errorDetails = error.message;
+    }
+
+    //sets error message & opens error modal
+    setErrorMessage(errorDetails);
+    onOpenError();
+  }
 
   const handleFormSubmit = async (event) => {
     event.preventDefault(); //prevent default form submission behaviour
@@ -139,19 +163,35 @@ const UserSettingsForm = () => {
         userFormData.password = userFormData.currentPassword;
       }
 
+      console.log('about to update user');
+
       //updates the user's data using the form data & uploaded image name
       const { data } = await editUser({
         variables: { currentUser, ...userFormData, image },
       });
 
+      console.log('updated user');
+
       //extracts the JWT returned from the mutation & updates the JWT in the client's local storage with it
       const { token, updatedUser } = data.editUser;
+
+      //resets user form data to their default states
+
       Auth.login(token);
     } catch (
       error //logs any errors to console
     ) {
-      console.error("Failed to update user data;", error);
+      handleErrorMessage(error);
+      console.error("Failed to update user data; " + error);
     }
+
+    //resets user form data back to default state
+    setUserFormData(
+    {
+      username: "",
+      email: "",
+      password: "",
+    });
   };
 
   return (
@@ -268,6 +308,7 @@ const UserSettingsForm = () => {
                 <Input
                   autoComplete="new-password"
                   name="password"
+                  type="password"
                   onChange={handleInputChange}
                   value={userFormData.password}
                 />
@@ -277,11 +318,36 @@ const UserSettingsForm = () => {
                 <Input
                   autoComplete="current-password"
                   name="currentPassword"
+                  type="password"
                   onChange={handleInputChange}
                   value={userFormData.currentPassword}
                 />
               </FormControl>
-              <Button variant="secondary" type="submit">
+
+              {/* Error message modal */}
+              <Modal isOpen={isOpenError} onClose={onCloseError}>
+                <ModalOverlay />
+                <ModalContent bg="codex.accents" color="codex.darkest">
+                  <ModalHeader>Oops! An error occured.</ModalHeader>
+                  <ModalBody>
+                    <Text>
+                      {errorMessage}
+                    </Text>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button variant="secondary" mr={3} onClick={onCloseError}>
+                      Close
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+
+              <Button
+                type="submit"
+                w="full"
+                mt="4"
+                variant="secondary"
+              >
                 Update Data
               </Button>
             </VStack>
