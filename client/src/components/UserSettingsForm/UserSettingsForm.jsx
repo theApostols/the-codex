@@ -71,6 +71,8 @@ const UserSettingsForm = () => {
     //retrieves the file uploaded to the profile image input
     const profileImageUpload = profileImageInput.files[0];
 
+    console.log(profileImageUpload);
+
     //if the uploaded file is not an image, clear the file & display an appropriate error message
     if (!profileImageUpload.type.match('image.*')) 
     {
@@ -80,10 +82,10 @@ const UserSettingsForm = () => {
     }
 
     //if the uploaded file is larger than 10 MB, clear the file & display an appropriate error message
-    if (!profileImageUpload.size < 10485760)
+    if (profileImageUpload.size > 10485760)
     {
       handleClearImage();
-      handleErrorMessage({message: 'File must be smaller than 10 MB'});
+      handleErrorMessage({message: 'File must be smaller than 10 MB.'});
       return;
     }
 
