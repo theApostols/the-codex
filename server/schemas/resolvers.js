@@ -51,8 +51,8 @@ const resolvers =
         //create a tags filter if any tags were provided, otherwise use an empty filter
         const filter = tags ? {tags: {$all: tags}} : {};
 
-        //retrieves & returns all snippets, filtering by tags if applicable
-        const snippets = await Snippet.find(filter);
+        //retrieves & returns all snippets, filtering by tags if applicable & sorting by newest
+        const snippets = await Snippet.find(filter).sort({creationDate: -1});
         return snippets;
       }
       catch (error) //catches any errors that occur, log it to console, & throw it as a new error
@@ -69,8 +69,8 @@ const resolvers =
         //create a tags filter if any tags were provided, otherwise use a filter to just search by username
         const filter = tags ? {tags: {$all: tags}, username: username} : {username};
 
-        //finds all snippets created by a specific user, filtering by tags if applicable
-        const snippets = await Snippet.find(filter);
+        //finds all snippets created by a specific user, filtering by tags if applicable & sorting by newest
+        const snippets = await Snippet.find(filter).sort({creationDate: -1});
 
         //retrieves user that created the above snippets
         const user = await User.findOne({username});
