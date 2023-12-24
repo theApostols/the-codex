@@ -45,13 +45,10 @@ const UserSettingsForm = () => {
   });
   const [errorMessage, setErrorMessage] = useState('');
 
-  let profileImage; //variable to hold profile image file
-
   //clears the chose profile picture file
   const handleClearImage = () => {
     const profileImageInput = document.getElementById("profileImageInput"); //gets a reference to the profile image input
     profileImageInput.value = ""; //clears the chosen file in the input
-    profileImage = ""; //resets the profile image variable to an empty string
 
     //gets a reference to preview image element for the profile picture & sets the src to an empty string
     const profileImagePreviewElement = document.getElementById(
@@ -64,17 +61,15 @@ const UserSettingsForm = () => {
   };
 
   //update profile image value when a file is selected
-  const handleFileSelection = (event) => {
+  const handleFileSelection = () => {
     //gets a reference to preview image element for the profile picture
     const profileImagePreviewElement = document.getElementById(
       "profile-image-preview"
     );
-
-    //retrieves the file stored in the profile image input
-    profileImage = event.target.files[0];
+    const profileImageInput = document.getElementById("profileImageInput");
 
     const uploadConverter = new FileReader(); //creates a new FileReader instance to read the above file
-    uploadConverter.readAsDataURL(profileImage); //convert the upload to a usable URL for an 'src' attribute
+    uploadConverter.readAsDataURL(profileImageInput.files[0]); //convert the upload to a usable URL for an 'src' attribute
 
     //upon the above conversion completing, set the 'src' attribute of the preview image element to the resulting URL
     //i.e. renders a preview of the uploaded file to the page
@@ -129,12 +124,13 @@ const UserSettingsForm = () => {
 
       //variable to hold file name of profile image, set to the file name of the profile image preview element's src
       let image = profileImagePreviewElement.getAttribute("src").split("/")[3];
+      const profileImageInput = document.getElementById("profileImageInput");
 
       //checks if a file exists in the profile image input
-      if (profileImage) {
+      if (profileImageInput.files[0]) {
         //constructs a new FormData instance & appends the uploaded file to it
         const formData = new FormData();
-        formData.append("file", profileImage);
+        formData.append("file", profileImageInput.files[0]);
 
         //if the node environment is set to 'production', set the server host to the render address
         //otherwise, set the server host to the localhost address
@@ -152,6 +148,8 @@ const UserSettingsForm = () => {
         //processes the newly-generated file name as a JSON response
         image = await response.json();
       }
+
+      console.log(image);
 
       //if the user did not fill out the new username field, update the form data value to their current username
       if (!userFormData.username) {
