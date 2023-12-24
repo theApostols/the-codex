@@ -13,7 +13,7 @@ import Auth from "../../utils/auth";
 const MotionContainer = motion(Container);
 
 function LoginForm() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isOpenError, onOpen: onOpenError, onClose: onCloseError } = useDisclosure();
   const [userFormData, setUserFormData] = useState({ email: "", password: "" });
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -32,7 +32,7 @@ function LoginForm() {
     let errorDetails; //variable to hold detailed error message
 
     //provides additional error details for specific errors
-    if (error.message === 'Failed to log in;')
+    if (error.message === 'Failed to log in; Unable to log in using the provided details. Please try again.')
     {
       errorDetails = 'Unable to log in using the provided details. Please try again.'
     }
@@ -41,8 +41,9 @@ function LoginForm() {
       errorDetails = error.message;
     }
 
+    //sets error message & opens error modal
     setErrorMessage(errorDetails);
-    onOpen();
+    onOpenError();
   }
 
   const handleFormSubmit = async (event) => {
@@ -140,7 +141,7 @@ function LoginForm() {
               </Button>
 
               {/* Error message modal */}
-              <Modal isOpen={isOpen} onClose={onClose}>
+              <Modal isOpen={isOpenError} onClose={onCloseError}>
                 <ModalOverlay />
                 <ModalContent bg="codex.accents" color="codex.darkest">
                   <ModalHeader>Oops! An error occured.</ModalHeader>
@@ -150,7 +151,7 @@ function LoginForm() {
                     </Text>
                   </ModalBody>
                   <ModalFooter>
-                    <Button variant="secondary" mr={3} onClick={onClose}>
+                    <Button variant="secondary" mr={3} onClick={onCloseError}>
                       Close
                     </Button>
                   </ModalFooter>
