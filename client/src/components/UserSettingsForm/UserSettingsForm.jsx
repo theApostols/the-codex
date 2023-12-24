@@ -68,8 +68,27 @@ const UserSettingsForm = () => {
     );
     const profileImageInput = document.getElementById("profileImageInput");
 
+    //retrieves the file uploaded to the profile image input
+    const profileImageUpload = profileImageInput.files[0];
+
+    //if the uploaded file is not an image, clear the file & display an appropriate error message
+    if (!profileImageUpload.type.match('image.*')) 
+    {
+      handleClearImage();
+      handleErrorMessage({message: 'File must be an image'});
+      return;
+    }
+
+    //if the uploaded file is larger than 10 MB, clear the file & display an appropriate error message
+    if (!profileImageUpload.size < 10485760)
+    {
+      handleClearImage();
+      handleErrorMessage({message: 'File must be smaller than 10 MB'});
+      return;
+    }
+
     const uploadConverter = new FileReader(); //creates a new FileReader instance to read the above file
-    uploadConverter.readAsDataURL(profileImageInput.files[0]); //convert the upload to a usable URL for an 'src' attribute
+    uploadConverter.readAsDataURL(profileImageUpload); //convert the upload to a usable URL for an 'src' attribute
 
     //upon the above conversion completing, set the 'src' attribute of the preview image element to the resulting URL
     //i.e. renders a preview of the uploaded file to the page
