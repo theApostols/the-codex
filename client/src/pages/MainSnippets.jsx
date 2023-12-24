@@ -68,12 +68,6 @@ export default function UserSnippets() {
     {
       try {
         // was getting undefined error, chatgpt suggested this fix
-        // find the snippet based on the snippetId
-        const snippet = snippets.find((s) => s._id === snippetId);
-        //check if the user has already propped the snippet
-        if (snippet.props.includes(username)) {
-          throw new Error("You Already Prop'd This Snippet!");
-        }
         // preform the addProps mutation
         await addProps({
           variables: {
@@ -92,11 +86,6 @@ export default function UserSnippets() {
     if (username)
     {
       try {
-        const snippet = snippets.find((s) => s._id === snippetId);
-
-        if (snippet.drops.includes(username)) {
-          throw new Error("You Already Dropped This Snippet!");
-        }
         await addDrops({
           variables: {
             username: username,
@@ -109,7 +98,7 @@ export default function UserSnippets() {
     }
   };
 
-  //REMOVE PROPS FROM A SNIPPET WHEN DROPPED
+  //REMOVE PROPS FROM A SNIPPET
   const handleRemoveProps = async (snippetId) => {
     if (username)
     {
@@ -126,7 +115,7 @@ export default function UserSnippets() {
     }
   };
 
-  //REMOVE DROPS FROM A SNIPPET WHEN PROPPED
+  //REMOVE DROPS FROM A SNIPPET
   const handleRemoveDrops = async (snippetId) => {
     if (username)
     {
@@ -196,8 +185,7 @@ export default function UserSnippets() {
                       variant="icon"
                       size="sm"
                       onClick={() =>
-                        handleAddDrops(snippet._id) &&
-                        handleRemoveProps(snippet._id)
+                        handleAddDrops(snippet._id)
                       }
                     >
                       <Icon as={FaAngleDoubleDown} w={8} h={8} mr="2" />
@@ -209,8 +197,7 @@ export default function UserSnippets() {
                       variant="icon"
                       size="sm"
                       onClick={() =>
-                        handleAddProps(snippet._id) &&
-                        handleRemoveDrops(snippet._id)
+                        handleAddProps(snippet._id)
                       }
                     >
                       <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />

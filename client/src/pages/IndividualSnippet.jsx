@@ -143,9 +143,6 @@ export default function UserSnippets() {
     if (currentUser)
     {
       try {
-        if (snippets.props.includes(currentUser)) {
-          throw new Error("You Already Prop'd This Snippet!");
-        }
         await addProps({
           variables: {
             username: currentUser,
@@ -162,9 +159,6 @@ export default function UserSnippets() {
     if (currentUser)
     {
       try {
-        if (snippets.drops.includes(currentUser)) {
-          throw new Error("You Already Dropped This Snippet!");
-        }
         await addDrops({
           variables: {
             username: currentUser,
@@ -261,8 +255,7 @@ export default function UserSnippets() {
                     size="sm"
                     onClick={() =>{
                       if (snippets) {
-                        handleAddDrops(snippets._id) &&
-                        handleRemoveProps(snippets._id)
+                        handleAddDrops(snippets._id)
                       }
                     }}
                   >
@@ -276,8 +269,7 @@ export default function UserSnippets() {
                     size="sm"
                     onClick={() =>{
                       if (snippets) {
-                        handleAddProps(snippets._id) &&
-                        handleRemoveDrops(snippets._id)
+                        handleAddProps(snippets._id)
                       }
                     }}
                   >

@@ -438,12 +438,6 @@ const resolvers =
     {
       try
       {
-        //check if user has already given props to this snippet
-        const snippet = await Snippet.findOne({_id: snippetId, props: username});
-        if (snippet) {
-          throw new Error('You have already given props to this snippet');
-        }
-
         //attempts to find a snippet by the objectId given in the arguments
         const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
         {
@@ -485,12 +479,6 @@ const resolvers =
     {
       try
       {
-        //check if user has already dropped this snippet
-        const snippet = await Snippet.findOne({_id: snippetId, drops: username});
-        if (snippet) {
-          throw new Error('You have already dropped this snippet');
-        }
-
         //attempts to find a snippet by the objectId given in the arguments
         const updatedSnippet = await Snippet.findOneAndUpdate({_id: snippetId},
         {
