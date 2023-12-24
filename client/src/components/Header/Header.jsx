@@ -36,18 +36,17 @@ const Header = () => {
 
   const navigate = useNavigate();
   const isAuthenticated = AuthService.loggedIn();
-  const user = isAuthenticated ? AuthService.getProfile() : null;
-  const currentUser = AuthService.getProfile().data.username;
+  const user = isAuthenticated ? AuthService.getProfile().data.username : null;
 
   const {
     loading: userLoading,
     error: userError,
     data: userData,
   } = useQuery(GET_ONE_USER, {
-    variables: { username: currentUser },
+    variables: { username: user },
   });
 
-  console.log(currentUser);
+  console.log(user);
   console.log(userData);
 
   const handleCreateClick = () => {
@@ -56,7 +55,7 @@ const Header = () => {
   };
 
   const handleProfileClick = () => {
-    navigate(`/user-snippets/${user.data.username}`);
+    navigate(`/user-snippets/${user}`);
     onClose();
   };
 
