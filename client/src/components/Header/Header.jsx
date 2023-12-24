@@ -1,4 +1,5 @@
 import React, { useRef, useContext } from "react";
+import { useQuery } from "@apollo/client";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Flex,
@@ -28,7 +29,7 @@ import { BiLogOut, BiMenu, BiPlus, BiUser, BiCog } from "react-icons/bi";
 import AuthService from "../../utils/auth";
 import { ThemeContext } from "../../main.jsx";
 import { BsFillSunFill, BsMoonFill } from "react-icons/bs";
-
+import { GET_ONE_USER } from "../../utils/queries.js";
 
 const Header = () => {
   const { isDarkMode, toggleTheme } = useContext(ThemeContext);
@@ -36,6 +37,18 @@ const Header = () => {
   const navigate = useNavigate();
   const isAuthenticated = AuthService.loggedIn();
   const user = isAuthenticated ? AuthService.getProfile() : null;
+  const currentUser = AuthService.getProfile().data.username;
+
+  const {
+    loading: userLoading,
+    error: userError,
+    data: userData,
+  } = useQuery(GET_ONE_USER, {
+    variables: { username: currentUser },
+  });
+
+  console.log(currentUser);
+  console.log(userData);
 
   const handleCreateClick = () => {
     navigate("/createsnippet");
@@ -133,7 +146,7 @@ const Header = () => {
         boxSize="50px" 
       />
             <Text fontSize="xl" fontWeight="bold" ml="2" mr='6'>
-              The Codex
+              The CodeX
             </Text>
 
                 {/* Button to toggle dark or light mode */}
@@ -155,8 +168,9 @@ const Header = () => {
 
             {isAuthenticated ? (
               <Avatar
+                id="profile-image-avatar"
+                src={`/images/file-uploads/${userData?.oneUser?.image}`}
                 size="sm"
-                src={user.avatar}
                 ref={btnRef}
                 onClick={onOpen}
                 cursor="pointer"
