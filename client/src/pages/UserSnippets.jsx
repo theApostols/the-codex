@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import React from "react";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
 import { GET_USER_SNIPPETS } from "../utils/queries";
-import { Box, Flex, VStack, HStack, Button, Icon, Text } from "@chakra-ui/react";
+import { Box, Flex, VStack, HStack, Button, Icon, Text, Avatar, Heading } from "@chakra-ui/react";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 
 export default function UserSnippets() {
@@ -55,6 +55,13 @@ export default function UserSnippets() {
           p="8"
           color="codex.accents"
         >
+          <HStack spacing = {4}>
+            <Avatar
+              size="2xl"
+              src={`/images/file-uploads/${data?.userSnippets?.user?.image}`}
+            />
+            <Heading color="codex.accents" size = "3xl">{username}</Heading>
+          </HStack>
           <Box
             w="full"
             border="1px solid"
