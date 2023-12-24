@@ -24,6 +24,8 @@ import {
   VStack,
   Divider,
   Icon,
+  HStack,
+  Heading
 } from "@chakra-ui/react";
 import { BiLogOut, BiMenu, BiPlus, BiUser, BiCog } from "react-icons/bi";
 import AuthService from "../../utils/auth";
@@ -125,7 +127,7 @@ const Header = () => {
           {isAuthenticated ? (
             <Avatar
               size="sm"
-              src={user.avatar}
+              src={`/images/file-uploads/${userData?.oneUser?.image}`}
               ref={btnRef}
               onClick={onOpen}
               cursor="pointer"
@@ -200,6 +202,13 @@ const Header = () => {
           <DrawerHeader color="codex.accents">{user?.name}</DrawerHeader>
           <DrawerBody>
             <VStack align="stretch" spacing={4}>
+              <HStack spacing = {4}>
+                <Avatar
+                  size="lg"
+                  src={`/images/file-uploads/${userData?.oneUser?.image}`}
+                />
+                <Heading color="codex.accents" size = "lg" isTruncated>{user}</Heading>
+              </HStack>
               <Button
                 leftIcon={
                   <Icon as={BiPlus} w={8} h={8} color="codex.highlights" />
