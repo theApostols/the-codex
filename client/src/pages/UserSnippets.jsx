@@ -1,12 +1,55 @@
 import { useQuery, useMutation } from "@apollo/client";
 import { Link, useParams } from 'react-router-dom';
-import React from "react";
+import React, { useState, useEffect } from "react";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
 import { GET_USER_SNIPPETS } from "../utils/queries";
-import { Box, Flex, VStack, HStack, Button, Icon, Text, Avatar, Heading } from "@chakra-ui/react";
+import { Box, Flex, VStack, HStack, Button, Icon, Text, Avatar, Heading, Divider, Checkbox } from "@chakra-ui/react";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 
 export default function UserSnippets() {
+  // set state for Tags
+  const [showTagsSection, setShowTagsSection] = useState(false);
+  // const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  // sample tags
+  const availableTags = [
+    "3D Printing",
+    "AI Markup Language (AIML)",
+    "Assembly",
+    "Augmented Reality (AR)",
+    "Blockchain",
+    "Cloud Computing",
+    "Concurrent",
+    "Configuration Management",
+    "Containerization and Orchestration",
+    "Data Science",
+    "Database Query",
+    "Desktop App",
+    "Distributed Systems",
+    "Domain-Specific Language (DSL)",
+    "Educational",
+    "Embedded Systems",
+    "Framework",
+    "Functional Programming",
+    "Game Dev",
+    "Graph Query",
+    "Hardware Description Language (HDL)",
+    "IoT Programming",
+    "Logic",
+    "Machine Learning",
+    "Markup",
+    "Mobile App Dev",
+    "Networking",
+    "Parallel",
+    "Robotics",
+    "Scientific Computing",
+    "Scripting",
+    "Serverless Computing",
+    "Virtual Reality (VR)",
+    "Web API",
+    "Web Dev",
+    "Web Security",
+  ];
   const paragraphStyle = {
     fontSize: "18px",
     color: "white",
@@ -17,10 +60,17 @@ export default function UserSnippets() {
   const {username} = useParams();
 
   // Use the useQuery hook to execute the GET_USER_SNIPPETS query
-  const { loading, error, data } = useQuery(GET_USER_SNIPPETS,
+  const { loading, error, data, refetch } = useQuery(GET_USER_SNIPPETS,
   {
     variables: {username}
   });
+
+  //refetch all snippets using updated tags upon state change
+  useEffect(() => {
+    if (loading) return; //eject from function if the page is still loading
+
+    refetch({tags: selectedTags, username: username});
+  }, [selectedTags, refetch, loading]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -29,6 +79,24 @@ export default function UserSnippets() {
   const snippets = data.userSnippets.snippets;
 
   console.log(snippets);
+
+  const handleToggleTags = () => {
+    setShowTagsSection(!showTagsSection);
+  };
+
+  const handleTagChange = async (tag) => {
+    const isTagSelected = selectedTags.includes(tag);
+
+    if (isTagSelected) {
+      // Tag is already selected, remove it
+      setSelectedTags((prevSelectedTags) =>
+        prevSelectedTags.filter((selectedTag) => selectedTag !== tag)
+      );
+    } else {
+      // Tag is not selected, add it
+      setSelectedTags((prevSelectedTags) => [...prevSelectedTags, tag]);
+    }
+  };
 
   return (
     <>
@@ -62,6 +130,35 @@ export default function UserSnippets() {
             />
             <Heading color="codex.accents" size = "3xl">{username}</Heading>
           </HStack>
+
+          <Divider my = {1} borderColor="codex.highlights"/>
+
+          {/* Toggle Tags Section */}
+          <Box w="full">
+            <Button variant="secondary" onClick={handleToggleTags} size="sm">
+              {showTagsSection ? "Hide Tags" : "Select Tags"}
+            </Button>
+            {showTagsSection && (
+              <Flex wrap="wrap" marginTop={2}>
+                {availableTags.map((tag, index) => (
+                  <Checkbox
+                    colorScheme="teal"
+                    size="lg"
+                    color="codex.accents"
+                    key={index}
+                    isChecked={selectedTags.includes(tag)}
+                    onChange={() => handleTagChange(tag)}
+                    marginRight={2} // adds margin between tags
+                  >
+                    {tag}
+                  </Checkbox>
+                ))}
+              </Flex>
+            )}
+          </Box>
+
+          <Divider my = {1} borderColor="codex.highlights"/>
+
           <Box
             w="full"
             border="1px solid"
