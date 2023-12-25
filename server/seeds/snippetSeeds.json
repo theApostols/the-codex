@@ -29,7 +29,7 @@
         "link": "https://twitter.com/SawyerMerritt/status/1682969511874424832"
       }
     ],
-    "tags": ["HTML", "CSS", "JavaScript", "X", "node-everything"]
+    "tags": ["Web Dev", "Game Dev", "Scripting", "Web Dev", "IoT Programming"]
   },
   {
     "snippetTitle": "title!",
@@ -46,7 +46,7 @@
         "code": "body {margin: 0;}"
       }
     ],
-    "tags": ["HTML", "X", "node-everything"]
+    "tags": ["Web Dev", "Web Security", "IoT Programming"]
   },
   {
     "snippetTitle": "HAHAHAHA TITLE",
@@ -70,7 +70,7 @@
         "link": "https://twitter.com/SawyerMerritt/status/1682969511874424832"
       }
     ],
-    "tags": ["node-everything"]
+    "tags": ["IoT Programming"]
   },
   {
     "snippetTitle": "title",
@@ -87,12 +87,12 @@
         "code": "console.log('test');"
       }
     ],
-    "tags": ["HTML", "CSS", "JavaScript"]
+    "tags": ["Web Dev", "Game Dev", "Scripting"]
   },
   {
     "snippetTitle": "title",
     "snippetText": "Walking on water and developing software from a specification are easy if both are frozen.",
     "username": "Edward V. Berard",
-    "tags": ["X", "node-everything"]
+    "tags": ["Web Dev", "IoT Programming"]
   }
 ]

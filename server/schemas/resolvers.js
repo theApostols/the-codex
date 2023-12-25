@@ -49,7 +49,7 @@ const resolvers =
       try
       {
         //create a tags filter if any tags were provided, otherwise use an empty filter
-        const filter = tags ? {tags: {$all: tags}} : {};
+        const filter = tags && tags.length > 0 ? {tags: {$all: tags}} : {};
 
         //retrieves & returns all snippets, filtering by tags if applicable & sorting by newest
         const snippets = await Snippet.find(filter).sort({creationDate: -1});
@@ -67,7 +67,7 @@ const resolvers =
       try
       {
         //create a tags filter if any tags were provided, otherwise use a filter to just search by username
-        const filter = tags ? {tags: {$all: tags}, username: username} : {username};
+        const filter = tags && tags.length > 0 ? {tags: {$all: tags}, username: username} : {username};
 
         //finds all snippets created by a specific user, filtering by tags if applicable & sorting by newest
         const snippets = await Snippet.find(filter).sort({creationDate: -1});
