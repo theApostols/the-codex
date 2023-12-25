@@ -11,6 +11,7 @@ import {
   Avatar,
   Flex,
   Checkbox,
+  Divider
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { GET_ALL_SNIPPETS } from "../utils/queries";
@@ -236,7 +237,7 @@ export default function UserSnippets() {
             {/* Toggle Tags Section */}
             <Box w="full">
               <Button variant="secondary" onClick={handleToggleTags} size="sm">
-                {showTagsSection ? "Hide Tags" : "Add Tags"}
+                {showTagsSection ? "Hide Tags" : "Select Tags"}
               </Button>
               {showTagsSection && (
                 <Flex wrap="wrap" marginTop={2}>
@@ -256,6 +257,9 @@ export default function UserSnippets() {
                 </Flex>
               )}
             </Box>
+
+            <Divider my = {1} borderColor="codex.highlights"/>
+
             <Box
               w="full"
               border="1px solid"
@@ -282,7 +286,7 @@ export default function UserSnippets() {
                         handleAddDrops(snippet._id)
                       }
                     >
-                      <Icon as={FaAngleDoubleDown} w={8} h={8} mr="2" />
+                      <Icon as={FaAngleDoubleDown} w={8} h={8} ml = "2" />
                     </Button>
                     <Text color="codex.highlights" fontSize="sm">
                       Props: {snippet.overallProps}
