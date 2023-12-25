@@ -10,8 +10,9 @@ import {
   Heading,
   Avatar,
   Flex,
+  Checkbox,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { GET_ALL_SNIPPETS } from "../utils/queries";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
@@ -24,8 +25,52 @@ import {
 import Auth from "../utils/auth";
 
 export default function UserSnippets() {
-  //PROPS AND DROPS MUTATIONS
-  //mutation to add props, with refetch to update cache to reflect new props
+  // set state for Tags
+  const [showTagsSection, setShowTagsSection] = useState(false);
+  // const [tags, setTags] = useState([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  // sample tags
+  const availableTags = [
+    "3D Printing",
+    "AI Markup Language (AIML)",
+    "Assembly",
+    "Augmented Reality (AR)",
+    "Blockchain",
+    "Cloud Computing",
+    "Concurrent",
+    "Configuration Management",
+    "Containerization and Orchestration",
+    "Data Science",
+    "Database Query",
+    "Desktop App",
+    "Distributed Systems",
+    "Domain-Specific Language (DSL)",
+    "Educational",
+    "Embedded Systems",
+    "Framework",
+    "Functional Programming",
+    "Game Dev",
+    "Graph Query",
+    "Hardware Description Language (HDL)",
+    "IoT Programming",
+    "Logic",
+    "Machine Learning",
+    "Markup",
+    "Mobile App Dev",
+    "Networking",
+    "Parallel",
+    "Robotics",
+    "Scientific Computing",
+    "Scripting",
+    "Serverless Computing",
+    "Virtual Reality (VR)",
+    "Web API",
+    "Web Dev",
+    "Web Security",
+  ];
+
+  // PROPS AND DROPS MUTATIONS
+  // mutation to add props, with refetch to update cache to reflect new props
   const [addProps] = useMutation(ADD_PROPS, {
     refetchQueries: [{ query: GET_ALL_SNIPPETS }],
   });
@@ -42,12 +87,20 @@ export default function UserSnippets() {
   const [removeDrops] = useMutation(REMOVE_DROPS);
 
   //QUERY TO GET ALL SNIPPETS
-  const { loading, error, data } = useQuery(GET_ALL_SNIPPETS);
+  const { loading, error, data, refetch } = useQuery(GET_ALL_SNIPPETS);
+
+  //refetch all snippets using updated tags upon state change
+  useEffect(() => {
+    if (loading) return; //eject from function if the page is still loading
+
+    refetch({tags: selectedTags});
+  }, [selectedTags, refetch, loading]);
+  
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-  const snippets = data.allSnippets;
+  const snippets = data?.allSnippets;
 
   let username; //variable to hold user's username
 
@@ -55,7 +108,7 @@ export default function UserSnippets() {
   try
   {
     //gets current user's username
-    username = Auth.getProfile().data.username;
+    username = Auth.getProfile()?.data?.username;
   }
   catch (error) //empty error block (this is just here to ensure the page still renders even if a user is not logged in)
   {}
@@ -132,6 +185,24 @@ export default function UserSnippets() {
     }
   };
 
+  const handleToggleTags = () => {
+    setShowTagsSection(!showTagsSection);
+  };
+
+  const handleTagChange = async (tag) => {
+    const isTagSelected = selectedTags.includes(tag);
+
+    if (isTagSelected) {
+      // Tag is already selected, remove it
+      setSelectedTags((prevSelectedTags) =>
+        prevSelectedTags.filter((selectedTag) => selectedTag !== tag)
+      );
+    } else {
+      // Tag is not selected, add it
+      setSelectedTags((prevSelectedTags) => [...prevSelectedTags, tag]);
+    }
+  };
+
   return (
     <>
       <Box
@@ -162,6 +233,29 @@ export default function UserSnippets() {
             p="8"
             color="codex.accents"
           >
+            {/* Toggle Tags Section */}
+            <Box w="full">
+              <Button variant="secondary" onClick={handleToggleTags} size="sm">
+                {showTagsSection ? "Hide Tags" : "Add Tags"}
+              </Button>
+              {showTagsSection && (
+                <Flex wrap="wrap" marginTop={2}>
+                  {availableTags.map((tag, index) => (
+                    <Checkbox
+                      colorScheme="teal"
+                      size="lg"
+                      color="codex.accents"
+                      key={index}
+                      isChecked={selectedTags.includes(tag)}
+                      onChange={() => handleTagChange(tag)}
+                      marginRight={2} // adds margin between tags
+                    >
+                      {tag}
+                    </Checkbox>
+                  ))}
+                </Flex>
+              )}
+            </Box>
             <Box
               w="full"
               border="1px solid"
@@ -169,7 +263,7 @@ export default function UserSnippets() {
               borderRadius="lg"
               bg="codex.darkest"
             >
-              {snippets.map((snippet, index) => (
+              {snippets?.map((snippet, index) => (
                 <Box
                   key={index}
                   pb="5"

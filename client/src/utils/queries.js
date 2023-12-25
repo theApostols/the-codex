@@ -134,8 +134,8 @@ query oneUser($username: String!) {
 //used on the main snippets page
 //retrieves all snippet data necessary to render each snippet preview
 export const GET_ALL_SNIPPETS = gql`
-query AllSnippets {
-  allSnippets {
+query AllSnippets($tags: [String]) {
+  allSnippets(tags: $tags) {
     _id
     username
     snippetTitle
