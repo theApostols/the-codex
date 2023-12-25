@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import React, { useState, useEffect } from "react";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
 import { GET_USER_SNIPPETS } from "../utils/queries";
-import { Box, Flex, VStack, HStack, Button, Icon, Text, Avatar, Heading, Divider, Checkbox } from "@chakra-ui/react";
+import { Box, Flex, VStack, HStack, Button, Icon, Text, Input, Avatar, Heading, Divider, Checkbox } from "@chakra-ui/react";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 
 export default function UserSnippets() {
@@ -55,6 +55,8 @@ export default function UserSnippets() {
     color: "white",
     fontWeight: "bold",
   };
+  //defines state for searching for users
+  const [userSearch, setUserSearch] = useState('');
 
   //retrieve user route parameter
   const {username} = useParams();
@@ -95,6 +97,27 @@ export default function UserSnippets() {
     } else {
       // Tag is not selected, add it
       setSelectedTags((prevSelectedTags) => [...prevSelectedTags, tag]);
+    }
+  };
+
+  const handleInputChange = (event) => {
+    const {value} = event.target;
+    setUserSearch(value);
+    console.log(userSearch);
+  };
+
+  //upon the user clicking the 'search' button, route to the user snippets page of the user they searched for
+  const handleUserSearch = () =>
+  {
+    window.location.assign(`/user-snippets/${userSearch}`);
+  }
+
+  //if the user presses the 'enter' key while the user search input is in focus, attempt to search for that user
+  const handleKeyPress = (event) =>
+  {
+    if (event.key === 'Enter')
+    {
+      handleUserSearch();
     }
   };
 
@@ -156,6 +179,15 @@ export default function UserSnippets() {
               </Flex>
             )}
           </Box>
+
+          <HStack w = "full">
+            <Input
+              onChange={handleInputChange}
+              onKeyDown={handleKeyPress}
+              value={userSearch}
+            />
+            <Button variant="secondary" onClick = {handleUserSearch}>Search</Button>
+          </HStack>
 
           <Divider my = {1} borderColor="codex.highlights"/>
 
