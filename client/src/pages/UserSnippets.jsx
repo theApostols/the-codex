@@ -5,6 +5,13 @@ import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
 import { GET_USER_SNIPPETS } from "../utils/queries";
 import { Box, Flex, VStack, HStack, Button, Icon, Text, Input, Avatar, Heading, Divider, Checkbox } from "@chakra-ui/react";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+import {
+  ADD_PROPS,
+  ADD_DROPS,
+  REMOVE_PROPS,
+  REMOVE_DROPS,
+} from "../utils/mutations";
+import Auth from "../utils/auth.js";
 
 export default function UserSnippets() {
   // set state for Tags
@@ -61,6 +68,23 @@ export default function UserSnippets() {
   //retrieve user route parameter
   const {username} = useParams();
 
+  // PROPS AND DROPS MUTATIONS
+  // mutation to add props, with refetch to update cache to reflect new props
+  const [addProps] = useMutation(ADD_PROPS, {
+    refetchQueries: [{ query: GET_USER_SNIPPETS }],
+  });
+
+  //mutation to add drops, with refetch to update cache to reflect new drops
+  const [addDrops] = useMutation(ADD_DROPS, {
+    refetchQueries: [{ query: GET_USER_SNIPPETS }],
+  });
+
+  //mutation to remove props, to calculate overall props when snippet is dropped
+  const [removeProps] = useMutation(REMOVE_PROPS);
+
+  //mutation to remove drops, to calculate overall props when snippet is propped
+  const [removeDrops] = useMutation(REMOVE_DROPS);
+
   // Use the useQuery hook to execute the GET_USER_SNIPPETS query
   const { loading, error, data, refetch } = useQuery(GET_USER_SNIPPETS,
   {
@@ -81,6 +105,89 @@ export default function UserSnippets() {
   const snippets = data.userSnippets.snippets;
 
   console.log(snippets);
+
+  let currentUser; //variable to hold current user's username
+
+  //attempts to retrieve username from JWT
+  try
+  {
+    //gets current user's username
+    currentUser = Auth.getProfile()?.data?.username;
+  }
+  catch (error) //empty error block (this is just here to ensure the page still renders even if a user is not logged in)
+  {}
+
+  //PROPS AND DROPS HANDLERS
+
+  //PROP A SNIPPET
+  const handleAddProps = async (snippetId) => {
+    if (currentUser)
+    {
+      try {
+        // was getting undefined error, chatgpt suggested this fix
+        // preform the addProps mutation
+        await addProps({
+          variables: {
+            username: currentUser,
+            snippetId: snippetId,
+          },
+        });
+      } catch (err) {
+        console.error("Error propping snippet", err);
+      }
+    }
+  };
+
+  //DROP A SNIPPET
+  const handleAddDrops = async (snippetId) => {
+    if (currentUser)
+    {
+      try {
+        await addDrops({
+          variables: {
+            username: currentUser,
+            snippetId: snippetId,
+          },
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
+  //REMOVE PROPS FROM A SNIPPET
+  const handleRemoveProps = async (snippetId) => {
+    if (currentUser)
+    {
+      try {
+        await removeProps({
+          variables: {
+            username: currentUser,
+            snippetId: snippetId,
+          },
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+
+  //REMOVE DROPS FROM A SNIPPET
+  const handleRemoveDrops = async (snippetId) => {
+    if (currentUser)
+    {
+      try {
+        await removeDrops({
+          variables: {
+            username: currentUser,
+            snippetId: snippetId,
+          },
+        });
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
 
   const handleToggleTags = () => {
     setShowTagsSection(!showTagsSection);
@@ -210,15 +317,27 @@ export default function UserSnippets() {
                   <MainSnippetPreview snippet={snippet} />
                 </Link>
                 <HStack color="codex.text">
-                  <Button variant="icon" size="sm">
-                    <Icon as={FaAngleDoubleDown} w={8} h={8} mr="2" />
+
+                  <Button
+                    variant="icon"
+                    size="sm"
+                    onClick={() => handleAddDrops(snippet._id)}
+                  >
+                    <Icon as={FaAngleDoubleDown} w={8} h={8} ml = "2" />
                   </Button>
+
                   <Text color="codex.highlights" fontSize="sm">
                     Props: {snippet.overallProps}
                   </Text>
-                  <Button variant="icon" size="sm">
+
+                  <Button
+                    variant="icon"
+                    size="sm"
+                    onClick={() => handleAddProps(snippet._id)}
+                  >
                     <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
                   </Button>
+
                 </HStack>
               </Box>
             ))}
