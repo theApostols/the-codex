@@ -203,7 +203,7 @@ function SignupForm() {
                 />
               </FormControl>
 
-              <Checkbox isChecked={agreeToTerms} onChange={handleAgreeChange}>
+              <Checkbox colorScheme="purple" isChecked={agreeToTerms} onChange={handleAgreeChange}>
                 I agree to the{" "}
                 <Link color="purple.300" onClick={handleTermsClick}>
                   Terms and Conditions
