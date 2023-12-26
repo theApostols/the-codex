@@ -19,7 +19,6 @@ import { CREATE_SNIPPET } from "../utils/mutations";
 import { useMutation, useQuery } from "@apollo/client";
 import Auth from "../utils/auth";
 import { GET_USER_SNIPPETS } from "../utils/queries";
-import SnippetDisplay from "../components/Snippet/Snippet2";
 
 export default function CreateSnippetPage() {
   // State to manage an array of snippet data
