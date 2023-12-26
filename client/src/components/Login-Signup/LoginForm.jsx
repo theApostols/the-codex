@@ -17,6 +17,13 @@ function LoginForm() {
   const [userFormData, setUserFormData] = useState({ email: "", password: "" });
   const [showAlert, setShowAlert] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  const [rememberMe, setRememberMe] = useState(false);
+
+  // Updates the state when the user checks or unchecks the checkbox.
+  const handleRememberMeChange = () => {
+    setRememberMe(!rememberMe);
+  };
   
   const [loginUser, { error, data }] = useMutation(LOGIN_USER);
   const navigate = useNavigate();
@@ -55,6 +62,13 @@ function LoginForm() {
       });
 
       const { token, user } = data.loginUser;
+      // If 'Remember Me' is checked, save in localStorage; otherwise, sessionStorage.
+      if (rememberMe) {
+        localStorage.setItem("authToken", token);
+      } else {
+        sessionStorage.setItem("authToken", token);
+      }
+
       Auth.login(token);
     } catch (err) {
       console.error("Login failed. Error:", err);
@@ -129,7 +143,8 @@ function LoginForm() {
                 />
               </FormControl>
 
-              <Checkbox colorScheme="purple">Remember me</Checkbox>
+              <Checkbox colorScheme="purple" isChecked={rememberMe}
+                onChange={handleRememberMeChange}>Remember me</Checkbox>
               <Button
                 disabled={!(userFormData.email && userFormData.password)}
                 type="submit"

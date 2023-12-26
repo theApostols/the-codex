@@ -424,12 +424,12 @@ export default function CreateSnippetPage() {
               {availableTags.map((tag, index) => (
                 <Checkbox
                   colorScheme="teal"
-                  size="lg"
+                  size="md"
                   color="codex.accents"
                   key={index}
                   isChecked={selectedTags.includes(tag)}
                   onChange={() => handleTagChange(tag)}
-                  marginRight={2} // adds margin between tags
+                  marginRight={4} // adds margin between tags
                 >
                   {tag}
                 </Checkbox>
