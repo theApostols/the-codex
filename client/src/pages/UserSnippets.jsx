@@ -292,6 +292,10 @@ export default function UserSnippets() {
               onChange={handleInputChange}
               onKeyDown={handleKeyPress}
               value={userSearch}
+              placeholder="Enter username"
+              borderColor="codex.borders"
+              focusBorderColor="codex.highlights"
+              borderWidth={2}
             />
             <Button variant="secondary" onClick = {handleUserSearch}>Search</Button>
           </HStack>
