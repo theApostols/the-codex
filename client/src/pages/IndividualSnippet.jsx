@@ -50,13 +50,12 @@ export default function UserSnippets() {
   let currentUser; //variable to hold user's username
 
   //attempts to retrieve username from JWT
-  try
-  {
+  try {
     //gets current user's username
     currentUser = Auth.getProfile().data.username;
-  }
-  catch (error) //empty error block (this is just here to ensure the page still renders even if a user is not logged in)
-  {}
+  } catch (
+    error //empty error block (this is just here to ensure the page still renders even if a user is not logged in)
+  ) {}
 
   const handleAddComment = async () => {
     try {
@@ -90,9 +89,6 @@ export default function UserSnippets() {
           });
         },
       });
-
-      // Handle the result if needed
-      console.log("Comment created:", result);
 
       // Clear the comment input and hide the input box
       setCommentInput("");
@@ -134,14 +130,10 @@ export default function UserSnippets() {
   // Extract snippets from the data
   const snippets = data.oneSnippet;
   const snippetUser = snippets.username;
-  // console.log("This is the snippets", snippets);
-  console.log(snippetUser);
-  console.log(currentUser);
 
   //props and drops handlers
   const handleAddProps = async (snippetId) => {
-    if (currentUser)
-    {
+    if (currentUser) {
       try {
         await addProps({
           variables: {
@@ -156,8 +148,7 @@ export default function UserSnippets() {
   };
 
   const handleAddDrops = async (snippetId) => {
-    if (currentUser)
-    {
+    if (currentUser) {
       try {
         await addDrops({
           variables: {
@@ -172,8 +163,7 @@ export default function UserSnippets() {
   };
 
   const handleRemoveProps = async (snippetId) => {
-    if (currentUser)
-    {
+    if (currentUser) {
       try {
         await removeProps({
           variables: {
@@ -188,8 +178,7 @@ export default function UserSnippets() {
   };
 
   const handleRemoveDrops = async (snippetId) => {
-    if (currentUser)
-    {
+    if (currentUser) {
       try {
         await removeDrops({
           variables: {
@@ -253,13 +242,13 @@ export default function UserSnippets() {
                   <Button
                     variant="icon"
                     size="sm"
-                    onClick={() =>{
+                    onClick={() => {
                       if (snippets) {
-                        handleAddDrops(snippets._id)
+                        handleAddDrops(snippets._id);
                       }
                     }}
                   >
-                    <Icon as={FaAngleDoubleDown} w={8} h={8} ml = "2"/>
+                    <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
                   </Button>
                   <Text color="codex.highlights" fontSize="sm">
                     Props: {snippets.overallProps}
@@ -267,9 +256,9 @@ export default function UserSnippets() {
                   <Button
                     variant="icon"
                     size="sm"
-                    onClick={() =>{
+                    onClick={() => {
                       if (snippets) {
-                        handleAddProps(snippets._id)
+                        handleAddProps(snippets._id);
                       }
                     }}
                   >
@@ -285,15 +274,15 @@ export default function UserSnippets() {
                     </Link>
                   )}
                   {/* Button to toggle comment input */}
-                  {currentUser ? 
+                  {currentUser ? (
                     <Button
                       variant="icon"
                       size="sm"
                       onClick={toggleCommentInputVisibility}
                     >
                       Add Comment
-                    </Button> : null
-                  }
+                    </Button>
+                  ) : null}
                 </HStack>
               </Box>
               {/* Comment input */}
@@ -304,9 +293,16 @@ export default function UserSnippets() {
                     value={commentInput}
                     onChange={handleCommentInputChange}
                   />
-                  <Button mt="4" variant="secondary" size="sm"
-                  onClick={handleAddComment}>Submit Comment</Button>
-                </Box>)}
+                  <Button
+                    mt="4"
+                    variant="secondary"
+                    size="sm"
+                    onClick={handleAddComment}
+                  >
+                    Submit Comment
+                  </Button>
+                </Box>
+              )}
             </Box>
           </VStack>
         </Flex>

@@ -23,7 +23,6 @@ import { GET_INDIVIDUAL_SNIPPET } from "../../utils/queries";
 // Added default value to the snippet renders on the userpage
 const IndividualSnippetPreview = ({ snippet }) => {
   // Check if snippetData and snippetCode exist before accessing
-  // console.log("This is the snippetData", snippet);
   let currentUser; //variable to hold user's username
 
   //attempts to retrieve username from JWT
@@ -67,7 +66,6 @@ const IndividualSnippetPreview = ({ snippet }) => {
       });
 
       // Handle the result if needed
-      console.log("Comment deleted:", result);
     } catch (error) {
       console.error("Error deleting comment:", error);
       // Handle error if needed
