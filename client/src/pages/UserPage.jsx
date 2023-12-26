@@ -18,7 +18,6 @@ export default function UserPage() {
 
   // Extract users from the data
   const users = data.allUsers;
-  // console.log(users);
 
   return (
     <>

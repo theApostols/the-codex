@@ -244,7 +244,6 @@ export default function CreateSnippetPage() {
           })),
         },
       });
-      console.log("Snippet created:", response.data.createSnippet);
 
       // Show message to confirm snippet was created
       setCreateMessage(true);
@@ -289,7 +288,6 @@ export default function CreateSnippetPage() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-  console.log("data:", data);
 
   const userSnippets = data.userSnippets || [];
 

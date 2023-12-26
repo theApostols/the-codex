@@ -10,10 +10,7 @@ import {
   HStack,
   Flex,
 } from "@chakra-ui/react";
-import {
-  BiEdit,
-  BiTrash,
-} from "react-icons/bi";
+import { BiEdit, BiTrash } from "react-icons/bi";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 
 // Added default value to the snippet renders on the userpage
@@ -24,13 +21,8 @@ const Snippet = (snippet) => {
     navigate("/createsnippet");
   };
   const snippetUsers = snippet.snippet;
-  // console.log(snippetUsers);
-  // console.log(
-  //   "This is the snippet title =",
-  //   snippetUsers.snippets[0].snippetTitle
-  // );
+
   return (
-    //<><p>Hello, World!</p></>
     <>
       <Box p="50" d="flex" alignItems="center" justifyContent="center">
         <VStack
@@ -92,7 +84,6 @@ const Snippet = (snippet) => {
             )}
 
             <VStack mt={4} align="start" spacing={2}>
-              
               {/* Comment for the snippet */}
               {/* {snippetUsers.snippets[0].comments.length > 0 && (
                 // display comments if there are any, if not, skip over
@@ -126,7 +117,6 @@ const Snippet = (snippet) => {
                 </>
               )} */}
 
-              
               {/* add a button to drop (dislike) */}
               <Flex justifyContent="space-between" w="full">
                 <HStack spacing={2}>
@@ -141,7 +131,11 @@ const Snippet = (snippet) => {
                   </Button>
                 </HStack>
                 <HStack spacing={2}>
-                  <Button variant="icon" size="sm" onClick={handleCreateSnippet}>
+                  <Button
+                    variant="icon"
+                    size="sm"
+                    onClick={handleCreateSnippet}
+                  >
                     <Icon as={BiEdit} w={6} h={8} mr="2" />
                   </Button>
                   <Button variant="icon" size="sm">
