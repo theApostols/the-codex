@@ -78,7 +78,7 @@ const IndividualSnippetPreview = ({ snippet }) => {
 
     return (
       <Box p={4} borderRadius="md">
-        <Text fontSize="sm" color="codex.accents300">
+        <Text fontSize="sm" color="codex.accents300" ml = "1" mb = "1">
           Created by {snippetData.username} Created on{" "}
           {snippetData.formattedCreationDate}
         </Text>
