@@ -235,11 +235,7 @@ export default function UserSnippets() {
                 {showTagsSection ? "Hide Tags" : "Select Tags"}
               </Button>
               {showTagsSection && (
-                <Grid
-                  marginTop={2}
-                  templateColumns="repeat(3, 1fr)"
-                  gap={2}
-                >
+                <Grid marginTop={2} templateColumns="repeat(3, 1fr)" gap={2}>
                   {availableTags.map((tag, index) => (
                     <Checkbox
                       colorScheme="purple"
@@ -274,9 +270,7 @@ export default function UserSnippets() {
                   borderBottom="1px solid"
                   borderColor="codex.borders"
                 >
-                  <Link to={`/individual-snippets/${snippet._id}`}>
-                    <MainSnippetPreview snippet={snippet} />
-                  </Link>
+                  <MainSnippetPreview snippet={snippet} />
                   <HStack color="codex.text">
                     <Button
                       variant="icon"

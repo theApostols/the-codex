@@ -20,9 +20,17 @@ import Auth from "../../utils/auth";
 import { useMutation } from "@apollo/client";
 import { GET_INDIVIDUAL_SNIPPET } from "../../utils/queries";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 // Added default value to the snippet renders on the userpage
 const IndividualSnippetPreview = ({ snippet }) => {
+  const navigate = useNavigate();
+
+  const handleUsernameClick = () => {
+    // Navigate to the sign-up page
+    navigate(`/user-snippets/${snippet.username}`);
+  };
+
   // Check if snippetData and snippetCode exist before accessing
   let currentUser; //variable to hold user's username
 
@@ -77,8 +85,17 @@ const IndividualSnippetPreview = ({ snippet }) => {
     return (
       <Box p={4} borderRadius="md">
         <Text fontSize="sm" color="codex.accents300" ml="1" mb="1">
-          Created by {snippetData.username} Created on{" "}
-          {snippetData.formattedCreationDate}
+          Created by{" "}
+          <Box
+            as="span"
+            color="codex.accents300"
+            textDecoration="underline"
+            cursor="pointer"
+            onClick={handleUsernameClick}
+          >
+            {snippetData.username}
+          </Box>{" "}
+          Created on {snippetData.formattedCreationDate}
         </Text>
         <VStack
           align={["center", "flex-start"]}
