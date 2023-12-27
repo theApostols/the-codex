@@ -19,6 +19,7 @@ import { DELETE_COMMENT } from "../../utils/mutations";
 import Auth from "../../utils/auth";
 import { useMutation } from "@apollo/client";
 import { GET_INDIVIDUAL_SNIPPET } from "../../utils/queries";
+import React from "react";
 
 // Added default value to the snippet renders on the userpage
 const IndividualSnippetPreview = ({ snippet }) => {
@@ -104,23 +105,15 @@ const IndividualSnippetPreview = ({ snippet }) => {
           )}
 
           <Text>{snippetData.snippetText}</Text>
-
           <Box w="full">
             {/* Map through all code blocks and render CodeEditor for each */}
             {snippetData.snippetCode.map((codeBlock, index) => (
-              <CodeEditor
-                key={index}
-                code={codeBlock.code}
-                // Assuming you also have a property like codeBlock.language
-                // language={codeBlock.language}
-              />
+              <React.Fragment key={index}>
+                {codeBlock.language}
+                <CodeEditor key={index} code={codeBlock.code} />
+              </React.Fragment>
             ))}
           </Box>
-          {/*           <Box w="full">
-            {snippetData.comments.map((comment, index) => (
-              <Text key={index}>{comment.commentText}</Text>
-            ))}
-          </Box> */}
           <Box w="full">
             {snippetData.comments.map((comment, index) => (
               <Box key={index} mb="4">
