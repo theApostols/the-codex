@@ -345,9 +345,7 @@ export default function UserSnippets() {
                       borderBottom="1px solid"
                       borderColor="codex.borders"
                     >
-                      <Link to={`/individual-snippets/${snippet._id}`}>
-                        <MainSnippetPreview snippet={snippet} />
-                      </Link>
+                      <MainSnippetPreview snippet={snippet} />
                       <HStack color="codex.text">
                         <Button
                           variant="icon"
