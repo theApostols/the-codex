@@ -2,9 +2,7 @@ import { Box, Text, Button, VStack, Code } from "@chakra-ui/react";
 
 // Added default value to the snippet renders on the userpage
 const SnippetPreview = (snippet) => {
-  // console.log("This is the snippet : ", snippet);
   const snippetData = snippet.snippet;
-  console.log("This is the snippetData: ", snippetData);
   return (
     <>
       <Box p={4} borderRadius="md" borderWidth="1px">
@@ -30,9 +28,7 @@ const SnippetPreview = (snippet) => {
             Drop
           </Button>
           {/* display total props */}
-          <Text fontSize="sm">
-            Props: {snippetData.overallProps}
-          </Text>
+          <Text fontSize="sm">Props: {snippetData.overallProps}</Text>
           {/* add a button to prop */}
           <Button variant="outline" size="sm">
             Prop

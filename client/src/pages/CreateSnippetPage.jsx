@@ -20,7 +20,6 @@ import { CREATE_SNIPPET } from "../utils/mutations";
 import { useMutation, useQuery } from "@apollo/client";
 import Auth from "../utils/auth";
 import { GET_USER_SNIPPETS } from "../utils/queries";
-import SnippetDisplay from "../components/Snippet/Snippet2";
 
 export default function CreateSnippetPage() {
   // State to manage an array of snippet data
@@ -245,7 +244,6 @@ export default function CreateSnippetPage() {
           })),
         },
       });
-      console.log("Snippet created:", response.data.createSnippet);
 
       // Show message to confirm snippet was created
       setCreateMessage(true);
@@ -290,7 +288,6 @@ export default function CreateSnippetPage() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-  console.log("data:", data);
 
   const userSnippets = data.userSnippets || [];
 

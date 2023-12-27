@@ -120,8 +120,6 @@ export default function UserSnippets() {
   // Extract snippets from the data
   const snippets = data.userSnippets.snippets;
 
-  console.log(snippets);
-
   let currentUser; //variable to hold current user's username
 
   //attempts to retrieve username from JWT
@@ -221,7 +219,6 @@ export default function UserSnippets() {
   const handleInputChange = (event) => {
     const { value } = event.target;
     setUserSearch(value);
-    console.log(userSearch);
   };
 
   //upon the user clicking the 'search' button, route to the user snippets page of the user they searched for
@@ -307,6 +304,7 @@ export default function UserSnippets() {
                     <Checkbox
                       colorScheme="purple"
                       size="md"
+
                       color="codex.accents"
                       key={index}
                       isChecked={selectedTags.includes(tag)}
@@ -376,6 +374,7 @@ export default function UserSnippets() {
                 </Box>
               ))}
             </Box>
+
           </VStack>
         </Flex>
       </Box>

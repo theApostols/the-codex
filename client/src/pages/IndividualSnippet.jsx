@@ -90,9 +90,6 @@ export default function UserSnippets() {
         },
       });
 
-      // Handle the result if needed
-      console.log("Comment created:", result);
-
       // Clear the comment input and hide the input box
       setCommentInput("");
       setCommentInputVisible(false);
@@ -133,9 +130,6 @@ export default function UserSnippets() {
   // Extract snippets from the data
   const snippets = data.oneSnippet;
   const snippetUser = snippets.username;
-  // console.log("This is the snippets", snippets);
-  console.log(snippetUser);
-  console.log(currentUser);
 
   //props and drops handlers
   const handleAddProps = async (snippetId) => {
@@ -307,6 +301,7 @@ export default function UserSnippets() {
                       mt="4"
                       variant="secondary"
                       size="sm"
+
                     onClick={handleAddComment}
                   >
                     Submit Comment

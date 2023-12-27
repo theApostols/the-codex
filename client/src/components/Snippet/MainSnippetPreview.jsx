@@ -19,14 +19,14 @@ import CodeEditor from "../CodeEditor";
 // Added default value to the snippet renders on the userpage
 const SnippetPreview = ({ snippet }) => {
   // Check if snippetData and snippetCode exist before accessing
-  console.log("This is the snippetData", snippet);
+
   if (snippet) {
     const snippetData = snippet;
 
     return (
       <>
         <Box p={4} borderRadius="md">
-          <Text fontSize="sm" color="codex.accents300" ml = "1" mb = "1">
+          <Text fontSize="sm" color="codex.accents300" ml="1" mb="1">
             Created by {snippetData.username} on{" "}
             {snippetData.formattedCreationDate}
           </Text>
@@ -56,7 +56,7 @@ const SnippetPreview = ({ snippet }) => {
 
             <Text>{snippetData.snippetText}</Text>
 
-          {/* <Box w="full">
+            {/* <Box w="full">
             { Map through all code blocks and render CodeEditor for each }
             {snippetData.snippetCode.map((codeBlock, index) => (
               <CodeEditor

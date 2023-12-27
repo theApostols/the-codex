@@ -25,7 +25,7 @@ import {
   Divider,
   Icon,
   HStack,
-  Heading
+  Heading,
 } from "@chakra-ui/react";
 import { BiLogOut, BiMenu, BiPlus, BiUser, BiCog } from "react-icons/bi";
 import AuthService from "../../utils/auth";
@@ -47,9 +47,6 @@ const Header = () => {
   } = useQuery(GET_ONE_USER, {
     variables: { username: user },
   });
-
-  console.log(user);
-  console.log(userData);
 
   const handleCreateClick = () => {
     navigate("/createsnippet");
@@ -96,10 +93,9 @@ const Header = () => {
               variant="outline"
             />
             <MenuList bg="codex.main" border="1px solid teal">
-              {isAuthenticated ? (null) : 
-              (
+              {isAuthenticated ? null : (
                 <MenuItem bg="transparent" color="codex.text">
-                Home
+                  Home
                 </MenuItem>
               )}
               <MenuItem bg="codex.main" color="codex.text" as={Link} to="/main-snippets" variant="primary">
@@ -112,14 +108,20 @@ const Header = () => {
           </Menu>
           {/* Button to toggle dark or light mode */}
           <Button onClick={toggleTheme} variant="ghost">
-                  {isDarkMode ? <BsFillSunFill w={8} h={8}/> : <BsMoonFill w={8} h={8}/>}
-                </Button>
+            {isDarkMode ? (
+              <BsFillSunFill w={8} h={8} />
+            ) : (
+              <BsMoonFill w={8} h={8} />
+            )}
+          </Button>
 
-          <Image 
-        src={isDarkMode ? "/images/logo_dark.png" : "/images/logo_light.png"} 
-        alt="Logo" 
-        boxSize="50px" 
-      />
+          <Image
+            src={
+              isDarkMode ? "/images/logo_dark.png" : "/images/logo_light.png"
+            }
+            alt="Logo"
+            boxSize="50px"
+          />
 
           {isAuthenticated ? (
             <Avatar
@@ -138,26 +140,31 @@ const Header = () => {
       ) : (
         <>
           <Flex align="center">
-          <Image 
-        src={isDarkMode ? "/images/logo_dark.png" : "/images/logo_light.png"} 
-        alt="Logo" 
-        boxSize="50px" 
-      />
-            <Text fontSize="xl" fontWeight="bold" ml="2" mr='6'>
+            <Image
+              src={
+                isDarkMode ? "/images/logo_dark.png" : "/images/logo_light.png"
+              }
+              alt="Logo"
+              boxSize="50px"
+            />
+            <Text fontSize="xl" fontWeight="bold" ml="2" mr="6">
               The CodeX
             </Text>
 
-                {/* Button to toggle dark or light mode */}
-                <Button onClick={toggleTheme} variant="ghost">
-                  {isDarkMode ? <BsFillSunFill w={8} h={8}/> : <BsMoonFill w={8} h={8}/>}
-                </Button>
+            {/* Button to toggle dark or light mode */}
+            <Button onClick={toggleTheme} variant="ghost">
+              {isDarkMode ? (
+                <BsFillSunFill w={8} h={8} />
+              ) : (
+                <BsMoonFill w={8} h={8} />
+              )}
+            </Button>
           </Flex>
 
           <Stack direction="row" spacing={4}>
-            {isAuthenticated ? (null) : 
-            (
+            {isAuthenticated ? null : (
               <Button as={Link} to="/" variant="link">
-              Home
+                Home
               </Button>
             )}
             <Button as={Link} to="/main-snippets" variant="link">Snippets</Button>
@@ -198,12 +205,14 @@ const Header = () => {
           <DrawerHeader color="codex.accents">{user?.name}</DrawerHeader>
           <DrawerBody>
             <VStack align="stretch" spacing={4}>
-              <HStack spacing = {4}>
+              <HStack spacing={4}>
                 <Avatar
                   size="lg"
                   src={`/images/file-uploads/${userData?.oneUser?.image}`}
                 />
-                <Heading color="codex.accents" size = "lg" isTruncated>{user}</Heading>
+                <Heading color="codex.accents" size="lg" isTruncated>
+                  {user}
+                </Heading>
               </HStack>
               <Button
                 leftIcon={
