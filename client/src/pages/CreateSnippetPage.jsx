@@ -10,8 +10,8 @@ import {
   Input,
   Text,
   Flex,
+  Grid,
   Checkbox,
-  FormLabel,
   Icon,
   Heading,
 } from "@chakra-ui/react";
@@ -311,7 +311,9 @@ export default function CreateSnippetPage() {
         backdropFilter="saturate(100%) blur(10px)"
         color="white"
       >
-        <Heading textAlign="center" color="codex.text" mb="6">Create Snippet</Heading>
+        <Heading textAlign="center" color="codex.text" mb="6">
+          Create Snippet
+        </Heading>
         <Box w="full">
           {/* Snippet title */}
           <Input
@@ -426,12 +428,16 @@ export default function CreateSnippetPage() {
             {showTagsSection ? "Hide Tags" : "Add Tags"}
           </Button>
           {showTagsSection && (
-            <Flex wrap="wrap" marginTop={2}>
+            <Grid
+              marginTop={2}
+              templateColumns="repeat(3, 1fr)"
+              gap={2}
+            >
               {availableTags.map((tag, index) => (
                 <Checkbox
-                colorScheme="purple"
-                  size="sm"
-                  color="codex.accents200"
+                  colorScheme="purple"
+                  size="md"
+                  color="codex.accents"
                   key={index}
                   isChecked={selectedTags.includes(tag)}
                   onChange={() => handleTagChange(tag)}
@@ -441,11 +447,11 @@ export default function CreateSnippetPage() {
                   {tag}
                 </Checkbox>
               ))}
-            </Flex>
+            </Grid>
           )}
         </Box>
         <Box w="full">
-          <Box w="full" >
+          <Box w="full">
             {/*Code editor component for syntax highlighting*/}
             {snippetList.map((snippet, index) => (
               <CodeEditor

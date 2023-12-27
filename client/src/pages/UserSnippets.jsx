@@ -1,10 +1,27 @@
 import { useQuery, useMutation } from "@apollo/client";
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview.jsx";
 import { GET_USER_SNIPPETS } from "../utils/queries";
-import { Box, Flex, VStack, HStack, Button, Icon, Text, Input, Avatar, Heading, Divider, Checkbox } from "@chakra-ui/react";
-import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+import {
+  Box,
+  Flex,
+  VStack,
+  HStack,
+  Button,
+  Icon,
+  Text,
+  Input,
+  Avatar,
+  Heading,
+  Divider,
+  Checkbox,
+  Grid,
+  InputRightElement,
+  InputGroup,
+} from "@chakra-ui/react";
+import { FaAngleDoubleDown, FaAngleDoubleUp, FaSearch } from "react-icons/fa";
+import { MdPersonSearch, MdCode, MdCodeOff } from "react-icons/md";
 import {
   ADD_PROPS,
   ADD_DROPS,
@@ -63,10 +80,10 @@ export default function UserSnippets() {
     fontWeight: "bold",
   };
   //defines state for searching for users
-  const [userSearch, setUserSearch] = useState('');
+  const [userSearch, setUserSearch] = useState("");
 
   //retrieve user route parameter
-  const {username} = useParams();
+  const { username } = useParams();
 
   // PROPS AND DROPS MUTATIONS
   // mutation to add props, with refetch to update cache to reflect new props
@@ -86,16 +103,15 @@ export default function UserSnippets() {
   const [removeDrops] = useMutation(REMOVE_DROPS);
 
   // Use the useQuery hook to execute the GET_USER_SNIPPETS query
-  const { loading, error, data, refetch } = useQuery(GET_USER_SNIPPETS,
-  {
-    variables: {username}
+  const { loading, error, data, refetch } = useQuery(GET_USER_SNIPPETS, {
+    variables: { username },
   });
 
   //refetch all snippets using updated tags upon state change
   useEffect(() => {
     if (loading) return; //eject from function if the page is still loading
 
-    refetch({tags: selectedTags, username: username});
+    refetch({ tags: selectedTags, username: username });
   }, [selectedTags, refetch, loading]);
 
   if (loading) return <p>Loading...</p>;
@@ -109,20 +125,18 @@ export default function UserSnippets() {
   let currentUser; //variable to hold current user's username
 
   //attempts to retrieve username from JWT
-  try
-  {
+  try {
     //gets current user's username
     currentUser = Auth.getProfile()?.data?.username;
-  }
-  catch (error) //empty error block (this is just here to ensure the page still renders even if a user is not logged in)
-  {}
+  } catch (
+    error //empty error block (this is just here to ensure the page still renders even if a user is not logged in)
+  ) {}
 
   //PROPS AND DROPS HANDLERS
 
   //PROP A SNIPPET
   const handleAddProps = async (snippetId) => {
-    if (currentUser)
-    {
+    if (currentUser) {
       try {
         // was getting undefined error, chatgpt suggested this fix
         // preform the addProps mutation
@@ -140,8 +154,7 @@ export default function UserSnippets() {
 
   //DROP A SNIPPET
   const handleAddDrops = async (snippetId) => {
-    if (currentUser)
-    {
+    if (currentUser) {
       try {
         await addDrops({
           variables: {
@@ -157,8 +170,7 @@ export default function UserSnippets() {
 
   //REMOVE PROPS FROM A SNIPPET
   const handleRemoveProps = async (snippetId) => {
-    if (currentUser)
-    {
+    if (currentUser) {
       try {
         await removeProps({
           variables: {
@@ -174,8 +186,7 @@ export default function UserSnippets() {
 
   //REMOVE DROPS FROM A SNIPPET
   const handleRemoveDrops = async (snippetId) => {
-    if (currentUser)
-    {
+    if (currentUser) {
       try {
         await removeDrops({
           variables: {
@@ -208,147 +219,166 @@ export default function UserSnippets() {
   };
 
   const handleInputChange = (event) => {
-    const {value} = event.target;
+    const { value } = event.target;
     setUserSearch(value);
     console.log(userSearch);
   };
 
   //upon the user clicking the 'search' button, route to the user snippets page of the user they searched for
-  const handleUserSearch = () =>
-  {
+  const handleUserSearch = () => {
     window.location.assign(`/user-snippets/${userSearch}`);
-  }
+  };
 
   //if the user presses the 'enter' key while the user search input is in focus, attempt to search for that user
-  const handleKeyPress = (event) =>
-  {
-    if (event.key === 'Enter')
-    {
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
       handleUserSearch();
     }
   };
 
   return (
     <>
-    <Box
-      p="50"
-      d="flex"
-      alignItems="center"
-      justifyContent="center"
-      color="white"
-    >
-      <Flex
-        direction={{ base: "column", md: "row" }}
-        w="full"
-        maxW="5xl"
-        mx="auto"
-        p="8"
-        alignItems="start"
+      <Box
+        p="50"
+        d="flex"
+        alignItems="center"
+        justifyContent="center"
+        color="white"
       >
-        <VStack
-          spacing="4"
+        <Flex
+          direction={{ base: "column", md: "row" }}
           w="full"
           maxW="5xl"
           mx="auto"
           p="8"
-          color="codex.accents"
+          alignItems="start"
         >
-          <HStack spacing = {4}>
-            <Avatar
-              size="2xl"
-              src={`/images/file-uploads/${data?.userSnippets?.user?.image}`}
-            />
-            <Heading color="codex.accents" size = "3xl">{username}</Heading>
-          </HStack>
-
-          <Divider my = {1} borderColor="codex.highlights"/>
-
-          {/* Toggle Tags Section */}
-          <Box w="full">
-            <Button variant="secondary" onClick={handleToggleTags} size="sm">
-              {showTagsSection ? "Hide Tags" : "Select Tags"}
-            </Button>
-            {showTagsSection && (
-              <Flex wrap="wrap" marginTop={2}>
-                {availableTags.map((tag, index) => (
-                  <Checkbox
-                    colorScheme="teal"
-                    size="lg"
-                    color="codex.accents"
-                    key={index}
-                    isChecked={selectedTags.includes(tag)}
-                    onChange={() => handleTagChange(tag)}
-                    marginRight={2} // adds margin between tags
-                  >
-                    {tag}
-                  </Checkbox>
-                ))}
-              </Flex>
-            )}
-          </Box>
-
-          <HStack w = "full">
-            <Input
-              onChange={handleInputChange}
-              onKeyDown={handleKeyPress}
-              value={userSearch}
-              placeholder="Enter username"
-              borderColor="codex.borders"
-              focusBorderColor="codex.highlights"
-              borderWidth={2}
-            />
-            <Button variant="secondary" onClick = {handleUserSearch}>Search</Button>
-          </HStack>
-
-          <Divider my = {1} borderColor="codex.highlights"/>
-
-          <Box
+          <VStack
+            spacing="4"
             w="full"
-            border="1px solid"
-            borderColor="codex.borders"
-            borderRadius="lg"
-            bg="codex.darkest"
+            maxW="5xl"
+            mx="auto"
+            p="8"
+            color="codex.accents"
           >
-            {snippets.map((snippet, index) => (
-              <Box
-                key={index}
-                pb="5"
-                w="full"
-                borderBottom="1px solid"
-                borderColor="codex.borders"
-              >
-                <Link to={`/individual-snippets/${snippet._id}`}>
-                  <MainSnippetPreview snippet={snippet} />
-                </Link>
-                <HStack color="codex.text">
+            <HStack spacing={4}>
+              <Avatar
+                size="2xl"
+                src={`/images/file-uploads/${data?.userSnippets?.user?.image}`}
+              />
+              <Heading color="codex.accents" size="3xl">
+                {username}
+              </Heading>
+            </HStack>
 
+            <Divider my={1} borderColor="codex.highlights" />
+
+            <HStack w="50%">
+              <InputGroup size="lg">
+                <Input
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyPress}
+                  value={userSearch}
+                  placeholder="Enter username"
+                  borderColor="codex.borders"
+                  focusBorderColor="codex.highlights"
+                  borderWidth={2}
+                />
+                <InputRightElement>
                   <Button
-                    variant="icon"
-                    size="sm"
-                    onClick={() => handleAddDrops(snippet._id)}
+                    variant="secondary"
+                    h="2.75rem"
+                    onClick={handleUserSearch}
                   >
-                    <Icon as={FaAngleDoubleDown} w={8} h={8} ml = "2" />
+                    <MdPersonSearch />
                   </Button>
+                </InputRightElement>
+              </InputGroup>
+            </HStack>
 
-                  <Text color="codex.highlights" fontSize="sm">
-                    Props: {snippet.overallProps}
-                  </Text>
+            {/* Toggle Tags Section */}
+            <Box w="full">
+              <Button variant="secondary" onClick={handleToggleTags} size="sm">
+                {showTagsSection ? "Hide Tags" : "Select Tags"}
+              </Button>
+              {showTagsSection && (
+                <Grid marginTop={2} templateColumns="repeat(3, 1fr)" gap={2}>
+                  {availableTags.map((tag, index) => (
+                    <Checkbox
+                      colorScheme="purple"
+                      size="md"
+                      color="codex.accents"
+                      key={index}
+                      isChecked={selectedTags.includes(tag)}
+                      onChange={() => handleTagChange(tag)}
+                      marginRight={2} // adds margin between tags
+                    >
+                      {tag}
+                    </Checkbox>
+                  ))}
+                </Grid>
+              )}
+            </Box>
 
-                  <Button
-                    variant="icon"
-                    size="sm"
-                    onClick={() => handleAddProps(snippet._id)}
-                  >
-                    <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
-                  </Button>
+            <Divider my={1} borderColor="codex.highlights" />
 
-                </HStack>
-              </Box>
-            ))}
-          </Box>
-        </VStack>
-      </Flex>
-    </Box>
-  </>
+            <Box
+              w="full"
+              border="1px solid"
+              borderColor="codex.borders"
+              borderRadius="lg"
+              bg="codex.darkest"
+            >
+              {snippets.map((snippet, index) => (
+                <Box
+                  key={index}
+                  pb="5"
+                  w="full"
+                  borderBottom="1px solid"
+                  borderColor="codex.borders"
+                >
+                  <Link to={`/individual-snippets/${snippet._id}`}>
+                    <MainSnippetPreview snippet={snippet} />
+                  </Link>
+                  <HStack color="codex.text">
+                    <Button
+                      variant="icon"
+                      size="sm"
+                      onClick={() => handleAddDrops(snippet._id)}
+                    >
+                      <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
+                    </Button>
+
+                    <Text color="codex.highlights" fontSize="sm">
+                      Props: {snippet.overallProps}
+                    </Text>
+
+                    <Button
+                      variant="icon"
+                      size="sm"
+                      onClick={() => handleAddProps(snippet._id)}
+                    >
+                      <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
+                    </Button>
+                    <Button
+                      variant="icon"
+                      size="sm"
+                    >
+                      <Icon as={MdCode} w={8} h={8} mr="2" /> save snippet
+                    </Button>
+                    <Button
+                      variant="icon"
+                      size="sm"
+                    >
+                      <Icon as={MdCodeOff} w={8} h={8} mr="2" /> unsave snippet
+                    </Button>
+                  </HStack>
+                </Box>
+              ))}
+            </Box>
+          </VStack>
+        </Flex>
+      </Box>
+    </>
   );
 }

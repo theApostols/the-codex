@@ -9,9 +9,10 @@ import {
   HStack,
   Heading,
   Avatar,
+  Grid,
   Flex,
   Checkbox,
-  Divider
+  Divider,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { GET_ALL_SNIPPETS } from "../utils/queries";
@@ -94,9 +95,8 @@ export default function UserSnippets() {
   useEffect(() => {
     if (loading) return; //eject from function if the page is still loading
 
-    refetch({tags: selectedTags});
+    refetch({ tags: selectedTags });
   }, [selectedTags, refetch, loading]);
-  
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -106,20 +106,18 @@ export default function UserSnippets() {
   let username; //variable to hold user's username
 
   //attempts to retrieve username from JWT
-  try
-  {
+  try {
     //gets current user's username
     username = Auth.getProfile()?.data?.username;
-  }
-  catch (error) //empty error block (this is just here to ensure the page still renders even if a user is not logged in)
-  {}
+  } catch (
+    error //empty error block (this is just here to ensure the page still renders even if a user is not logged in)
+  ) {}
 
   //PROPS AND DROPS HANDLERS
 
   //PROP A SNIPPET
   const handleAddProps = async (snippetId) => {
-    if (username)
-    {
+    if (username) {
       try {
         // was getting undefined error, chatgpt suggested this fix
         // preform the addProps mutation
@@ -137,8 +135,7 @@ export default function UserSnippets() {
 
   //DROP A SNIPPET
   const handleAddDrops = async (snippetId) => {
-    if (username)
-    {
+    if (username) {
       try {
         await addDrops({
           variables: {
@@ -154,8 +151,7 @@ export default function UserSnippets() {
 
   //REMOVE PROPS FROM A SNIPPET
   const handleRemoveProps = async (snippetId) => {
-    if (username)
-    {
+    if (username) {
       try {
         await removeProps({
           variables: {
@@ -171,8 +167,7 @@ export default function UserSnippets() {
 
   //REMOVE DROPS FROM A SNIPPET
   const handleRemoveDrops = async (snippetId) => {
-    if (username)
-    {
+    if (username) {
       try {
         await removeDrops({
           variables: {
@@ -240,11 +235,15 @@ export default function UserSnippets() {
                 {showTagsSection ? "Hide Tags" : "Select Tags"}
               </Button>
               {showTagsSection && (
-                <Flex wrap="wrap" marginTop={2}>
+                <Grid
+                  marginTop={2}
+                  templateColumns="repeat(3, 1fr)"
+                  gap={2}
+                >
                   {availableTags.map((tag, index) => (
                     <Checkbox
-                      colorScheme="teal"
-                      size="lg"
+                      colorScheme="purple"
+                      size="md"
                       color="codex.accents"
                       key={index}
                       isChecked={selectedTags.includes(tag)}
@@ -254,11 +253,11 @@ export default function UserSnippets() {
                       {tag}
                     </Checkbox>
                   ))}
-                </Flex>
+                </Grid>
               )}
             </Box>
 
-            <Divider my = {1} borderColor="codex.highlights"/>
+            <Divider my={1} borderColor="codex.highlights" />
 
             <Box
               w="full"
@@ -282,11 +281,9 @@ export default function UserSnippets() {
                     <Button
                       variant="icon"
                       size="sm"
-                      onClick={() =>
-                        handleAddDrops(snippet._id)
-                      }
+                      onClick={() => handleAddDrops(snippet._id)}
                     >
-                      <Icon as={FaAngleDoubleDown} w={8} h={8} ml = "2" />
+                      <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
                     </Button>
                     <Text color="codex.highlights" fontSize="sm">
                       Props: {snippet.overallProps}
@@ -294,9 +291,7 @@ export default function UserSnippets() {
                     <Button
                       variant="icon"
                       size="sm"
-                      onClick={() =>
-                        handleAddProps(snippet._id)
-                      }
+                      onClick={() => handleAddProps(snippet._id)}
                     >
                       <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
                     </Button>
