@@ -13,6 +13,7 @@ import {
   Checkbox,
   FormLabel,
   Icon,
+  Heading,
 } from "@chakra-ui/react";
 import { BiSave } from "react-icons/bi";
 import { CREATE_SNIPPET } from "../utils/mutations";
@@ -310,6 +311,7 @@ export default function CreateSnippetPage() {
         backdropFilter="saturate(100%) blur(10px)"
         color="white"
       >
+        <Heading textAlign="center" color="codex.text" mb="6">Create Snippet</Heading>
         <Box w="full">
           {/* Snippet title */}
           <Input
@@ -360,6 +362,7 @@ export default function CreateSnippetPage() {
               placeholder="Enter your code snippet here"
               rows={10}
               cols={40}
+              mb={4}
             />
             {/* Language dropdown */}
             <LanguageSelector
@@ -371,6 +374,7 @@ export default function CreateSnippetPage() {
               variant="secondary"
               onClick={() => handleRemoveSnippetBox(index)}
               size="sm"
+              mt={4}
             >
               Remove Snippet
             </Button>
@@ -397,6 +401,7 @@ export default function CreateSnippetPage() {
                     bg="codex.darkest"
                     type="text"
                     placeholder="Resource Link"
+                    mt={4}
                     value={resource.link}
                     onChange={(e) => handleResourceLinkChange(e, index)}
                   />
@@ -404,6 +409,7 @@ export default function CreateSnippetPage() {
                     variant="secondary"
                     onClick={() => handleRemoveResource(index)}
                     size="sm"
+                    mt={4}
                   >
                     Remove Resource
                   </Button>
@@ -423,13 +429,14 @@ export default function CreateSnippetPage() {
             <Flex wrap="wrap" marginTop={2}>
               {availableTags.map((tag, index) => (
                 <Checkbox
-                  colorScheme="teal"
-                  size="md"
-                  color="codex.accents"
+                colorScheme="purple"
+                  size="sm"
+                  color="codex.accents200"
                   key={index}
                   isChecked={selectedTags.includes(tag)}
                   onChange={() => handleTagChange(tag)}
-                  marginRight={4} // adds margin between tags
+                  mr={8}
+                  mt={1} // adds margin between tags
                 >
                   {tag}
                 </Checkbox>
@@ -438,7 +445,7 @@ export default function CreateSnippetPage() {
           )}
         </Box>
         <Box w="full">
-          <Box w="full">
+          <Box w="full" >
             {/*Code editor component for syntax highlighting*/}
             {snippetList.map((snippet, index) => (
               <CodeEditor
