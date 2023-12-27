@@ -26,13 +26,12 @@ const IndividualSnippetPreview = ({ snippet }) => {
   let currentUser; //variable to hold user's username
 
   //attempts to retrieve username from JWT
-  try
-  {
+  try {
     //gets current user's username
     currentUser = Auth.getProfile().data.username;
-  }
-  catch (error) //empty error block (this is just here to ensure the page still renders even if a user is not logged in)
-  {}
+  } catch (
+    error //empty error block (this is just here to ensure the page still renders even if a user is not logged in)
+  ) {}
 
   // Define your DELETE_COMMENT mutation
   const [deleteComment] = useMutation(DELETE_COMMENT);
@@ -76,7 +75,7 @@ const IndividualSnippetPreview = ({ snippet }) => {
 
     return (
       <Box p={4} borderRadius="md">
-        <Text fontSize="sm" color="codex.accents300" ml = "1" mb = "1">
+        <Text fontSize="sm" color="codex.accents300" ml="1" mb="1">
           Created by {snippetData.username} Created on{" "}
           {snippetData.formattedCreationDate}
         </Text>
@@ -138,7 +137,12 @@ const IndividualSnippetPreview = ({ snippet }) => {
 
                 {/* Render delete button for comments created by the logged-in user */}
                 {currentUser === comment.username && (
-                  <Button onClick={() => handleDeleteComment(comment._id)}>
+                  <Button
+                    mt="4"
+                    variant="secondary"
+                    size="sm"
+                    onClick={() => handleDeleteComment(comment._id)}
+                  >
                     Delete Comment
                   </Button>
                 )}

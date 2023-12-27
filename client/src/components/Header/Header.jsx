@@ -98,14 +98,11 @@ const Header = () => {
                   Home
                 </MenuItem>
               )}
-              <MenuItem bg="codex.main" color="codex.text">
+              <MenuItem bg="codex.main" color="codex.text" as={Link} to="/main-snippets" variant="primary">
                 Snippets
               </MenuItem>
-              <MenuItem bg="codex.main" color="codex.text">
-                Button03
-              </MenuItem>
-              <MenuItem bg="codex.main" color="codex.text">
-                Button04
+              <MenuItem bg="codex.main" color="codex.text" as={Link} to="/dashboard">
+                Dashboard
               </MenuItem>
             </MenuList>
           </Menu>
@@ -170,13 +167,8 @@ const Header = () => {
                 Home
               </Button>
             )}
-            <Button as={Link} to="/main-snippets" variant="link">
-              Snippets
-            </Button>
-            <Button as={Link} to="/dashboard" variant="link">
-              Dashboard
-            </Button>
-            <Button variant="link">Button04</Button>
+            <Button as={Link} to="/main-snippets" variant="link">Snippets</Button>
+            <Button as={Link} to="/dashboard" variant="link">Dashboard</Button>
 
             {isAuthenticated ? (
               <Avatar
@@ -209,7 +201,7 @@ const Header = () => {
       >
         <DrawerOverlay />
         <DrawerContent bg="codex.darkest">
-          <DrawerCloseButton />
+          <DrawerCloseButton color="codex.text200"/>
           <DrawerHeader color="codex.accents">{user?.name}</DrawerHeader>
           <DrawerBody>
             <VStack align="stretch" spacing={4}>

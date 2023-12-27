@@ -16,8 +16,12 @@ import {
   Heading,
   Divider,
   Checkbox,
+  Grid,
+  InputRightElement,
+  InputGroup,
 } from "@chakra-ui/react";
-import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+import { FaAngleDoubleDown, FaAngleDoubleUp, FaSearch } from "react-icons/fa";
+import { MdPersonSearch, MdCode, MdCodeOff } from "react-icons/md";
 import {
   ADD_PROPS,
   ADD_DROPS,
@@ -266,17 +270,41 @@ export default function UserSnippets() {
 
             <Divider my={1} borderColor="codex.highlights" />
 
+            <HStack w="50%">
+              <InputGroup size="lg">
+                <Input
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyPress}
+                  value={userSearch}
+                  placeholder="Enter username"
+                  borderColor="codex.borders"
+                  focusBorderColor="codex.highlights"
+                  borderWidth={2}
+                />
+                <InputRightElement>
+                  <Button
+                    variant="secondary"
+                    h="2.75rem"
+                    onClick={handleUserSearch}
+                  >
+                    <MdPersonSearch />
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </HStack>
+
             {/* Toggle Tags Section */}
             <Box w="full">
               <Button variant="secondary" onClick={handleToggleTags} size="sm">
                 {showTagsSection ? "Hide Tags" : "Select Tags"}
               </Button>
               {showTagsSection && (
-                <Flex wrap="wrap" marginTop={2}>
+                <Grid marginTop={2} templateColumns="repeat(3, 1fr)" gap={2}>
                   {availableTags.map((tag, index) => (
                     <Checkbox
-                      colorScheme="teal"
-                      size="lg"
+                      colorScheme="purple"
+                      size="md"
+
                       color="codex.accents"
                       key={index}
                       isChecked={selectedTags.includes(tag)}
@@ -286,78 +314,67 @@ export default function UserSnippets() {
                       {tag}
                     </Checkbox>
                   ))}
-                </Flex>
+                </Grid>
               )}
             </Box>
 
-            <HStack w="full">
-              <Input
-                onChange={handleInputChange}
-                onKeyDown={handleKeyPress}
-                value={userSearch}
-                placeholder="Enter username"
-                borderColor="codex.borders"
-                focusBorderColor="codex.highlights"
-                borderWidth={2}
-              />
-              <Button variant="secondary" onClick={handleUserSearch}>
-                Search
-              </Button>
-            </HStack>
+            <Divider my={1} borderColor="codex.highlights" />
 
-            {data.userSnippets.user !== null &&
-            data.userSnippets.user !== undefined ? (
-              <>
-                <Divider my={1} borderColor="codex.highlights" />
-
+            <Box
+              w="full"
+              border="1px solid"
+              borderColor="codex.borders"
+              borderRadius="lg"
+              bg="codex.darkest"
+            >
+              {snippets.map((snippet, index) => (
                 <Box
+                  key={index}
+                  pb="5"
                   w="full"
-                  border="1px solid"
+                  borderBottom="1px solid"
                   borderColor="codex.borders"
-                  borderRadius="lg"
-                  bg="codex.darkest"
                 >
-                  {snippets.map((snippet, index) => (
-                    <Box
-                      key={index}
-                      pb="5"
-                      w="full"
-                      borderBottom="1px solid"
-                      borderColor="codex.borders"
+                  <Link to={`/individual-snippets/${snippet._id}`}>
+                    <MainSnippetPreview snippet={snippet} />
+                  </Link>
+                  <HStack color="codex.text">
+                    <Button
+                      variant="icon"
+                      size="sm"
+                      onClick={() => handleAddDrops(snippet._id)}
                     >
-                      <Link to={`/individual-snippets/${snippet._id}`}>
-                        <MainSnippetPreview snippet={snippet} />
-                      </Link>
-                      <HStack color="codex.text">
-                        <Button
-                          variant="icon"
-                          size="sm"
-                          onClick={() => handleAddDrops(snippet._id)}
-                        >
-                          <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
-                        </Button>
+                      <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
+                    </Button>
 
-                        <Text color="codex.highlights" fontSize="sm">
-                          Props: {snippet.overallProps}
-                        </Text>
+                    <Text color="codex.highlights" fontSize="sm">
+                      Props: {snippet.overallProps}
+                    </Text>
 
-                        <Button
-                          variant="icon"
-                          size="sm"
-                          onClick={() => handleAddProps(snippet._id)}
-                        >
-                          <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
-                        </Button>
-                      </HStack>
-                    </Box>
-                  ))}
+                    <Button
+                      variant="icon"
+                      size="sm"
+                      onClick={() => handleAddProps(snippet._id)}
+                    >
+                      <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
+                    </Button>
+                    <Button
+                      variant="icon"
+                      size="sm"
+                    >
+                      <Icon as={MdCode} w={8} h={8} mr="2" /> save snippet
+                    </Button>
+                    <Button
+                      variant="icon"
+                      size="sm"
+                    >
+                      <Icon as={MdCodeOff} w={8} h={8} mr="2" /> unsave snippet
+                    </Button>
+                  </HStack>
                 </Box>
-              </>
-            ) : (
-              <Text color="red" mt={2}>
-                User not found or name is incorrect.
-              </Text>
-            )}
+              ))}
+            </Box>
+
           </VStack>
         </Flex>
       </Box>

@@ -289,14 +289,19 @@ export default function UserSnippets() {
               {commentInputVisible && (
                 <Box p="4">
                   <Textarea
+                    color="codex.text200"
                     placeholder="Type your comment here..."
                     value={commentInput}
                     onChange={handleCommentInputChange}
+                    borderColor="codex.borders"
+                    focusBorderColor="codex.highlights"
+                    borderWidth={2}
                   />
                   <Button
-                    mt="4"
-                    variant="secondary"
-                    size="sm"
+                      mt="4"
+                      variant="secondary"
+                      size="sm"
+
                     onClick={handleAddComment}
                   >
                     Submit Comment
