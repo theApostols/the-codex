@@ -19,9 +19,17 @@ import {
   Grid,
   InputRightElement,
   InputGroup,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure
 } from "@chakra-ui/react";
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaSearch } from "react-icons/fa";
-import { MdPersonSearch, MdCode, MdCodeOff } from "react-icons/md";
+import { MdPersonSearch } from "react-icons/md";
 import {
   ADD_PROPS,
   ADD_DROPS,
@@ -79,6 +87,10 @@ export default function UserSnippets() {
     color: "white",
     fontWeight: "bold",
   };
+
+  // State for comment input
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   //defines state for searching for users
   const [userSearch, setUserSearch] = useState("");
 
@@ -106,6 +118,13 @@ export default function UserSnippets() {
   const { loading, error, data, refetch } = useQuery(GET_USER_SNIPPETS, {
     variables: { username },
   });
+
+  //if the user does not exist, display an error message
+  useEffect(() => {
+    if (error || (data && !data.userSnippets.user)) {
+      onOpen();
+    }
+  }, [error, data, onOpen]);
 
   //refetch all snippets using updated tags upon state change
   useEffect(() => {
@@ -270,8 +289,8 @@ export default function UserSnippets() {
 
             <Divider my={1} borderColor="codex.highlights" />
 
-            <HStack w="50%">
-              <InputGroup size="lg">
+            <HStack>
+              <InputGroup size="lg" w={["full", "3/4", "1/2"]}>
                 <Input
                   onChange={handleInputChange}
                   onKeyDown={handleKeyPress}
@@ -366,22 +385,30 @@ export default function UserSnippets() {
                         >
                           <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
                         </Button>
-                        <Button variant="icon" size="sm">
-                          <Icon as={MdCode} w={8} h={8} mr="2" /> save snippet
-                        </Button>
-                        <Button variant="icon" size="sm">
-                          <Icon as={MdCodeOff} w={8} h={8} mr="2" /> unsave
-                          snippet
-                        </Button>
                       </HStack>
                     </Box>
                   ))}
                 </Box>
               </>
             ) : (
-              <Text color="red" mt={2}>
-                User not found or name is incorrect.
-              </Text>
+
+              // <Text color="red" mt={2}>
+              //   User not found or name is incorrect.
+              // </Text>
+
+              <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>User Not Found</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <Text>The username you entered does not exist or is incorrect. Please try again with a different username.</Text>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button variant="secondary" mr={3} onClick={onClose}>Close</Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
             )}
           </VStack>
         </Flex>
