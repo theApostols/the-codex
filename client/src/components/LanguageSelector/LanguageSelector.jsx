@@ -12,7 +12,7 @@ const LanguageSelector = ({
       <FormLabel color="codex.accents">Choose Language:</FormLabel>
       <Select
         bg="codex.borders"
-        color="codex.text"
+        color="black"
         value={value}
         onChange={(e) => onChange(e.target.value)}
       >
