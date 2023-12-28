@@ -81,10 +81,10 @@ const CodeEditor = ({ code,language }) => {
   return (
     <Box p={4} borderRadius="md" borderWidth="1px" overflow="auto">
       <SyntaxHighlighter
-        lineProps={{style: {wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}}
-        wrapLines={true}
-        // showLineNumbers={true}
-        // showInlineLineNumbers={false}
+        lineProps={{style: {wordBreak: 'break-word', whiteSpace: 'pre-wrap',}}}
+        wrapLongLines={true}
+        //want to add line numbers but rendering weird when wrapping
+        //showLineNumbers={true}
         language={highlightedLanguage} 
         style={ agate }>
           {code}
