@@ -11,11 +11,13 @@ import {
   Avatar,
   Flex,
   Textarea,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { GET_INDIVIDUAL_SNIPPET } from "../utils/queries";
 import IndividualSnippetPreview from "../components/Snippet/IndividualSnippetPreview";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+import { MdCode, MdCodeOff, MdOutlineAddComment, MdOutlineEditNote } from "react-icons/md";
 import Auth from "../utils/auth";
 import {
   CREATE_COMMENT,
@@ -31,6 +33,8 @@ export default function UserSnippets() {
     color: "white",
     fontWeight: "bold",
   };
+
+  const isResponsive = useBreakpointValue({ base: true, md: true, lg: false });
 
   // State for comment input
   const [commentInput, setCommentInput] = useState("");
@@ -266,23 +270,31 @@ export default function UserSnippets() {
                   </Button>
                   {/* Conditionally render the edit button */}
                   {currentUser && snippetUser === currentUser && (
-                    <Link to={`/edit-snippet/${snippets._id}`}>
-                      <Button variant="icon" size="sm">
-                        {/* PLEASE EDIT THIS TO LOOK BETTER =D I SUCK AT THIS */}
-                        Edit
-                      </Button>
-                    </Link>
-                  )}
-                  {/* Button to toggle comment input */}
-                  {currentUser ? (
-                    <Button
-                      variant="icon"
-                      size="sm"
-                      onClick={toggleCommentInputVisibility}
-                    >
-                      Add Comment
+                  <Link to={`/edit-snippet/${snippets._id}`}>
+                    <Button variant="icon" size="sm">
+                      <Icon as={MdOutlineEditNote} w={8} h={8} mr={isResponsive ? "0" : "2"} />
+                      {isResponsive ? "" : "Edit"}
                     </Button>
-                  ) : null}
+                  </Link>
+                )}
+                {currentUser ? (
+                  <Button
+                    variant="icon"
+                    size="sm"
+                    onClick={toggleCommentInputVisibility}
+                  >
+                    <Icon as={MdOutlineAddComment} w={6} h={6} mr={isResponsive ? "0" : "2"} />
+                    {isResponsive ? "" : "Add Comment"}
+                  </Button>
+                ) : null}
+                <Button variant="icon" size="sm">
+                  <Icon as={MdCode} w={8} h={8} mr={isResponsive ? "0" : "2"} />
+                  {isResponsive ? "" : "Save Snippet"}
+                </Button>
+                <Button variant="icon" size="sm">
+                  <Icon as={MdCodeOff} w={8} h={8} mr={isResponsive ? "0" : "2"} />
+                  {isResponsive ? "" : "Unsave Snippet"}
+                </Button>
                 </HStack>
               </Box>
               {/* Comment input */}
@@ -298,10 +310,9 @@ export default function UserSnippets() {
                     borderWidth={2}
                   />
                   <Button
-                      mt="4"
-                      variant="secondary"
-                      size="sm"
-
+                    mt="4"
+                    variant="secondary"
+                    size="sm"
                     onClick={handleAddComment}
                   >
                     Submit Comment

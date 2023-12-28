@@ -83,7 +83,7 @@ const IndividualSnippetPreview = ({ snippet }) => {
     const snippetData = snippet;
 
     return (
-      <Box p={4} borderRadius="md">
+      <Box p={4} borderRadius="md" cursor="default">
         <Text fontSize="sm" color="codex.accents300" ml="1" mb="1">
           Created by{" "}
           <Box
@@ -108,7 +108,7 @@ const IndividualSnippetPreview = ({ snippet }) => {
           boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
           bg="rgba(45, 55, 72, 0.8)"
           backdropFilter="saturate(100%) blur(10px)"
-          color="codex.text"
+          color="white"
         >
           <Text fontSize="xl" fontWeight="bold">
             {snippetData.snippetTitle}
@@ -133,8 +133,8 @@ const IndividualSnippetPreview = ({ snippet }) => {
           </Box>
           <Box w="full">
             {snippetData.comments.map((comment, index) => (
-              <Box key={index} mb="4">
-                <Text>{comment.commentText}</Text>
+              <Box key={index} mb="8">
+                <Text mb="2">{comment.commentText}</Text>
                 <Text fontSize="sm" color="codex.accents300">
                   Posted by {comment.username} on{" "}
                   {comment.formattedCreationDate}
