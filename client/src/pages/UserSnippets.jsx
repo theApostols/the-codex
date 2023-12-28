@@ -21,7 +21,7 @@ import {
   InputGroup,
 } from "@chakra-ui/react";
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaSearch } from "react-icons/fa";
-import { MdPersonSearch, MdCode, MdCodeOff } from "react-icons/md";
+import { MdPersonSearch } from "react-icons/md";
 import {
   ADD_PROPS,
   ADD_DROPS,
@@ -365,13 +365,6 @@ export default function UserSnippets() {
                           onClick={() => handleAddProps(snippet._id)}
                         >
                           <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
-                        </Button>
-                        <Button variant="icon" size="sm">
-                          <Icon as={MdCode} w={8} h={8} mr="2" /> save snippet
-                        </Button>
-                        <Button variant="icon" size="sm">
-                          <Icon as={MdCodeOff} w={8} h={8} mr="2" /> unsave
-                          snippet
                         </Button>
                       </HStack>
                     </Box>
