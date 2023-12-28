@@ -157,19 +157,21 @@ export default function UserSnippets() {
   const handleAddProps = async (snippetId) => {
     if (currentUser) {
       try {
-  
+        // Check if the user has already propped/dropped the snippet
         const userHasProp = snippets.props.includes(currentUser);
-  
+        const userHasDropped = snippets.drops.includes(currentUser);
+
         if (userHasProp) {
           // User has already propped, so remove the prop
           await removeProps({
             variables: {
               username: currentUser,
               snippetId: snippetId,
-              operation: userHasProp ? "REMOVE" : "ADD",
             },
           });
-        } else {
+        } else if (!userHasDropped) {
+          // user cannot prop if they have dropped, need to undrop first
+          // makes it so both buttons are not active at the same time
           // User hasn't propped, so add the prop
           await addProps({
             variables: {
@@ -203,17 +205,19 @@ export default function UserSnippets() {
       try {
 
           const userHasDropped = snippets.drops.includes(currentUser);
-  
+          const userHasProp = snippets.props.includes(currentUser);
+
         if (userHasDropped) {
           // User has already dropped, so remove the drop
           await removeDrops({
             variables: {
               username: currentUser,
               snippetId: snippetId,
-              operation: userHasDropped ? "REMOVE" : "ADD",
             },
           });
-        } else {
+        } else if (!userHasProp) {
+          // user cannot drop if they have propped, need to unprop first
+          // makes it so both buttons are not active at the same time
           // User hasn't dropped, so add the drop
           await addDrops({
             variables: {
@@ -227,36 +231,6 @@ export default function UserSnippets() {
       }
     }
   };
-
-  // const handleRemoveProps = async (snippetId) => {
-  //   if (currentUser) {
-  //     try {
-  //       await removeProps({
-  //         variables: {
-  //           username: currentUser,
-  //           snippetId: snippetId,
-  //         },
-  //       });
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   }
-  // };
-
-  // const handleRemoveDrops = async (snippetId) => {
-  //   if (currentUser) {
-  //     try {
-  //       await removeDrops({
-  //         variables: {
-  //           username: currentUser,
-  //           snippetId: snippetId,
-  //         },
-  //       });
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   }
-  // };
 
   return (
     <>
