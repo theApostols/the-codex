@@ -280,19 +280,6 @@ export default function CreateSnippetPage() {
     }
   }, [createMessage]);
 
-  ////////GET USER SNIPPETS////////////////////
-  //////// DELETE THIS BLOCK LATER ///////////
-  const { loading, error, data } = useQuery(GET_USER_SNIPPETS, {
-    variables: { username: Auth.getProfile().data.username },
-  });
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-
-  const userSnippets = data.userSnippets || [];
-
-  ////////////////////////////////////////////
-
   return (
     <Box p="50" d="flex" alignItems="center" justifyContent="center">
       <VStack

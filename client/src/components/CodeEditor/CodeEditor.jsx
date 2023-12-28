@@ -76,11 +76,18 @@ import { Box } from '@chakra-ui/react';
 
 const CodeEditor = ({ code,language }) => {
   const highlightedLanguage = language === 'custom' ? 'javascript' : language;
-  
+
+
   return (
     <Box p={4} borderRadius="md" borderWidth="1px" overflow="auto">
-      <SyntaxHighlighter language={highlightedLanguage} style={agate}>
-        {code}
+      <SyntaxHighlighter
+        lineProps={{style: {wordBreak: 'break-word', whiteSpace: 'pre-wrap',}}}
+        wrapLongLines={true}
+        //want to add line numbers but rendering weird when wrapping
+        //showLineNumbers={true}
+        language={highlightedLanguage} 
+        style={ agate }>
+          {code}
       </SyntaxHighlighter>
     </Box>
   );
