@@ -17,9 +17,8 @@ import {
 } from "@chakra-ui/react";
 import { BiSave } from "react-icons/bi";
 import { CREATE_SNIPPET } from "../utils/mutations";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import Auth from "../utils/auth";
-import { GET_USER_SNIPPETS } from "../utils/queries";
 
 export default function CreateSnippetPage() {
   // State to manage an array of snippet data
@@ -137,6 +136,7 @@ export default function CreateSnippetPage() {
   };
 
   const handleCustomLanguageChange = (e) => {
+    //used with languageSelector component
     // set customLanguage to the value of user input if they choose to enter a custom language
     // trim whitespace, convert to lowercase, and capitalize the first letter
     setCustomLanguage(
@@ -349,10 +349,24 @@ export default function CreateSnippetPage() {
               rows={10}
               cols={40}
               mb={4}
+              onKeyDown={(e) => { // Add tab functionality to code snippet input
+                if (e.key === "Tab") {
+                  e.preventDefault(); // Prevent default behavior (moving to the next field)
+                  const { selectionStart, selectionEnd } = e.target;
+                  const value = e.target.value;
+                  // Insert a tab character at the caret position
+                  e.target.value =
+                    value.substring(0, selectionStart) +
+                    "\t" +
+                    value.substring(selectionEnd);
+                  // Move the caret position after the inserted tab character
+                  e.target.setSelectionRange(selectionStart + 1, selectionStart + 1);
+                }
+              }}
             />
             {/* Language dropdown */}
             <LanguageSelector
-              value={language[index]} // Update this line
+              value={language[index] || "javascript"} // Update this line
               onChange={(value) => handleLanguageChange(value, index)}
             />
             {/* Button to remove the snippet box */}

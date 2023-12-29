@@ -142,7 +142,7 @@ export default function UserSnippets() {
 
   // Extract snippets from the data
   const snippets = data.userSnippets.snippets;
-  console.log(snippets);
+  // console.log(snippets);
 
   let currentUser; //variable to hold current user's username
 
