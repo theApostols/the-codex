@@ -72,11 +72,6 @@ export default function CreateSnippetPage() {
     setCustomLanguage("");
   };
 
-  // State to manage an array of snippet data
-  const [snippetList, setSnippetList] = useState([
-    { language: "javascript", code: "" },
-  ]);
-
   const [resources, setResources] = useState([]);
 
   const [snippetTitle, setSnippetTitle] = useState("");
@@ -145,18 +140,24 @@ export default function CreateSnippetPage() {
 
   // Function to add a new snippet box
   const handleAddSnippetBox = () => {
-    setSnippetList((prevList) => [
-      ...prevList,
-      { language: "javascript", code: "" },
-    ]);
+    setSnippetData((prevSnippetData) => ({
+      ...prevSnippetData,
+      snippetCode: [
+        ...prevSnippetData.snippetCode,
+        { language: "javascript", code: "" },
+      ],
+    }));
   };
 
   // Function to remove a snippet box by index
   const handleRemoveSnippetBox = (index) => {
-    setSnippetList((prevList) => {
-      const newList = [...prevList];
-      newList.splice(index, 1);
-      return newList;
+    setSnippetData((prevSnippetData) => {
+      const newSnippetCode = [...prevSnippetData.snippetCode];
+      newSnippetCode.splice(index, 1);
+      return {
+        ...prevSnippetData,
+        snippetCode: newSnippetCode,
+      };
     });
   };
 
