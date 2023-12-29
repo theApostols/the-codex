@@ -211,6 +211,7 @@ mutation RemoveProps($username: String!, $snippetId: ID!)
   {
     _id
     props
+    overallProps
   }
 }`;
 
@@ -246,6 +247,7 @@ mutation RemoveDrops($username: String!, $snippetId: ID!)
   {
     _id
     drops
+    overallProps
   }
 }`;
 
