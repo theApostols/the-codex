@@ -12,12 +12,18 @@ import {
   Flex,
   Textarea,
   useBreakpointValue,
+  ColorModeContext,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { GET_INDIVIDUAL_SNIPPET } from "../utils/queries";
 import IndividualSnippetPreview from "../components/Snippet/IndividualSnippetPreview";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
-import { MdCode, MdCodeOff, MdOutlineAddComment, MdOutlineEditNote } from "react-icons/md";
+import {
+  MdCode,
+  MdCodeOff,
+  MdOutlineAddComment,
+  MdOutlineEditNote,
+} from "react-icons/md";
 import Auth from "../utils/auth";
 import {
   CREATE_COMMENT,
@@ -203,9 +209,8 @@ export default function UserSnippets() {
   const handleAddDrops = async (snippetId) => {
     if (currentUser) {
       try {
-
-          const userHasDropped = snippets.drops.includes(currentUser);
-          const userHasProp = snippets.props.includes(currentUser);
+        const userHasDropped = snippets.drops.includes(currentUser);
+        const userHasProp = snippets.props.includes(currentUser);
 
         if (userHasDropped) {
           // User has already dropped, so remove the drop
@@ -287,11 +292,14 @@ export default function UserSnippets() {
                         handleAddDrops(snippets._id);
                       }
                     }}
-                    color={snippets.drops.includes(currentUser) ? "codex.highlights" : "codex.borders"}
+                    color={
+                      snippets.drops.includes(currentUser)
+                        ? "codex.highlights"
+                        : "codex.borders"
+                    }
                   >
                     <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
                   </Button>
-
                   <Text color="codex.highlights" fontSize="sm">
                     Props: {snippets.overallProps}
                   </Text>
@@ -303,40 +311,99 @@ export default function UserSnippets() {
                         handleAddProps(snippets._id);
                       }
                     }}
-                    color={snippets.props.includes(currentUser) ? "codex.highlights" : "codex.borders"}
+                    color={
+                      snippets.props.includes(currentUser)
+                        ? "codex.highlights"
+                        : "codex.borders"
+                    }
                   >
                     <Icon as={FaAngleDoubleUp} w={8} h={8} />
                   </Button>
 
                   {/* Conditionally render the edit button */}
                   {currentUser && snippetUser === currentUser && (
-                  <Link to={`/edit-snippet/${snippets._id}`}>
-                    <Button variant="icon" size="sm">
-                      <Icon as={MdOutlineEditNote} w={8} h={8} mr={isResponsive ? "0" : "2"} />
-                      {isResponsive ? "" : "Edit"}
+                    <Link to={`/edit-snippet/${snippets._id}`}>
+                      <Button variant="icon" size="sm">
+                        <Icon
+                          as={MdOutlineEditNote}
+                          w={8}
+                          h={8}
+                          mr={isResponsive ? "0" : "2"}
+                        />
+                        {isResponsive ? "" : "Edit"}
+                      </Button>
+                    </Link>
+                  )}
+                  {currentUser ? (
+                    <Button
+                      variant="icon"
+                      size="sm"
+                      onClick={toggleCommentInputVisibility}
+                    >
+                      <Icon
+                        as={MdOutlineAddComment}
+                        w={6}
+                        h={6}
+                        mr={isResponsive ? "0" : "2"}
+                      />
+                      {isResponsive ? "" : "Add Comment"}
                     </Button>
-                  </Link>
-                )}
-                {currentUser ? (
-                  <Button
-                    variant="icon"
-                    size="sm"
-                    onClick={toggleCommentInputVisibility}
-                  >
-                    <Icon as={MdOutlineAddComment} w={6} h={6} mr={isResponsive ? "0" : "2"} />
-                    {isResponsive ? "" : "Add Comment"}
+                  ) : null}
+                  <Button variant="icon" size="sm">
+                    <Icon
+                      as={MdCode}
+                      w={8}
+                      h={8}
+                      mr={isResponsive ? "0" : "2"}
+                    />
+                    {isResponsive ? "" : "Save Snippet"}
                   </Button>
-                ) : null}
-                <Button variant="icon" size="sm">
-                  <Icon as={MdCode} w={8} h={8} mr={isResponsive ? "0" : "2"} />
-                  {isResponsive ? "" : "Save Snippet"}
-                </Button>
-                <Button variant="icon" size="sm">
-                  <Icon as={MdCodeOff} w={8} h={8} mr={isResponsive ? "0" : "2"} />
-                  {isResponsive ? "" : "Unsave Snippet"}
-                </Button>
+                  <Button variant="icon" size="sm">
+                    <Icon
+                      as={MdCodeOff}
+                      w={8}
+                      h={8}
+                      mr={isResponsive ? "0" : "2"}
+                    />
+                    {isResponsive ? "" : "Unsave Snippet"}
+                  </Button>
                 </HStack>
               </Box>
+              {/* Conditionally render resource links */}
+              {snippets.resources && snippets.resources.length > 0 && (
+                <VStack p="4" align="start">
+                  <Heading fontSize="m">
+                    Resources
+                  </Heading>
+                  {snippets.resources.map((resource, index) => (
+                    <Text key={index} color="codex.text" fontSize="sm"
+                    _hover={{ textDecoration: 'underline' }}>
+                      <Link 
+                        to={resource.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {resource.title || resource.link}
+                      </Link>
+                    </Text>
+                  ))}
+                </VStack>
+              )}
+
+              {/* Conditionally render tags */}
+              {snippets.tags && snippets.tags.length > 0 && (
+                <VStack pl="4" pb="4" pr="4" align="start">
+                  <Heading fontSize="m">
+                    Tags
+                  </Heading>
+                  <HStack>
+                    {snippets.tags.map((tag, index) => (
+                      <Text key={index} color="codex.text" fontSize="sm">{tag}</Text>
+                    ))}
+                  </HStack>
+                </VStack>
+              )}
+
               {/* Comment input */}
               {commentInputVisible && (
                 <Box p="4">
