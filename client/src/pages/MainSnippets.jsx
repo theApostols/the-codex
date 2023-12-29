@@ -83,10 +83,14 @@ export default function UserSnippets() {
   });
 
   //mutation to remove props, to calculate overall props when snippet is dropped
-  const [removeProps] = useMutation(REMOVE_PROPS);
+  const [removeProps] = useMutation(REMOVE_PROPS, {
+    refetchQueries: [{ query: GET_ALL_SNIPPETS }],
+  });
 
   //mutation to remove drops, to calculate overall props when snippet is propped
-  const [removeDrops] = useMutation(REMOVE_DROPS);
+  const [removeDrops] = useMutation(REMOVE_DROPS, {
+    refetchQueries: [{ query: GET_ALL_SNIPPETS }],
+  });
 
   //QUERY TO GET ALL SNIPPETS
   const { loading, error, data, refetch } = useQuery(GET_ALL_SNIPPETS);
@@ -102,31 +106,53 @@ export default function UserSnippets() {
   if (error) return <p>Error: {error.message}</p>;
 
   const snippets = data?.allSnippets;
+  // console.log(snippets);
 
-  let username; //variable to hold user's username
+  let currentUser; //variable to hold user's username
 
   //attempts to retrieve username from JWT
   try {
     //gets current user's username
-    username = Auth.getProfile()?.data?.username;
+    currentUser = Auth.getProfile()?.data?.username;
   } catch (
     error //empty error block (this is just here to ensure the page still renders even if a user is not logged in)
   ) {}
 
   //PROPS AND DROPS HANDLERS
-
   //PROP A SNIPPET
   const handleAddProps = async (snippetId) => {
-    if (username) {
+    if (currentUser) {
       try {
-        // was getting undefined error, chatgpt suggested this fix
-        // preform the addProps mutation
-        await addProps({
-          variables: {
-            username: username,
-            snippetId: snippetId,
-          },
-        });
+        // find snippet by id in snippets array
+        const snippet = snippets.find((snippet) => snippet._id === snippetId);
+
+        if (!snippet) {
+          console.error("Snippet not found");
+          return;
+        }
+        // Check if the user has already propped/dropped the snippet
+        const userHasProp = snippet.props.includes(currentUser);
+        const userHasDropped = snippet.drops.includes(currentUser);
+
+        if (userHasProp) {
+          // User has already propped, so remove the prop
+          await removeProps({
+            variables: {
+              username: currentUser,
+              snippetId: snippetId,
+            },
+          });
+        } else if (!userHasDropped) {
+          // user cannot prop if they have dropped, need to undrop first
+          // makes it so both buttons are not active at the same time
+          // User hasn't propped, so add the prop
+          await addProps({
+            variables: {
+              username: currentUser,
+              snippetId: snippetId,
+            },
+          });
+        }
       } catch (err) {
         console.error("Error propping snippet", err);
       }
@@ -135,48 +161,38 @@ export default function UserSnippets() {
 
   //DROP A SNIPPET
   const handleAddDrops = async (snippetId) => {
-    if (username) {
+    if (currentUser) {
       try {
-        await addDrops({
-          variables: {
-            username: username,
-            snippetId: snippetId,
-          },
-        });
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  };
+        const snippet = snippets.find((snippet) => snippet._id === snippetId);
 
-  //REMOVE PROPS FROM A SNIPPET
-  const handleRemoveProps = async (snippetId) => {
-    if (username) {
-      try {
-        await removeProps({
-          variables: {
-            username: username,
-            snippetId: snippetId,
-          },
-        });
+        if (!snippet) {
+          console.error("Snippet not found");
+          return;
+        }
+        // Check if the user has already propped/dropped the snippet
+        const userHasProp = snippet.props.includes(currentUser);
+        const userHasDropped = snippet.drops.includes(currentUser);
+        if (userHasDropped) {
+          // User has already dropped, so remove the drop
+          await removeDrops({
+            variables: {
+              username: currentUser,
+              snippetId: snippetId,
+            },
+          });
+        } else if (!userHasProp) {
+          // user cannot drop if they have propped, need to unprop first
+          // makes it so both buttons are not active at the same time
+          // User hasn't dropped, so add the drop
+          await addDrops({
+            variables: {
+              username: currentUser,
+              snippetId: snippetId,
+            },
+          });
+        }
       } catch (err) {
-        console.error(err);
-      }
-    }
-  };
-
-  //REMOVE DROPS FROM A SNIPPET
-  const handleRemoveDrops = async (snippetId) => {
-    if (username) {
-      try {
-        await removeDrops({
-          variables: {
-            username: username,
-            snippetId: snippetId,
-          },
-        });
-      } catch (err) {
-        console.error(err);
+        console.error("Error dropping snippet:", err);
       }
     }
   };
@@ -275,7 +291,16 @@ export default function UserSnippets() {
                     <Button
                       variant="icon"
                       size="sm"
-                      onClick={() => handleAddDrops(snippet._id)}
+                      onClick={() => {
+                        if (snippet) {
+                          handleAddDrops(snippet._id);
+                        }
+                      }}
+                      color={
+                        snippet.drops.includes(currentUser)
+                          ? "codex.highlights"
+                          : "codex.borders"
+                      }
                     >
                       <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
                     </Button>
@@ -285,7 +310,16 @@ export default function UserSnippets() {
                     <Button
                       variant="icon"
                       size="sm"
-                      onClick={() => handleAddProps(snippet._id)}
+                      onClick={() => {
+                        if (snippet) {
+                          handleAddProps(snippet._id);
+                        }
+                      }}
+                      color={
+                        snippet.props.includes(currentUser)
+                          ? "codex.highlights"
+                          : "codex.borders"
+                      }
                     >
                       <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
                     </Button>

@@ -26,7 +26,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { FaAngleDoubleDown, FaAngleDoubleUp, FaSearch } from "react-icons/fa";
 import { MdPersonSearch } from "react-icons/md";
@@ -109,10 +109,14 @@ export default function UserSnippets() {
   });
 
   //mutation to remove props, to calculate overall props when snippet is dropped
-  const [removeProps] = useMutation(REMOVE_PROPS);
+  const [removeProps] = useMutation(REMOVE_PROPS, {
+    refetchQueries: [{ query: GET_USER_SNIPPETS }],
+  });
 
   //mutation to remove drops, to calculate overall props when snippet is propped
-  const [removeDrops] = useMutation(REMOVE_DROPS);
+  const [removeDrops] = useMutation(REMOVE_DROPS, {
+    refetchQueries: [{ query: GET_USER_SNIPPETS }],
+  });
 
   // Use the useQuery hook to execute the GET_USER_SNIPPETS query
   const { loading, error, data, refetch } = useQuery(GET_USER_SNIPPETS, {
@@ -138,6 +142,7 @@ export default function UserSnippets() {
 
   // Extract snippets from the data
   const snippets = data.userSnippets.snippets;
+  // console.log(snippets);
 
   let currentUser; //variable to hold current user's username
 
@@ -155,14 +160,36 @@ export default function UserSnippets() {
   const handleAddProps = async (snippetId) => {
     if (currentUser) {
       try {
-        // was getting undefined error, chatgpt suggested this fix
-        // preform the addProps mutation
-        await addProps({
-          variables: {
-            username: currentUser,
-            snippetId: snippetId,
-          },
-        });
+        // find snippet by id in snippets array
+        const snippet = snippets.find((snippet) => snippet._id === snippetId);
+
+        if (!snippet) {
+          console.error("Snippet not found");
+          return;
+        }
+        // Check if the user has already propped/dropped the snippet
+        const userHasProp = snippet.props.includes(currentUser);
+        const userHasDropped = snippet.drops.includes(currentUser);
+
+        if (userHasProp) {
+          // User has already propped, so remove the prop
+          await removeProps({
+            variables: {
+              username: currentUser,
+              snippetId: snippetId,
+            },
+          });
+        } else if (!userHasDropped) {
+          // user cannot prop if they have dropped, need to undrop first
+          // makes it so both buttons are not active at the same time
+          // User hasn't propped, so add the prop
+          await addProps({
+            variables: {
+              username: currentUser,
+              snippetId: snippetId,
+            },
+          });
+        }
       } catch (err) {
         console.error("Error propping snippet", err);
       }
@@ -173,49 +200,104 @@ export default function UserSnippets() {
   const handleAddDrops = async (snippetId) => {
     if (currentUser) {
       try {
-        await addDrops({
-          variables: {
-            username: currentUser,
-            snippetId: snippetId,
-          },
-        });
+        const snippet = snippets.find((snippet) => snippet._id === snippetId);
+
+        if (!snippet) {
+          console.error("Snippet not found");
+          return;
+        }
+        // Check if the user has already propped/dropped the snippet
+        const userHasProp = snippet.props.includes(currentUser);
+        const userHasDropped = snippet.drops.includes(currentUser);
+        if (userHasDropped) {
+          // User has already dropped, so remove the drop
+          await removeDrops({
+            variables: {
+              username: currentUser,
+              snippetId: snippetId,
+            },
+          });
+        } else if (!userHasProp) {
+          // user cannot drop if they have propped, need to unprop first
+          // makes it so both buttons are not active at the same time
+          // User hasn't dropped, so add the drop
+          await addDrops({
+            variables: {
+              username: currentUser,
+              snippetId: snippetId,
+            },
+          });
+        }
       } catch (err) {
-        console.error(err);
+        console.error("Error dropping snippet:", err);
       }
     }
   };
+
+  // const handleAddProps = async (snippetId) => {
+  //   if (currentUser) {
+  //     try {
+
+  //       // preform the addProps mutation
+  //       await addProps({
+  //         variables: {
+  //           username: currentUser,
+  //           snippetId: snippetId,
+  //         },
+  //       });
+  //     } catch (err) {
+  //       console.error("Error propping snippet", err);
+  //     }
+  //   }
+  // };
+
+  //DROP A SNIPPET
+  // const handleAddDrops = async (snippetId) => {
+  //   if (currentUser) {
+  //     try {
+  //       await addDrops({
+  //         variables: {
+  //           username: currentUser,
+  //           snippetId: snippetId,
+  //         },
+  //       });
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   }
+  // };
 
   //REMOVE PROPS FROM A SNIPPET
-  const handleRemoveProps = async (snippetId) => {
-    if (currentUser) {
-      try {
-        await removeProps({
-          variables: {
-            username: currentUser,
-            snippetId: snippetId,
-          },
-        });
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  };
+  // const handleRemoveProps = async (snippetId) => {
+  //   if (currentUser) {
+  //     try {
+  //       await removeProps({
+  //         variables: {
+  //           username: currentUser,
+  //           snippetId: snippetId,
+  //         },
+  //       });
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   }
+  // };
 
   //REMOVE DROPS FROM A SNIPPET
-  const handleRemoveDrops = async (snippetId) => {
-    if (currentUser) {
-      try {
-        await removeDrops({
-          variables: {
-            username: currentUser,
-            snippetId: snippetId,
-          },
-        });
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  };
+  // const handleRemoveDrops = async (snippetId) => {
+  //   if (currentUser) {
+  //     try {
+  //       await removeDrops({
+  //         variables: {
+  //           username: currentUser,
+  //           snippetId: snippetId,
+  //         },
+  //       });
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   }
+  // };
 
   const handleToggleTags = () => {
     setShowTagsSection(!showTagsSection);
@@ -369,7 +451,16 @@ export default function UserSnippets() {
                         <Button
                           variant="icon"
                           size="sm"
-                          onClick={() => handleAddDrops(snippet._id)}
+                          onClick={() => {
+                            if (snippet) {
+                              handleAddDrops(snippet._id);
+                            }
+                          }}
+                          color={
+                            snippet.drops.includes(currentUser)
+                              ? "codex.highlights"
+                              : "codex.borders"
+                          }
                         >
                           <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
                         </Button>
@@ -381,7 +472,16 @@ export default function UserSnippets() {
                         <Button
                           variant="icon"
                           size="sm"
-                          onClick={() => handleAddProps(snippet._id)}
+                          onClick={() => {
+                            if (snippet) {
+                              handleAddProps(snippet._id);
+                            }
+                          }}
+                          color={
+                            snippet.props.includes(currentUser)
+                              ? "codex.highlights"
+                              : "codex.borders"
+                          }
                         >
                           <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
                         </Button>
@@ -391,7 +491,6 @@ export default function UserSnippets() {
                 </Box>
               </>
             ) : (
-
               // <Text color="red" mt={2}>
               //   User not found or name is incorrect.
               // </Text>
@@ -402,10 +501,15 @@ export default function UserSnippets() {
                   <ModalHeader>User Not Found</ModalHeader>
                   <ModalCloseButton />
                   <ModalBody>
-                    <Text>The username you entered does not exist or is incorrect. Please try again with a different username.</Text>
+                    <Text>
+                      The username you entered does not exist or is incorrect.
+                      Please try again with a different username.
+                    </Text>
                   </ModalBody>
                   <ModalFooter>
-                    <Button variant="secondary" mr={3} onClick={onClose}>Close</Button>
+                    <Button variant="secondary" mr={3} onClick={onClose}>
+                      Close
+                    </Button>
                   </ModalFooter>
                 </ModalContent>
               </Modal>
