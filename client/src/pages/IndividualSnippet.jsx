@@ -13,7 +13,7 @@ import {
   Textarea,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { GET_INDIVIDUAL_SNIPPET } from "../utils/queries";
 import IndividualSnippetPreview from "../components/Snippet/IndividualSnippetPreview";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
