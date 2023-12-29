@@ -125,7 +125,7 @@ export default function UserSnippets() {
       try {
         // find snippet by id in snippets array
         const snippet = snippets.find((snippet) => snippet._id === snippetId);
-        
+
         if (!snippet) {
           console.error("Snippet not found");
           return;
@@ -164,7 +164,7 @@ export default function UserSnippets() {
     if (currentUser) {
       try {
         const snippet = snippets.find((snippet) => snippet._id === snippetId);
-        
+
         if (!snippet) {
           console.error("Snippet not found");
           return;
@@ -172,7 +172,7 @@ export default function UserSnippets() {
         // Check if the user has already propped/dropped the snippet
         const userHasProp = snippet.props.includes(currentUser);
         const userHasDropped = snippet.drops.includes(currentUser);
-      if (userHasDropped) {
+        if (userHasDropped) {
           // User has already dropped, so remove the drop
           await removeDrops({
             variables: {
@@ -296,7 +296,11 @@ export default function UserSnippets() {
                           handleAddDrops(snippet._id);
                         }
                       }}
-                      color={snippet.drops.includes(currentUser) ? "codex.highlights" : "codex.borders"}
+                      color={
+                        snippet.drops.includes(currentUser)
+                          ? "codex.highlights"
+                          : "codex.borders"
+                      }
                     >
                       <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
                     </Button>
@@ -311,7 +315,11 @@ export default function UserSnippets() {
                           handleAddProps(snippet._id);
                         }
                       }}
-                      color={snippet.props.includes(currentUser) ? "codex.highlights" : "codex.borders"}
+                      color={
+                        snippet.props.includes(currentUser)
+                          ? "codex.highlights"
+                          : "codex.borders"
+                      }
                     >
                       <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
                     </Button>

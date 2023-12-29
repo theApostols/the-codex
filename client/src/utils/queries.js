@@ -186,6 +186,8 @@ query UserSnippets($username: String!, $tags: [String]) {
       snippetTitle
       snippetText
       overallProps
+      props
+      drops
       formattedCreationDate
       formattedEditDate
       resources {
