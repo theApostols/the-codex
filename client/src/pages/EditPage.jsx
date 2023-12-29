@@ -460,16 +460,17 @@ export default function CreateSnippetPage() {
         </Box>
         <Box w="full">
           <Box w="full">
-            {/*Code editor component for syntax highlighting*/}
-            {snippetList.map((snippet, index) => (
+            {/* Code editor component for syntax highlighting */}
+            {snippetData.snippetCode.map((snippetCode, index) => (
               <CodeEditor
                 key={index}
-                code={code[index]}
-                language={language[index] || "javascript"}
+                code={snippetCode.code}
+                language={snippetCode.language || "javascript"}
                 activeSnippetIndex={index}
               />
             ))}
           </Box>
+
           <Box pt="5">
             <Button variant="secondary" onClick={handleCreateSnippet}>
               <Icon as={BiSave} w={6} h={8} mr="2" color="codex.text" />
