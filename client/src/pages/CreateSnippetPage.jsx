@@ -366,7 +366,7 @@ export default function CreateSnippetPage() {
             />
             {/* Language dropdown */}
             <LanguageSelector
-              value={language[index] || "javascript"} // Update this line
+              value={language[index] || "javascript"} // Default to "javascript" if language is not provided
               onChange={(value) => handleLanguageChange(value, index)}
             />
             {/* Button to remove the snippet box */}
