@@ -106,7 +106,6 @@ export default function UserSnippets() {
   if (error) return <p>Error: {error.message}</p>;
 
   const snippets = data?.allSnippets;
-  // console.log(snippets);
 
   let currentUser; //variable to hold user's username
 
@@ -248,7 +247,7 @@ export default function UserSnippets() {
             {/* Toggle Tags Section */}
             <Box w="full">
               <Button variant="secondary" onClick={handleToggleTags} size="sm">
-                {showTagsSection ? "Hide Tags" : "Select Tags"}
+                {showTagsSection ? "Hide Tags" : "Filter Tags"}
               </Button>
               {showTagsSection && (
                 <Grid marginTop={2} templateColumns="repeat(3, 1fr)" gap={2}>
