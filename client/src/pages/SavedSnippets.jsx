@@ -36,29 +36,55 @@ export default function SavedSnippets() {
 
   const savedSnippets = data?.userSavedSnippets.savedSnippets || [];
 
-return (
-    <Box p="4" color="codex.text" bg="codex.darkest" mb="4">
-      <Flex direction="column" align="center">
-        <Box
+  return (
+    <Box
+      p="50"
+      d="flex"
+      alignItems="center"
+      justifyContent="center"
+      color="white"
+    >
+      <Flex
+        direction={{ base: "column", md: "row" }}
+        w="full"
+        maxW="5xl"
+        mx="auto"
+        p="8"
+        alignItems="start"
+      >
+        <VStack
+          spacing="4"
           w="full"
           maxW="5xl"
-          p="4"
-          borderRadius="lg"
-          boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
+          mx="auto"
+          p="8"
+          color="codex.accents"
         >
-          <Heading as="h1" size="lg" mb="4" color="codex.accents">
-            Saved Snippets
-          </Heading>
-          <Divider mb="4" borderColor="codex.borders" />
-          <Grid
-            templateColumns={["repeat(1, 1fr)", "repeat(2, 1fr)"]}
-            gap="4"
+          <Box
+            w="full"
+            border="1px solid"
+            borderColor="codex.borders"
+            borderRadius="lg"
+            bg="codex.darkest"
           >
+            <Heading as="h1" size="lg" m="4" textAlign="center">
+              Saved Snippets
+            </Heading>
+            <Divider mb="4" borderColor="codex.borders" />
+
             {savedSnippets.map((snippet) => (
-              <MainSnippetPreview key={snippet._id} snippet={snippet} />
+              <Box
+                key={snippet._id}
+                pb="5"
+                w="full"
+                borderBottom="1px solid"
+                borderColor="codex.borders"
+              >
+                <MainSnippetPreview key={snippet._id} snippet={snippet} />
+              </Box>
             ))}
-          </Grid>
-        </Box>
+          </Box>
+        </VStack>
       </Flex>
     </Box>
   );

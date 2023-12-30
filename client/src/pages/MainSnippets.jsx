@@ -248,7 +248,7 @@ export default function UserSnippets() {
             {/* Toggle Tags Section */}
             <Box w="full">
               <Button variant="secondary" onClick={handleToggleTags} size="sm">
-                {showTagsSection ? "Hide Tags" : "Select Tags"}
+                {showTagsSection ? "Hide Tags" : "Filter Tags"}
               </Button>
               {showTagsSection && (
                 <Grid marginTop={2} templateColumns="repeat(3, 1fr)" gap={2}>
