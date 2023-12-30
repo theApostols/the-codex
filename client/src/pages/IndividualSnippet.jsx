@@ -44,6 +44,9 @@ export default function UserSnippets() {
 
   const isResponsive = useBreakpointValue({ base: true, md: true, lg: false });
 
+  // Check if the user is logged in
+  const isAuthenticated = Auth.loggedIn();
+
   // State for comment input
   const [commentInput, setCommentInput] = useState("");
   const [commentInputVisible, setCommentInputVisible] = useState(false);
@@ -247,7 +250,7 @@ export default function UserSnippets() {
         console.error("Error unsaving snippet:", err);
       }
     }
-  }
+  };
 
   return (
     <>
@@ -361,30 +364,36 @@ export default function UserSnippets() {
                       {isResponsive ? "" : "Add Comment"}
                     </Button>
                   ) : null}
-                  <Button variant="icon" size="sm"
-                    onClick={() =>
-                      handleSaveSnippet(snippets._id)}
-                  >
-                    <Icon
-                      as={MdCode}
-                      w={8}
-                      h={8}
-                      mr={isResponsive ? "0" : "2"}
-                    />
-                    {isResponsive ? "" : "Save Snippet"}
-                  </Button>
-                  <Button variant="icon" size="sm"
-                    onClick={() =>
-                      handleUnsaveSnippet(snippets._id)}
-                  >
-                    <Icon
-                      as={MdCodeOff}
-                      w={8}
-                      h={8}
-                      mr={isResponsive ? "0" : "2"}
-                    />
-                    {isResponsive ? "" : "Unsave Snippet"}
-                  </Button>
+                  {isAuthenticated && (
+                    <>
+                      <Button
+                        variant="icon"
+                        size="sm"
+                        onClick={() => handleSaveSnippet(snippets._id)}
+                      >
+                        <Icon
+                          as={MdCode}
+                          w={8}
+                          h={8}
+                          mr={isResponsive ? "0" : "2"}
+                        />
+                        {isResponsive ? "" : "Save Snippet"}
+                      </Button>
+                      <Button
+                        variant="icon"
+                        size="sm"
+                        onClick={() => handleUnsaveSnippet(snippets._id)}
+                      >
+                        <Icon
+                          as={MdCodeOff}
+                          w={8}
+                          h={8}
+                          mr={isResponsive ? "0" : "2"}
+                        />
+                        {isResponsive ? "" : "Unsave Snippet"}
+                      </Button>
+                    </>
+                  )}
                 </HStack>
               </Box>
               {/* Conditionally render resource links */}
