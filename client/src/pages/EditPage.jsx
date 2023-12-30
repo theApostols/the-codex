@@ -18,7 +18,6 @@ import {
 import { BiSave } from "react-icons/bi";
 import { EDIT_SNIPPET } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
-import Auth from "../utils/auth";
 import { useQuery } from "@apollo/client";
 import { GET_INDIVIDUAL_SNIPPET } from "../utils/queries";
 import { useParams } from "react-router-dom";
@@ -159,7 +158,7 @@ export default function CreateSnippetPage() {
       newCodeArray.splice(index, 1);
       return newCodeArray;
     });
-  
+
     setSnippetData((prevSnippetData) => {
       const newSnippetCode = [...prevSnippetData.snippetCode];
       newSnippetCode.splice(index, 1);
@@ -169,7 +168,6 @@ export default function CreateSnippetPage() {
       };
     });
   };
-  
 
   const handleSnippetTitleChange = (e) => {
     setSnippetData((prevSnippetData) => ({
@@ -280,16 +278,15 @@ export default function CreateSnippetPage() {
           tags: selectedTags,
         },
       });
-  
+
       // Show message to confirm snippet was saved
       setCreateMessage(true);
-  
+
       // Optionally, you can redirect the user or perform any other actions
     } catch (error) {
       console.error("Error saving snippet:", error);
     }
   };
-  
 
   ////////////////////////////////////////////////
 
