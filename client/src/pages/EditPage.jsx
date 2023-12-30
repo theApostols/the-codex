@@ -179,6 +179,12 @@ export default function CreateSnippetPage() {
   };
 
   const handleCodeChange = (newCode, index) => {
+    setCode((prevCode) => {
+      const newCodeArray = [...prevCode];
+      newCodeArray[index] = newCode;
+      return newCodeArray;
+    });
+
     setSnippetData((prevSnippetData) => {
       const newSnippetData = { ...prevSnippetData };
       newSnippetData.snippetCode[index].code = newCode;
@@ -480,7 +486,7 @@ export default function CreateSnippetPage() {
           {/*Message to confirm snippet was created*/}
           {createMessage && (
             <Text color="codex.accents200" fontWeight="bold">
-              Snippet created!
+              Changes saved!
             </Text>
           )}
         </Box>
