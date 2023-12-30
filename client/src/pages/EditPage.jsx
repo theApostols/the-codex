@@ -16,7 +16,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { BiSave } from "react-icons/bi";
-import { CREATE_SNIPPET } from "../utils/mutations";
+import { EDIT_SNIPPET } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
 import Auth from "../utils/auth";
 import { useQuery } from "@apollo/client";
@@ -63,13 +63,13 @@ export default function CreateSnippetPage() {
     }
   }, [loading, data]);
 
-  console.log(snippetData);
+  // console.log(data.oneSnippet.snippetCode[0].language);
 
   const handleLanguageChange = (selectedLanguage, index) => {
-    setLanguage((prevLanguages) => {
-      const newLanguages = [...prevLanguages];
-      newLanguages[index] = selectedLanguage;
-      return newLanguages;
+    setSnippetData((prevSnippetData) => {
+      const newSnippetData = { ...prevSnippetData };
+      newSnippetData.snippetCode[index].language = selectedLanguage;
+      return newSnippetData;
     });
     // clear customLanguage when a predefined language is selected
     setCustomLanguage("");
@@ -165,20 +165,28 @@ export default function CreateSnippetPage() {
   };
 
   const handleSnippetTitleChange = (e) => {
-    setSnippetTitle(e.target.value);
+    setSnippetData((prevSnippetData) => ({
+      ...prevSnippetData,
+      snippetTitle: e.target.value,
+    }));
   };
-
+  
   const handleSnippetTextChange = (e) => {
-    setSnippetText(e.target.value);
+    setSnippetData((prevSnippetData) => ({
+      ...prevSnippetData,
+      snippetText: e.target.value,
+    }));
   };
+  
 
   const handleCodeChange = (newCode, index) => {
-    setCode((prevCode) => {
-      const newCodeArray = [...prevCode];
-      newCodeArray[index] = newCode;
-      return newCodeArray;
+    setSnippetData((prevSnippetData) => {
+      const newSnippetData = { ...prevSnippetData };
+      newSnippetData.snippetCode[index].code = newCode;
+      return newSnippetData;
     });
   };
+  
 
   const handleCustomLanguageChange = (e) => {
     //used with languageSelector component
@@ -242,42 +250,28 @@ export default function CreateSnippetPage() {
     }
   };
 
-  ///////////CREATE SNIPPET BLOCK////////////////////
+  ///////////SAVE SNIPPET BLOCK////////////////////
 
-  const [createSnippet] = useMutation(CREATE_SNIPPET);
+  const [saveSnippet] = useMutation(EDIT_SNIPPET);
 
-  const handleCreateSnippet = async () => {
+  const handleSaveSnippet = async () => {
     try {
-      const response = await createSnippet({
+      const response = await saveSnippet({
         variables: {
           ...snippetData,
-          snippetCode: code.map((snippetCode, index) => ({
-            language: language[index] || "javascript", // Default to "javascript" if language is not provided
-            code: snippetCode,
+          snippetCode: snippetData.snippetCode.map((snippetCode, index) => ({
+            language: snippetCode.language || "javascript",
+            code: code[index] || "", // Use the code from the 'code' array
           })),
         },
       });
 
-      // Show message to confirm snippet was created
-      setCreateMessage(true);
+      // Show message to confirm snippet was saved
+      setSaveMessage(true);
 
-      // Reset form data once snippet is created
-      setSnippetTitle("");
-      setSnippetText("");
-      setCode([""]);
-      setLanguage(["javascript"]);
-      setCustomLanguage("");
-      setShowResourceFields(false);
-      setResources([]);
-      setSelectedTags([]);
-
-      // Reset snippetList to initial state
-      setSnippetList([{ language: "javascript", code: "" }]);
-      window.location.assign(
-        `/individual-snippets/${response.data.createSnippet._id}`
-      );
+      // Optionally, you can redirect the user or perform any other actions
     } catch (error) {
-      console.error("Error creating snippet:", error);
+      console.error("Error saving snippet:", error);
     }
   };
 
@@ -476,7 +470,7 @@ export default function CreateSnippetPage() {
           </Box>
 
           <Box pt="5">
-            <Button variant="secondary" onClick={handleCreateSnippet}>
+            <Button variant="secondary" onClick={handleSaveSnippet}>
               <Icon as={BiSave} w={6} h={8} mr="2" color="codex.text" />
               Save
             </Button>
