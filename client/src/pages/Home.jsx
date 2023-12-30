@@ -214,6 +214,13 @@ function FeaturedSnippets() {
   // Adjust grid columns based on the current breakpoint
   const columns = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
+  const navigate = useNavigate();
+
+  const handleSnippetsClick = () => {
+    // Navigate to the sign-up page
+    navigate("/main-snippets");
+  };
+
   return (
     <MotionBox
       initial="hidden"
@@ -235,7 +242,7 @@ function FeaturedSnippets() {
             category="Data Structures"
           />
         </SimpleGrid>
-        <Button variant='secondary' mt={4}>
+        <Button variant='secondary' mt={4} onClick={handleSnippetsClick}>
           View More Snippets
         </Button>
       </Box>

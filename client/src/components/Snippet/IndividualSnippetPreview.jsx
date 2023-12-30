@@ -141,7 +141,7 @@ const IndividualSnippetPreview = ({ snippet }) => {
               bg="codex.dark"
               boxShadow="sm"
               p="4">
-                <Text mb="2">{comment.commentText}</Text>
+                <Text mb="2" color="codex.text200">{comment.commentText}</Text>
                 <Text fontSize="sm" color="codex.accents300">
                   Posted by {comment.username} on{" "}
                   {comment.formattedCreationDate}
