@@ -31,6 +31,8 @@ import {
   ADD_DROPS,
   REMOVE_PROPS,
   REMOVE_DROPS,
+  SAVE_SNIPPET,
+  UNSAVE_SNIPPET,
 } from "../utils/mutations";
 
 export default function UserSnippets() {
@@ -133,6 +135,10 @@ export default function UserSnippets() {
     refetchQueries: [{ query: GET_INDIVIDUAL_SNIPPET }],
   });
 
+  //SAVE AND UNSAVE MUTATIONS
+  const [saveSnippet] = useMutation(SAVE_SNIPPET);
+  const [unsaveSnippet] = useMutation(UNSAVE_SNIPPET);
+
   // Use the useQuery hook to execute the GET_USER_SNIPPETS query
   const { loading, error, data } = useQuery(GET_INDIVIDUAL_SNIPPET, {
     variables: { snippetId },
@@ -146,20 +152,6 @@ export default function UserSnippets() {
   const snippetUser = snippets.username;
 
   //props and drops handlers
-  // const handleAddProps = async (snippetId) => {
-  //   if (currentUser) {
-  //     try {
-  //       await addProps({
-  //         variables: {
-  //           username: currentUser,
-  //           snippetId: snippetId,
-  //         },
-  //       });
-  //     } catch (err) {
-  //       console.error("Error propping snippet", err);
-  //     }
-  //   }
-  // };
   const handleAddProps = async (snippetId) => {
     if (currentUser) {
       try {
@@ -192,20 +184,6 @@ export default function UserSnippets() {
     }
   };
 
-  // const handleAddDrops = async (snippetId) => {
-  //   if (currentUser) {
-  //     try {
-  //       await addDrops({
-  //         variables: {
-  //           username: currentUser,
-  //           snippetId: snippetId,
-  //         },
-  //       });
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   }
-  // };
   const handleAddDrops = async (snippetId) => {
     if (currentUser) {
       try {
@@ -236,6 +214,37 @@ export default function UserSnippets() {
       }
     }
   };
+
+  //save and unsave handlers
+  const handleSaveSnippet = async (snippetId) => {
+    if (currentUser) {
+      try {
+        await saveSnippet({
+          variables: {
+            username: currentUser,
+            snippetId: snippetId,
+          },
+        });
+      } catch (err) {
+        console.error("Error saving snippet:", err);
+      }
+    }
+  };
+
+  const handleUnsaveSnippet = async (snippetId) => {
+    if (currentUser) {
+      try {
+        await unsaveSnippet({
+          variables: {
+            username: currentUser,
+            snippetId: snippetId,
+          },
+        });
+      } catch (err) {
+        console.error("Error unsaving snippet:", err);
+      }
+    }
+  }
 
   return (
     <>
@@ -372,13 +381,15 @@ export default function UserSnippets() {
               {/* Conditionally render resource links */}
               {snippets.resources && snippets.resources.length > 0 && (
                 <VStack p="4" align="start">
-                  <Heading fontSize="m">
-                    Resources
-                  </Heading>
+                  <Heading fontSize="m">Resources</Heading>
                   {snippets.resources.map((resource, index) => (
-                    <Text key={index} color="codex.text" fontSize="sm"
-                    _hover={{ textDecoration: 'underline' }}>
-                      <Link 
+                    <Text
+                      key={index}
+                      color="codex.text"
+                      fontSize="sm"
+                      _hover={{ textDecoration: "underline" }}
+                    >
+                      <Link
                         to={resource.link}
                         target="_blank"
                         rel="noopener noreferrer"
@@ -393,12 +404,12 @@ export default function UserSnippets() {
               {/* Conditionally render tags */}
               {snippets.tags && snippets.tags.length > 0 && (
                 <VStack pl="4" pb="4" pr="4" align="start">
-                  <Heading fontSize="m">
-                    Tags
-                  </Heading>
+                  <Heading fontSize="m">Tags</Heading>
                   <HStack>
                     {snippets.tags.map((tag, index) => (
-                      <Text key={index} color="codex.text" fontSize="sm">{tag}</Text>
+                      <Text key={index} color="codex.text" fontSize="sm">
+                        {tag}
+                      </Text>
                     ))}
                   </HStack>
                 </VStack>

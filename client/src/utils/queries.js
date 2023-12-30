@@ -229,6 +229,8 @@ query UserSavedSnippets($username: String!) {
       snippetTitle
       snippetText
       overallProps
+      props
+      drops
       formattedCreationDate
       formattedEditDate
     }
