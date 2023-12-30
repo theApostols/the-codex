@@ -170,14 +170,13 @@ export default function CreateSnippetPage() {
       snippetTitle: e.target.value,
     }));
   };
-  
+
   const handleSnippetTextChange = (e) => {
     setSnippetData((prevSnippetData) => ({
       ...prevSnippetData,
       snippetText: e.target.value,
     }));
   };
-  
 
   const handleCodeChange = (newCode, index) => {
     setSnippetData((prevSnippetData) => {
@@ -186,7 +185,6 @@ export default function CreateSnippetPage() {
       return newSnippetData;
     });
   };
-  
 
   const handleCustomLanguageChange = (e) => {
     //used with languageSelector component
@@ -258,16 +256,20 @@ export default function CreateSnippetPage() {
     try {
       const response = await saveSnippet({
         variables: {
-          ...snippetData,
-          snippetCode: snippetData.snippetCode.map((snippetCode, index) => ({
-            language: snippetCode.language || "javascript",
-            code: code[index] || "", // Use the code from the 'code' array
+          snippetId: snippetData._id,
+          snippetTitle: snippetData.snippetTitle,
+          snippetText: snippetData.snippetText,
+          snippetCode: snippetData.snippetCode.map((codeBlock, index) => ({
+            language: codeBlock.language || "javascript",
+            code: code[index] || "", // Use the correct index to get the corresponding code
           })),
+          resources: resources.map(({ __typename, ...rest }) => rest),
+          tags: selectedTags,
         },
       });
 
       // Show message to confirm snippet was saved
-      setSaveMessage(true);
+      setCreateMessage(true);
 
       // Optionally, you can redirect the user or perform any other actions
     } catch (error) {
