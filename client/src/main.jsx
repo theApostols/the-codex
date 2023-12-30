@@ -18,6 +18,7 @@ import UserSnippets from "./pages/UserSnippets.jsx";
 import MainSnippets from "./pages/MainSnippets.jsx";
 import IndividualSnippets from "./pages/IndividualSnippet.jsx";
 import EditPage from "./pages/EditPage.jsx";
+import SavedSnippets from "./pages/SavedSnippets.jsx";
 
 // routes and corresponding components
 const router = createBrowserRouter([
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
       {
         path: "/edit-page/:snippetId",
         element: <EditPage />,
+      },
+      {
+        path: "/saved-snippets/:username",
+        element: <SavedSnippets />,
       },
     ],
   },
