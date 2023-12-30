@@ -79,7 +79,7 @@ const CodeEditor = ({ code,language }) => {
 
 
   return (
-    <Box p={4} borderRadius="md" borderWidth="1px" overflow="auto">
+    <Box p={4} borderRadius="md" borderWidth="1px" borderColor="codex.highlights" bg="codex.darkest"overflow="auto">
       <SyntaxHighlighter
         lineProps={{style: {wordBreak: 'break-word', whiteSpace: 'pre-wrap',}}}
         wrapLongLines={true}
