@@ -154,6 +154,12 @@ export default function CreateSnippetPage() {
 
   // Function to remove a snippet box by index
   const handleRemoveSnippetBox = (index) => {
+    setCode((prevCode) => {
+      const newCodeArray = [...prevCode];
+      newCodeArray.splice(index, 1);
+      return newCodeArray;
+    });
+  
     setSnippetData((prevSnippetData) => {
       const newSnippetCode = [...prevSnippetData.snippetCode];
       newSnippetCode.splice(index, 1);
@@ -163,6 +169,7 @@ export default function CreateSnippetPage() {
       };
     });
   };
+  
 
   const handleSnippetTitleChange = (e) => {
     setSnippetData((prevSnippetData) => ({
@@ -273,15 +280,16 @@ export default function CreateSnippetPage() {
           tags: selectedTags,
         },
       });
-
+  
       // Show message to confirm snippet was saved
       setCreateMessage(true);
-
+  
       // Optionally, you can redirect the user or perform any other actions
     } catch (error) {
       console.error("Error saving snippet:", error);
     }
   };
+  
 
   ////////////////////////////////////////////////
 
