@@ -135,7 +135,8 @@ export default function UserSnippets() {
     refetchQueries: [{ query: GET_INDIVIDUAL_SNIPPET }],
   });
 
-  //SAVE AND UNSAVE MUTATIONS
+  //SAVE AND UNSAVE MUTATIONS/STATE
+  const [isSaved, setIsSaved] = useState(false);
   const [saveSnippet] = useMutation(SAVE_SNIPPET);
   const [unsaveSnippet] = useMutation(UNSAVE_SNIPPET);
 
@@ -225,6 +226,7 @@ export default function UserSnippets() {
             snippetId: snippetId,
           },
         });
+        setIsSaved(true);
       } catch (err) {
         console.error("Error saving snippet:", err);
       }
@@ -240,6 +242,7 @@ export default function UserSnippets() {
             snippetId: snippetId,
           },
         });
+        setIsSaved(false);
       } catch (err) {
         console.error("Error unsaving snippet:", err);
       }
@@ -358,7 +361,10 @@ export default function UserSnippets() {
                       {isResponsive ? "" : "Add Comment"}
                     </Button>
                   ) : null}
-                  <Button variant="icon" size="sm">
+                  <Button variant="icon" size="sm"
+                    onClick={() =>
+                      handleSaveSnippet(snippets._id)}
+                  >
                     <Icon
                       as={MdCode}
                       w={8}
@@ -367,7 +373,10 @@ export default function UserSnippets() {
                     />
                     {isResponsive ? "" : "Save Snippet"}
                   </Button>
-                  <Button variant="icon" size="sm">
+                  <Button variant="icon" size="sm"
+                    onClick={() =>
+                      handleUnsaveSnippet(snippets._id)}
+                  >
                     <Icon
                       as={MdCodeOff}
                       w={8}
