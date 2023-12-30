@@ -57,6 +57,9 @@ export default function CreateSnippetPage() {
       setShowResourceFields(
         data.oneSnippet.resources?.length > 0 || showResourceFields
       );
+
+      // Show tags section if there are tags
+      setShowTagsSection(data.oneSnippet.tags?.length > 0);
     }
   }, [loading, data]);
 
