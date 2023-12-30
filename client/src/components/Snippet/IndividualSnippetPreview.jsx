@@ -7,6 +7,7 @@ import {
   Icon,
   HStack,
   Flex,
+  Divider,
 } from "@chakra-ui/react";
 import {
   BiBookmarkAltMinus,
@@ -131,10 +132,16 @@ const IndividualSnippetPreview = ({ snippet }) => {
               </React.Fragment>
             ))}
           </Box>
+          <Divider my={1} borderColor="codex.highlights" borderWidth="1px" />
           <Box w="full">
             {snippetData.comments.map((comment, index) => (
-              <Box key={index} mb="8">
-                <Text mb="2">{comment.commentText}</Text>
+              <Box key={index} mb="8" borderRadius="md"
+              border="1px"
+              borderColor="codex.dark"
+              bg="codex.dark"
+              boxShadow="sm"
+              p="4">
+                <Text mb="2" color="codex.text200">{comment.commentText}</Text>
                 <Text fontSize="sm" color="codex.accents300">
                   Posted by {comment.username} on{" "}
                   {comment.formattedCreationDate}

@@ -27,7 +27,7 @@ import {
   HStack,
   Heading,
 } from "@chakra-ui/react";
-import { BiLogOut, BiMenu, BiPlus, BiUser, BiCog } from "react-icons/bi";
+import { BiLogOut, BiMenu, BiPlus, BiUser, BiCog, BiArchive } from "react-icons/bi";
 import AuthService from "../../utils/auth";
 import { ThemeContext } from "../../main.jsx";
 import { BsFillSunFill, BsMoonFill } from "react-icons/bs";
@@ -69,6 +69,11 @@ const Header = () => {
 
   const handleLoginClick = () => {
     navigate("/login");
+  };
+
+  const handleSavedClick = () => {
+    navigate(`/saved-snippets/${user}`);
+    onClose();
   };
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -223,6 +228,16 @@ const Header = () => {
                 onClick={handleCreateClick}
               >
                 Create
+              </Button>
+              <Button
+                leftIcon={
+                  <Icon as={BiArchive} w={8} h={8} color="codex.highlights" />
+                }
+                variant="ghost"
+                justifyContent="start"
+                onClick={handleSavedClick}
+              >
+                Saved Snippets
               </Button>
               <Button
                 leftIcon={

@@ -1,7 +1,12 @@
+import React, { useContext } from "react";
 import { Box, Container, Stack, Text, Link, Heading, SimpleGrid, Icon, Image, Button } from '@chakra-ui/react';
 import { FaTwitter, FaInstagram, FaGithub, FaEnvelope } from 'react-icons/fa';
+import { ThemeContext } from "../../main.jsx";
 
 const Footer = () => {
+
+  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+
   return (
     <Box
       bg="codex.darkest" 
@@ -16,11 +21,13 @@ const Footer = () => {
         <SimpleGrid columns={{ base: 1, md: 4 }} spacing={10}>
           {/* First column containing the logo and some text. */}
           <Box>
-            <Image
-              src="/images/logo_dark.png"
-              alt="LOGO"
-              boxSize="50px"
-            />
+          <Image
+            src={
+              isDarkMode ? "/images/logo_dark.png" : "/images/logo_light.png"
+            }
+            alt="Logo"
+            boxSize="50px"
+          />
             <Heading as="p" size="lg" fontWeight="bold">
               The CodeX
             </Heading>

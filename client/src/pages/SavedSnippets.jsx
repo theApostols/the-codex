@@ -124,6 +124,9 @@ export default function SavedSnippets() {
           p="8"
           color="codex.accents"
         >
+          <Heading color="codex.text" as="h1" m="4" textAlign="center">
+              Saved Snippets
+            </Heading>
           {/* Toggle Tags Section */}
           <Box w="full">
             <Button variant="secondary" onClick={handleToggleTags} size="sm">
@@ -156,9 +159,7 @@ export default function SavedSnippets() {
             borderRadius="lg"
             bg="codex.darkest"
           >
-            <Heading as="h1" size="lg" m="4" textAlign="center">
-              Saved Snippets
-            </Heading>
+            
             <Divider mb="4" borderColor="codex.borders" />
 
             {savedSnippets.map((snippet) => (

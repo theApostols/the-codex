@@ -22,7 +22,7 @@ const lightColors = {
     darkest: '#f0f0f3',
     dark: '#dadada',
     main: '#ffffff',
-    borders: '#cccccc',
+    borders: '#989898',
     highlights: '#b5aedd',
     accents: '#413C66',
     text: '#1d1c1c',
