@@ -106,7 +106,6 @@ export default function UserSnippets() {
   if (error) return <p>Error: {error.message}</p>;
 
   const snippets = data?.allSnippets;
-  // console.log(snippets);
 
   let currentUser; //variable to hold user's username
 
