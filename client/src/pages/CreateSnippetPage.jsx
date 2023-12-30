@@ -282,6 +282,9 @@ export default function CreateSnippetPage() {
 
   return (
     <Box p="50" d="flex" alignItems="center" justifyContent="center">
+      <Heading textAlign="center" color="codex.text" mb="6">
+          Create Snippet
+        </Heading>
       <VStack
         spacing="4"
         w="full"
@@ -295,9 +298,6 @@ export default function CreateSnippetPage() {
         backdropFilter="saturate(100%) blur(10px)"
         color="white"
       >
-        <Heading textAlign="center" color="codex.text" mb="6">
-          Create Snippet
-        </Heading>
         <Box w="full">
           {/* Snippet title */}
           <Input
