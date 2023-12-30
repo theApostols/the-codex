@@ -16,15 +16,63 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import { BiSave } from "react-icons/bi";
-import { CREATE_SNIPPET } from "../utils/mutations";
+import { EDIT_SNIPPET } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
-import Auth from "../utils/auth";
+import { useQuery } from "@apollo/client";
+import { GET_INDIVIDUAL_SNIPPET } from "../utils/queries";
+import { useParams } from "react-router-dom";
 
 export default function CreateSnippetPage() {
-  // State to manage an array of snippet data
-  const [snippetList, setSnippetList] = useState([
-    { language: "javascript", code: "" },
-  ]);
+  const { snippetId } = useParams();
+
+  // Define your GraphQL query
+  const { loading, error, data } = useQuery(GET_INDIVIDUAL_SNIPPET, {
+    variables: { snippetId },
+  });
+
+  // State to manage the snippet data
+  const [snippetData, setSnippetData] = useState({
+    snippetTitle: "",
+    snippetText: "",
+    snippetCode: [], // Empty array to hold the array of objects later
+    resources: [],
+    tags: [],
+    username: "",
+    _id: "",
+  });
+
+  useEffect(() => {
+    if (!loading && data && data.oneSnippet) {
+      // Update the state with the fetched snippet data
+      setSnippetData(data.oneSnippet);
+
+      // Set the selected tags based on the fetched snippet data
+      setSelectedTags(data.oneSnippet.tags || []);
+
+      // Set the resources based on the fetched snippet data
+      setResources(data.oneSnippet.resources || []);
+
+      // Show the resource fields when resources are present or if they were initially hidden
+      setShowResourceFields(
+        data.oneSnippet.resources?.length > 0 || showResourceFields
+      );
+
+      // Show tags section if there are tags
+      setShowTagsSection(data.oneSnippet.tags?.length > 0);
+    }
+  }, [loading, data]);
+
+  // console.log(data.oneSnippet.snippetCode[0].language);
+
+  const handleLanguageChange = (selectedLanguage, index) => {
+    setSnippetData((prevSnippetData) => {
+      const newSnippetData = { ...prevSnippetData };
+      newSnippetData.snippetCode[index].language = selectedLanguage;
+      return newSnippetData;
+    });
+    // clear customLanguage when a predefined language is selected
+    setCustomLanguage("");
+  };
 
   const [resources, setResources] = useState([]);
 
@@ -94,27 +142,45 @@ export default function CreateSnippetPage() {
 
   // Function to add a new snippet box
   const handleAddSnippetBox = () => {
-    setSnippetList((prevList) => [
-      ...prevList,
-      { language: "javascript", code: "" },
-    ]);
+    setSnippetData((prevSnippetData) => ({
+      ...prevSnippetData,
+      snippetCode: [
+        ...prevSnippetData.snippetCode,
+        { language: "javascript", code: "" },
+      ],
+    }));
   };
 
   // Function to remove a snippet box by index
   const handleRemoveSnippetBox = (index) => {
-    setSnippetList((prevList) => {
-      const newList = [...prevList];
-      newList.splice(index, 1);
-      return newList;
+    setCode((prevCode) => {
+      const newCodeArray = [...prevCode];
+      newCodeArray.splice(index, 1);
+      return newCodeArray;
+    });
+
+    setSnippetData((prevSnippetData) => {
+      const newSnippetCode = [...prevSnippetData.snippetCode];
+      newSnippetCode.splice(index, 1);
+      return {
+        ...prevSnippetData,
+        snippetCode: newSnippetCode,
+      };
     });
   };
 
   const handleSnippetTitleChange = (e) => {
-    setSnippetTitle(e.target.value);
+    setSnippetData((prevSnippetData) => ({
+      ...prevSnippetData,
+      snippetTitle: e.target.value,
+    }));
   };
 
   const handleSnippetTextChange = (e) => {
-    setSnippetText(e.target.value);
+    setSnippetData((prevSnippetData) => ({
+      ...prevSnippetData,
+      snippetText: e.target.value,
+    }));
   };
 
   const handleCodeChange = (newCode, index) => {
@@ -123,16 +189,12 @@ export default function CreateSnippetPage() {
       newCodeArray[index] = newCode;
       return newCodeArray;
     });
-  };
 
-  const handleLanguageChange = (selectedLanguage, index) => {
-    setLanguage((prevLanguages) => {
-      const newLanguages = [...prevLanguages];
-      newLanguages[index] = selectedLanguage;
-      return newLanguages;
+    setSnippetData((prevSnippetData) => {
+      const newSnippetData = { ...prevSnippetData };
+      newSnippetData.snippetCode[index].code = newCode;
+      return newSnippetData;
     });
-    // clear customLanguage when a predefined language is selected
-    setCustomLanguage("");
   };
 
   const handleCustomLanguageChange = (e) => {
@@ -197,74 +259,32 @@ export default function CreateSnippetPage() {
     }
   };
 
-  ///////////CREATE SNIPPET BLOCK////////////////////
+  ///////////SAVE SNIPPET BLOCK////////////////////
 
-  const [createSnippet] = useMutation(CREATE_SNIPPET);
+  const [saveSnippet] = useMutation(EDIT_SNIPPET);
 
-  const [snippetData, setSnippetData] = useState({
-    username: "",
-    snippetTitle: "",
-    snippetText: "",
-    snippetCode: [],
-    resources: showResourceFields
-      ? [{ title: resourceTitle, link: resourceLink }]
-      : [],
-    tags: selectedTags,
-  });
-
-  useEffect(() => {
-    // const getUsername = Auth.loggedIn() ? Auth.getProfile().data.username : null;
-    const getUsername = Auth.getProfile().data.username;
-    setSnippetData({
-      ...snippetData,
-      username: getUsername,
-      snippetTitle: snippetTitle,
-      snippetText: snippetText,
-      snippetCode: [{ language: language, code: code }],
-      resources: showResourceFields ? resources : [],
-      tags: selectedTags,
-    });
-  }, [
-    snippetTitle,
-    snippetText,
-    code,
-    showResourceFields,
-    resources,
-    selectedTags,
-  ]);
-
-  const handleCreateSnippet = async () => {
+  const handleSaveSnippet = async () => {
     try {
-      const response = await createSnippet({
+      const response = await saveSnippet({
         variables: {
-          ...snippetData,
-          snippetCode: code.map((snippetCode, index) => ({
-            language: language[index] || "javascript", // Default to "javascript" if language is not provided
-            code: snippetCode,
+          snippetId: snippetData._id,
+          snippetTitle: snippetData.snippetTitle,
+          snippetText: snippetData.snippetText,
+          snippetCode: snippetData.snippetCode.map((codeBlock, index) => ({
+            language: codeBlock.language || "javascript",
+            code: code[index] || "", // Use the correct index to get the corresponding code
           })),
+          resources: resources.map(({ __typename, ...rest }) => rest),
+          tags: selectedTags,
         },
       });
 
-      // Show message to confirm snippet was created
+      // Show message to confirm snippet was saved
       setCreateMessage(true);
 
-      // Reset form data once snippet is created
-      setSnippetTitle("");
-      setSnippetText("");
-      setCode([""]);
-      setLanguage(["javascript"]);
-      setCustomLanguage("");
-      setShowResourceFields(false);
-      setResources([]);
-      setSelectedTags([]);
-
-      // Reset snippetList to initial state
-      setSnippetList([{ language: "javascript", code: "" }]);
-      window.location.assign(
-        `/individual-snippets/${response.data.createSnippet._id}`
-      );
+      // Optionally, you can redirect the user or perform any other actions
     } catch (error) {
-      console.error("Error creating snippet:", error);
+      console.error("Error saving snippet:", error);
     }
   };
 
@@ -310,7 +330,7 @@ export default function CreateSnippetPage() {
             color="codex.text"
             type="text"
             placeholder="Enter Snippet Title"
-            value={snippetTitle}
+            value={snippetData.snippetTitle}
             onChange={handleSnippetTitleChange}
           />
         </Box>
@@ -325,14 +345,14 @@ export default function CreateSnippetPage() {
             bg="codex.darkest"
             color="codex.text"
             type="text"
-            value={snippetText}
+            value={snippetData.snippetText}
             onChange={(e) => handleSnippetTextChange(e)}
             placeholder="Say something about your snippet!"
             rows={5}
             cols={40}
           />
         </Box>
-        {snippetList.map((snippet, index) => (
+        {snippetData.snippetCode.map((codeBlock, index) => (
           <Box key={index} w="full">
             {/* Text area for code snippet input */}
             <Textarea
@@ -343,13 +363,14 @@ export default function CreateSnippetPage() {
               borderBottom="0"
               bg="codex.darkest"
               color="codex.text"
-              value={code[index]}
+              value={codeBlock.code}
               onChange={(e) => handleCodeChange(e.target.value, index)}
               placeholder="Enter your code snippet here"
               rows={10}
               cols={40}
               mb={4}
-              onKeyDown={(e) => { // Add tab functionality to code snippet input
+              onKeyDown={(e) => {
+                // Add tab functionality to code snippet input
                 if (e.key === "Tab") {
                   e.preventDefault(); // Prevent default behavior (moving to the next field)
                   const { selectionStart, selectionEnd } = e.target;
@@ -360,13 +381,16 @@ export default function CreateSnippetPage() {
                     "\t" +
                     value.substring(selectionEnd);
                   // Move the caret position after the inserted tab character
-                  e.target.setSelectionRange(selectionStart + 1, selectionStart + 1);
+                  e.target.setSelectionRange(
+                    selectionStart + 1,
+                    selectionStart + 1
+                  );
                 }
               }}
             />
             {/* Language dropdown */}
             <LanguageSelector
-              value={language[index] || "javascript"} // Default to "javascript" if language is not provided
+              value={codeBlock.language || "javascript"} // Default to "javascript" if language is not provided
               onChange={(value) => handleLanguageChange(value, index)}
             />
             {/* Button to remove the snippet box */}
@@ -380,6 +404,7 @@ export default function CreateSnippetPage() {
             </Button>
           </Box>
         ))}
+
         <Button variant="secondary" onClick={handleAddSnippetBox} size="sm">
           Add Snippet
         </Button>
@@ -426,11 +451,7 @@ export default function CreateSnippetPage() {
             {showTagsSection ? "Hide Tags" : "Add Tags"}
           </Button>
           {showTagsSection && (
-            <Grid
-              marginTop={2}
-              templateColumns="repeat(3, 1fr)"
-              gap={2}
-            >
+            <Grid marginTop={2} templateColumns="repeat(3, 1fr)" gap={2}>
               {availableTags.map((tag, index) => (
                 <Checkbox
                   colorScheme="purple"
@@ -450,18 +471,19 @@ export default function CreateSnippetPage() {
         </Box>
         <Box w="full">
           <Box w="full">
-            {/*Code editor component for syntax highlighting*/}
-            {snippetList.map((snippet, index) => (
+            {/* Code editor component for syntax highlighting */}
+            {snippetData.snippetCode.map((snippetCode, index) => (
               <CodeEditor
                 key={index}
-                code={code[index]}
-                language={language[index] || "javascript"}
+                code={snippetCode.code}
+                language={snippetCode.language || "javascript"}
                 activeSnippetIndex={index}
               />
             ))}
           </Box>
+
           <Box pt="5">
-            <Button variant="secondary" onClick={handleCreateSnippet}>
+            <Button variant="secondary" onClick={handleSaveSnippet}>
               <Icon as={BiSave} w={6} h={8} mr="2" color="codex.text" />
               Save
             </Button>
@@ -469,7 +491,7 @@ export default function CreateSnippetPage() {
           {/*Message to confirm snippet was created*/}
           {createMessage && (
             <Text color="codex.accents200" fontWeight="bold">
-              Snippet created!
+              Changes saved!
             </Text>
           )}
         </Box>
