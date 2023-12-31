@@ -365,6 +365,7 @@ export default function UserSnippets() {
                       />
                       {isResponsive ? "" : "Add Comment"}
                     </Button>
+                    
                   ) : null}
                   {isAuthenticated && (
                     <>
@@ -380,7 +381,7 @@ export default function UserSnippets() {
                         <Icon
                           as={isSaved ? MdCodeOff : MdCode}
                           w={8}
-d                          h={8}
+                          h={8}
                           mr={isResponsive ? "0" : "2"}
                         />
                         {isResponsive ? "" : isSaved ? "Unsave Snippet" : "Save Snippet"}
