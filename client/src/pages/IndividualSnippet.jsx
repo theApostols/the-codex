@@ -13,6 +13,7 @@ import {
   Textarea,
   useBreakpointValue,
   ColorModeContext,
+  Spacer,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { GET_INDIVIDUAL_SNIPPET } from "../utils/queries";
@@ -334,6 +335,7 @@ export default function UserSnippets() {
                   >
                     <Icon as={FaAngleDoubleUp} w={8} h={8} />
                   </Button>
+                  <Spacer />
 
                   {/* Conditionally render the edit button */}
                   {currentUser && snippetUser === currentUser && (
@@ -366,20 +368,25 @@ export default function UserSnippets() {
                   ) : null}
                   {isAuthenticated && (
                     <>
+                    {/* conditionally render save/unsave buttons */}
                       <Button
                         variant="icon"
                         size="sm"
-                        onClick={() => handleSaveSnippet(snippets._id)}
+                        onClick={() => 
+                          isSaved
+                            ? handleUnsaveSnippet(snippets._id)
+                            : handleSaveSnippet(snippets._id)}
                       >
                         <Icon
-                          as={MdCode}
+                          as={isSaved ? MdCodeOff : MdCode}
                           w={8}
-                          h={8}
+d                          h={8}
                           mr={isResponsive ? "0" : "2"}
                         />
-                        {isResponsive ? "" : "Save Snippet"}
+                        {isResponsive ? "" : isSaved ? "Unsave Snippet" : "Save Snippet"}
                       </Button>
-                      <Button
+                      <Spacer />
+                      {/* <Button
                         variant="icon"
                         size="sm"
                         onClick={() => handleUnsaveSnippet(snippets._id)}
@@ -391,7 +398,7 @@ export default function UserSnippets() {
                           mr={isResponsive ? "0" : "2"}
                         />
                         {isResponsive ? "" : "Unsave Snippet"}
-                      </Button>
+                      </Button> */}
                     </>
                   )}
                 </HStack>
