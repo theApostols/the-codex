@@ -522,7 +522,7 @@ export default function CreateSnippetPage() {
               Save
             </Button>
           </Box>
-          {/*Message to confirm snippet was created*/}
+          {/*Message to confirm snippet changes saved*/}
           {createMessage && (
             <Text color="codex.accents200" fontWeight="bold">
               Changes saved!
