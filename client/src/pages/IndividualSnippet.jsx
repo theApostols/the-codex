@@ -337,7 +337,7 @@ export default function UserSnippets() {
 
                   {/* Conditionally render the edit button */}
                   {currentUser && snippetUser === currentUser && (
-                    <Link to={`/edit-snippet/${snippets._id}`}>
+                    <Link to={`/edit-page/${snippets._id}`}>
                       <Button variant="icon" size="sm">
                         <Icon
                           as={MdOutlineEditNote}
