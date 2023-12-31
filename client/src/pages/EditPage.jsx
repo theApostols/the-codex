@@ -312,8 +312,12 @@ export default function CreateSnippetPage() {
 
       // Show message to confirm snippet was saved
       setCreateMessage(true);
-
-      // Optionally, you can redirect the user or perform any other actions
+      // delay redirect to allow time for edit message to display
+      setTimeout(() => {
+        window.location.assign(
+          `/individual-snippets/${response.data.editSnippet._id}`
+      );}, 1000);
+      
     } catch (error) {
       console.error("Error saving snippet:", error);
     }
