@@ -183,20 +183,38 @@ export default function CreateSnippetPage() {
     }));
   };
 
+  // const handleCodeChange = (newCode, index) => {
+  //   setCode((prevCode) => {
+  //     const newCodeArray = [...prevCode];
+  //     newCodeArray[index] = newCode;
+  //     return newCodeArray;
+  //   });
+
+  //   setSnippetData((prevSnippetData) => {
+  //     const newSnippetData = { ...prevSnippetData };
+  //     newSnippetData.snippetCode[index].code = newCode;
+  //     return newSnippetData;
+  //   });
+  // };
+
   const handleCodeChange = (newCode, index) => {
     setCode((prevCode) => {
       const newCodeArray = [...prevCode];
       newCodeArray[index] = newCode;
       return newCodeArray;
     });
-
+  
     setSnippetData((prevSnippetData) => {
       const newSnippetData = { ...prevSnippetData };
-      newSnippetData.snippetCode[index].code = newCode;
+      newSnippetData.snippetCode = [...prevSnippetData.snippetCode]; // Create a copy of the snippetCode array
+      newSnippetData.snippetCode[index] = { // Create a copy of the code object
+        ...prevSnippetData.snippetCode[index],
+        code: newCode,
+      };
       return newSnippetData;
     });
   };
-
+  
   const handleCustomLanguageChange = (e) => {
     //used with languageSelector component
     // set customLanguage to the value of user input if they choose to enter a custom language
