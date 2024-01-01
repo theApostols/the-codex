@@ -244,6 +244,21 @@ export default function UserSnippets() {
             p="8"
             color="codex.accents"
           >
+            {/* Welcome message for logged-in users */}
+            {currentUser ? (
+              <Text fontSize="x-large" fontWeight="bold" color="codex.highlights" pb="10" textAlign="center">
+                Welcome, {currentUser}!
+                <br /> Enjoy browsing the Codex.
+              </Text>
+            ) : (
+              <Text fontSize="x-large" fontWeight="bold" color="codex.highlights" pb="10" textAlign="center">
+                Welcome to the Codex!
+                <br /> Please <Link to="/login">Login</Link> or {}
+                <Link to="/signup">Signup</Link> for exclusive access.
+              </Text> 
+
+            )}
+                        
             {/* Toggle Tags Section */}
             <Box w="full">
               <Button variant="secondary" onClick={handleToggleTags} size="sm">

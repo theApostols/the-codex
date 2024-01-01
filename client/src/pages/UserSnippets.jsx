@@ -234,71 +234,6 @@ export default function UserSnippets() {
     }
   };
 
-  // const handleAddProps = async (snippetId) => {
-  //   if (currentUser) {
-  //     try {
-
-  //       // preform the addProps mutation
-  //       await addProps({
-  //         variables: {
-  //           username: currentUser,
-  //           snippetId: snippetId,
-  //         },
-  //       });
-  //     } catch (err) {
-  //       console.error("Error propping snippet", err);
-  //     }
-  //   }
-  // };
-
-  //DROP A SNIPPET
-  // const handleAddDrops = async (snippetId) => {
-  //   if (currentUser) {
-  //     try {
-  //       await addDrops({
-  //         variables: {
-  //           username: currentUser,
-  //           snippetId: snippetId,
-  //         },
-  //       });
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   }
-  // };
-
-  //REMOVE PROPS FROM A SNIPPET
-  // const handleRemoveProps = async (snippetId) => {
-  //   if (currentUser) {
-  //     try {
-  //       await removeProps({
-  //         variables: {
-  //           username: currentUser,
-  //           snippetId: snippetId,
-  //         },
-  //       });
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   }
-  // };
-
-  //REMOVE DROPS FROM A SNIPPET
-  // const handleRemoveDrops = async (snippetId) => {
-  //   if (currentUser) {
-  //     try {
-  //       await removeDrops({
-  //         variables: {
-  //           username: currentUser,
-  //           snippetId: snippetId,
-  //         },
-  //       });
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   }
-  // };
-
   const handleToggleTags = () => {
     setShowTagsSection(!showTagsSection);
   };
@@ -404,7 +339,7 @@ export default function UserSnippets() {
                     onClick={handleToggleTags}
                     size="sm"
                   >
-                    {showTagsSection ? "Hide Tags" : "Select Tags"}
+                    {showTagsSection ? "Hide Tags" : "Filter Tags"}
                   </Button>
                   {showTagsSection && (
                     <Grid
@@ -491,9 +426,6 @@ export default function UserSnippets() {
                 </Box>
               </>
             ) : (
-              // <Text color="red" mt={2}>
-              //   User not found or name is incorrect.
-              // </Text>
 
               <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
