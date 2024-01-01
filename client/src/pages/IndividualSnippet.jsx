@@ -13,6 +13,7 @@ import {
   Textarea,
   useBreakpointValue,
   ColorModeContext,
+  Spacer,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { GET_INDIVIDUAL_SNIPPET } from "../utils/queries";
@@ -23,6 +24,7 @@ import {
   MdCodeOff,
   MdOutlineAddComment,
   MdOutlineEditNote,
+  MdOutlineDeleteForever,
 } from "react-icons/md";
 import Auth from "../utils/auth";
 import {
@@ -33,6 +35,7 @@ import {
   REMOVE_DROPS,
   SAVE_SNIPPET,
   UNSAVE_SNIPPET,
+  DELETE_SNIPPET,
 } from "../utils/mutations";
 
 export default function UserSnippets() {
@@ -143,7 +146,12 @@ export default function UserSnippets() {
   const [saveSnippet] = useMutation(SAVE_SNIPPET);
   const [unsaveSnippet] = useMutation(UNSAVE_SNIPPET);
 
-  // Use the useQuery hook to execute the GET_USER_SNIPPETS query
+  //DELETE SNIPPET MUTATION
+  const [deleteSnippet] = useMutation(DELETE_SNIPPET, {
+    refetchQueries: [{ query: GET_INDIVIDUAL_SNIPPET, variables: { snippetId } }],
+  });
+
+  // Use the useQuery hook to execute the GET_INDIVIDUAL_SNIPPETS query
   const { loading, error, data } = useQuery(GET_INDIVIDUAL_SNIPPET, {
     variables: { snippetId },
   });
@@ -252,6 +260,26 @@ export default function UserSnippets() {
     }
   };
 
+  // Event handler for deleting a snippet
+  const handleDeleteSnippet = async (snippetId) => {
+    // Prompt the user to confirm they want to delete the snippet
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this snippet? This action cannot be undone. You will be redirected back to the main page upon deletion.");
+    if (confirmDelete) {
+      try {
+        const result = await deleteSnippet({ variables: { snippetId } });
+        // Extract the deleted snippet's _id from the result
+        const deletedSnippetId = result.data.deleteSnippet._id;
+        console.log(`Snippet with _id ${deletedSnippetId} deleted successfully`);
+        // redirect to main page after deletion
+        window.location.assign("/main-snippets");
+      
+      } catch (error) {
+      console.error("Error deleting snippet:", error);
+      }
+    }
+  };
+
   return (
     <>
       <Box
@@ -334,10 +362,11 @@ export default function UserSnippets() {
                   >
                     <Icon as={FaAngleDoubleUp} w={8} h={8} />
                   </Button>
+                  <Spacer />
 
                   {/* Conditionally render the edit button */}
                   {currentUser && snippetUser === currentUser && (
-                    <Link to={`/edit-snippet/${snippets._id}`}>
+                    <Link to={`/edit-page/${snippets._id}`}>
                       <Button variant="icon" size="sm">
                         <Icon
                           as={MdOutlineEditNote}
@@ -363,35 +392,49 @@ export default function UserSnippets() {
                       />
                       {isResponsive ? "" : "Add Comment"}
                     </Button>
+                    
                   ) : null}
                   {isAuthenticated && (
                     <>
+                    {/* conditionally render save/unsave buttons */}
                       <Button
                         variant="icon"
                         size="sm"
-                        onClick={() => handleSaveSnippet(snippets._id)}
+                        onClick={() => 
+                          isSaved
+                            ? handleUnsaveSnippet(snippets._id)
+                            : handleSaveSnippet(snippets._id)}
                       >
                         <Icon
-                          as={MdCode}
+                          as={isSaved ? MdCodeOff : MdCode}
                           w={8}
                           h={8}
                           mr={isResponsive ? "0" : "2"}
                         />
-                        {isResponsive ? "" : "Save Snippet"}
+                        {isResponsive ? "" : isSaved ? "Unsave Snippet" : "Save Snippet"}
                       </Button>
-                      <Button
-                        variant="icon"
-                        size="sm"
-                        onClick={() => handleUnsaveSnippet(snippets._id)}
-                      >
-                        <Icon
-                          as={MdCodeOff}
-                          w={8}
-                          h={8}
-                          mr={isResponsive ? "0" : "2"}
-                        />
-                        {isResponsive ? "" : "Unsave Snippet"}
-                      </Button>
+
+                      {/* conditionally render delete button */}
+                      {currentUser && snippetUser === currentUser && (
+                        <Button
+                          variant="icon"
+                          size="sm"
+                          onClick={() => {
+                            if (snippets) {
+                              handleDeleteSnippet(snippets._id);
+                            }
+                          }}
+                        >
+                          <Icon
+                            as={MdOutlineDeleteForever}
+                            w={8}
+                            h={8}
+                            mr={isResponsive ? "0" : "2"}
+                          />
+                          {isResponsive ? "" : "Delete"}
+                        </Button>
+                      )}
+                      <Spacer />
                     </>
                   )}
                 </HStack>

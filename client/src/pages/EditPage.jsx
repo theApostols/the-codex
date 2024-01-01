@@ -64,10 +64,23 @@ export default function CreateSnippetPage() {
 
   // console.log(data.oneSnippet.snippetCode[0].language);
 
+  // const handleLanguageChange = (selectedLanguage, index) => {
+  //   setSnippetData((prevSnippetData) => {
+  //     const newSnippetData = { ...prevSnippetData };
+  //     newSnippetData.snippetCode[index].language = selectedLanguage;
+  //     return newSnippetData;
+  //   });
+  //   // clear customLanguage when a predefined language is selected
+  //   setCustomLanguage("");
+  // };
   const handleLanguageChange = (selectedLanguage, index) => {
     setSnippetData((prevSnippetData) => {
       const newSnippetData = { ...prevSnippetData };
-      newSnippetData.snippetCode[index].language = selectedLanguage;
+      newSnippetData.snippetCode = [...prevSnippetData.snippetCode]; // Create a copy of the snippetCode array
+      newSnippetData.snippetCode[index] = { // Create a copy of the code object
+        ...prevSnippetData.snippetCode[index],
+        language: selectedLanguage,
+      };
       return newSnippetData;
     });
     // clear customLanguage when a predefined language is selected
@@ -214,7 +227,7 @@ export default function CreateSnippetPage() {
       return newSnippetData;
     });
   };
-  
+
   const handleCustomLanguageChange = (e) => {
     //used with languageSelector component
     // set customLanguage to the value of user input if they choose to enter a custom language
@@ -299,8 +312,12 @@ export default function CreateSnippetPage() {
 
       // Show message to confirm snippet was saved
       setCreateMessage(true);
-
-      // Optionally, you can redirect the user or perform any other actions
+      // delay redirect to allow time for edit message to display
+      setTimeout(() => {
+        window.location.assign(
+          `/individual-snippets/${response.data.editSnippet._id}`
+      );}, 1000);
+      
     } catch (error) {
       console.error("Error saving snippet:", error);
     }
@@ -334,7 +351,7 @@ export default function CreateSnippetPage() {
         color="white"
       >
         <Heading textAlign="center" color="codex.text" mb="6">
-          Create Snippet
+          Edit Snippet
         </Heading>
         <Box w="full">
           {/* Snippet title */}
@@ -426,7 +443,6 @@ export default function CreateSnippetPage() {
         <Button variant="secondary" onClick={handleAddSnippetBox} size="sm">
           Add Snippet
         </Button>
-        {/*MORE code blocks*/}
         {/* Add resources section */}
         <Box w="full">
           <VStack mt={4} spacing={4}>
@@ -506,7 +522,7 @@ export default function CreateSnippetPage() {
               Save
             </Button>
           </Box>
-          {/*Message to confirm snippet was created*/}
+          {/*Message to confirm snippet changes saved*/}
           {createMessage && (
             <Text color="codex.accents200" fontWeight="bold">
               Changes saved!
