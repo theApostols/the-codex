@@ -1,18 +1,12 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
 import { Link, useParams } from "react-router-dom";
-import {
-  Box,
-  VStack,
-  Heading,
-  Flex,
-  Divider,
-} from "@chakra-ui/react";
+import { Box, VStack, Heading, Flex, Divider } from "@chakra-ui/react";
 import { GET_SAVED_SNIPPETS } from "../utils/queries";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview";
 
 export default function SavedSnippets() {
-   const { username } = useParams();
+  const { username } = useParams();
 
   const { data, loading, error, refetch } = useQuery(GET_SAVED_SNIPPETS, {
     variables: { username },
@@ -54,8 +48,8 @@ export default function SavedSnippets() {
           color="codex.accents"
         >
           <Heading color="codex.text" as="h1" m="4" textAlign="center">
-              Saved Snippets
-            </Heading>
+            Saved Snippets
+          </Heading>
 
           <Box
             w="full"
@@ -64,7 +58,6 @@ export default function SavedSnippets() {
             borderRadius="lg"
             bg="codex.darkest"
           >
-            
             <Divider mb="4" borderColor="codex.borders" />
 
             {savedSnippets.map((snippet) => (
