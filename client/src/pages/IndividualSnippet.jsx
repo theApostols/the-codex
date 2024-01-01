@@ -365,7 +365,7 @@ export default function UserSnippets() {
                   <Spacer />
 
                   {/* Conditionally render the edit button */}
-                  {currentUser && snippetUser === currentUser && (
+                  {isAuthenticated && snippetUser === currentUser && (
                     <Link to={`/edit-page/${snippets._id}`}>
                       <Button variant="icon" size="sm">
                         <Icon
