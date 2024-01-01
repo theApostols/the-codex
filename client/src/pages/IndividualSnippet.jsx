@@ -441,7 +441,15 @@ export default function UserSnippets() {
               </Box>
               {/* Conditionally render resource links */}
               {snippets.resources && snippets.resources.length > 0 && (
-                <VStack p="4" align="start">
+                <VStack 
+                align={["center", "flex-start"]}
+                maxW="5xl"
+                mx="auto"
+                p="4"
+                m="4"
+                borderRadius="lg"
+                bg="rgba(45, 55, 72, 0.8)"
+                >
                   <Heading fontSize="m">Resources</Heading>
                   {snippets.resources.map((resource, index) => (
                     <Text
@@ -464,7 +472,16 @@ export default function UserSnippets() {
 
               {/* Conditionally render tags */}
               {snippets.tags && snippets.tags.length > 0 && (
-                <VStack pl="4" pb="4" pr="4" align="start">
+                <VStack 
+                align={["center", "flex-start"]}
+                maxW="5xl"
+                mx="auto"
+                p="4"
+                m="4"
+                borderRadius="lg"
+                bg="rgba(45, 55, 72, 0.8)"
+                >
+
                   <Heading fontSize="m">Tags</Heading>
                   <HStack>
                     {snippets.tags.map((tag, index) => (
@@ -473,6 +490,7 @@ export default function UserSnippets() {
                       </Text>
                     ))}
                   </HStack>
+                
                 </VStack>
               )}
 
