@@ -39,6 +39,7 @@ export default function CreateSnippetPage() {
     tags: [],
     username: "",
     _id: "",
+    dirty: false, // Flag to indicate if the snippet has been edited
   });
 
   useEffect(() => {
@@ -77,7 +78,8 @@ export default function CreateSnippetPage() {
     setSnippetData((prevSnippetData) => {
       const newSnippetData = { ...prevSnippetData };
       newSnippetData.snippetCode = [...prevSnippetData.snippetCode]; // Create a copy of the snippetCode array
-      newSnippetData.snippetCode[index] = { // Create a copy of the code object
+      newSnippetData.snippetCode[index] = {
+        // Create a copy of the code object
         ...prevSnippetData.snippetCode[index],
         language: selectedLanguage,
       };
@@ -216,14 +218,17 @@ export default function CreateSnippetPage() {
       newCodeArray[index] = newCode;
       return newCodeArray;
     });
-  
+
     setSnippetData((prevSnippetData) => {
       const newSnippetData = { ...prevSnippetData };
       newSnippetData.snippetCode = [...prevSnippetData.snippetCode]; // Create a copy of the snippetCode array
-      newSnippetData.snippetCode[index] = { // Create a copy of the code object
+      newSnippetData.snippetCode[index] = {
+        // Create a copy of the code object
         ...prevSnippetData.snippetCode[index],
         code: newCode,
       };
+      // Set the dirty flag to true, indicating that the snippet has been edited
+      newSnippetData.dirty= true;
       return newSnippetData;
     });
   };
@@ -296,28 +301,31 @@ export default function CreateSnippetPage() {
 
   const handleSaveSnippet = async () => {
     try {
-      const response = await saveSnippet({
-        variables: {
-          snippetId: snippetData._id,
-          snippetTitle: snippetData.snippetTitle,
-          snippetText: snippetData.snippetText,
-          snippetCode: snippetData.snippetCode.map((codeBlock, index) => ({
-            language: codeBlock.language || "javascript",
-            code: code[index] || "", // Use the correct index to get the corresponding code
-          })),
-          resources: resources.map(({ __typename, ...rest }) => rest),
-          tags: selectedTags,
-        },
-      });
 
-      // Show message to confirm snippet was saved
-      setCreateMessage(true);
-      // delay redirect to allow time for edit message to display
-      setTimeout(() => {
-        window.location.assign(
-          `/individual-snippets/${response.data.editSnippet._id}`
-      );}, 1000);
-      
+        const response = await saveSnippet({
+          variables: {
+            snippetId: snippetData._id,
+            snippetTitle: snippetData.snippetTitle,
+            snippetText: snippetData.snippetText,
+            snippetCode: snippetData.snippetCode.map((codeBlock, index) => ({
+              language: codeBlock.language || "javascript",
+              // code: code[index] || "", // Use the correct index to get the corresponding code
+              code: codeBlock.code || "",
+            })),
+            resources: resources.map(({ __typename, ...rest }) => rest),
+            tags: selectedTags,
+          },
+        });
+
+        // Show message to confirm snippet was saved
+        setCreateMessage(true);
+        // delay redirect to allow time for edit message to display
+        setTimeout(() => {
+          window.location.assign(
+            `/individual-snippets/${response.data.editSnippet._id}`
+          );
+        }, 1000);
+
     } catch (error) {
       console.error("Error saving snippet:", error);
     }
