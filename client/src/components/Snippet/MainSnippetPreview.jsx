@@ -1,20 +1,8 @@
 import {
   Box,
   Text,
-  Button,
   VStack,
-  Code,
-  Icon,
-  HStack,
-  Flex,
 } from "@chakra-ui/react";
-import {
-  BiBookmarkAltMinus,
-  BiBookmarkAltPlus,
-  BiEdit,
-  BiTrash,
-} from "react-icons/bi";
-import CodeEditor from "../CodeEditor";
 import { useNavigate } from "react-router-dom";
 import { Link, useParams } from "react-router-dom";
 
@@ -28,7 +16,6 @@ const SnippetPreview = ({ snippet }) => {
   };
 
   // Check if snippetData and snippetCode exist before accessing
-
   if (snippet) {
     const snippetData = snippet;
 
@@ -74,27 +61,12 @@ const SnippetPreview = ({ snippet }) => {
               )}
 
               <Text>{snippetData.snippetText}</Text>
-
-              {/* <Box w="full">
-            { Map through all code blocks and render CodeEditor for each }
-            {snippetData.snippetCode.map((codeBlock, index) => (
-              <CodeEditor
-                key={index}
-                code={codeBlock.code}
-                // Assuming you also have a property like codeBlock.language
-                // language={codeBlock.language}
-              />
-            ))}
-          </Box> */}
-
-              {/* Add your other components or elements here */}
             </VStack>
           </Link>
         </Box>
       </>
     );
   } else {
-    // Render nothing or a placeholder for when snippetData.snippetCode doesn't exist or is empty
     return null;
   }
 };

@@ -1,3 +1,4 @@
-import Snippet from './Snippet';
+import SnippetPreview from './MainSnippetPreview';
+import IndividualSnippetPreview from './IndividualSnippetPreview';
 
-export default Snippet;
+export default { SnippetPreview, IndividualSnippetPreview };
