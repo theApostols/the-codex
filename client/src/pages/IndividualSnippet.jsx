@@ -264,7 +264,7 @@ export default function UserSnippets() {
   const handleDeleteSnippet = async (snippetId) => {
     // Prompt the user to confirm they want to delete the snippet
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this snippet? This action cannot be undone. You will be redirected back to the main page upon deletion.");
+      "Are you sure you want to delete this snippet? This action cannot be undone.");
     if (confirmDelete) {
       try {
         const result = await deleteSnippet({ variables: { snippetId } });
@@ -272,7 +272,7 @@ export default function UserSnippets() {
         const deletedSnippetId = result.data.deleteSnippet._id;
         console.log(`Snippet with _id ${deletedSnippetId} deleted successfully`);
         // redirect to main page after deletion
-        window.location.assign("/main-snippets");
+        window.location.assign(`/user-snippets/${currentUser}`);
       
       } catch (error) {
       console.error("Error deleting snippet:", error);
