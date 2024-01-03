@@ -1,7 +1,7 @@
 # The Codex
 
 ## Description
-The Codex is an online community that allows developers and tech enthusiasts to share their knowledge and passion with others. Users can browse code snippets, post snippets, comment on snippets, save snippets, and edit and delete their own snippets. They can also "Prop" or "Drop" snippets to show their appreciation (prop) or disapproval (drop) of the code. Anyone can browse snippets, but only registered users can post, comment, prop or drop, and save snippets.
+[The Codex](https://the-codex.onrender.com/) is an online community that allows developers and tech enthusiasts to share their knowledge and passion with others. Users can browse code snippets, post snippets, comment on snippets, save snippets, and edit and delete their own snippets. They can also "Prop" or "Drop" snippets to show their appreciation (prop) or disapproval (drop) of the code. Anyone can browse snippets, but only registered users can post, comment, prop or drop, and save snippets.
 The Codex is a full-stack MERN (MongoDB, Express, React, Node) application that incorporates technologies such as [GraphQL](https://graphql.org/), [Apollo Server](https://www.apollographql.com/docs/apollo-server/), [Apollo Client](https://www.apollographql.com/docs/react/), [Cors](https://www.npmjs.com/package/cors), [React Router DOM](https://reactrouter.com/web/guides/quick-start), [React Icons](https://react-icons.github.io/react-icons/),[React Syntax Highlighter](https://github.com/react-syntax-highlighter/react-syntax-highlighter), [Chakra UI](https://chakra-ui.com/), [Framer Motion](https://www.framer.com/motion/), and [Multer](https://www.npmjs.com/package/multer).  
 The Codex uses JSON Web Token (JWT) authentication for secure user login and registration. JWT tokens are decoded using JWT decode for user verification.  Cors is used to allow cross-origin requests from the client-side application to the server-side application. 
 The Codex uses React Syntax Highlighter to display code snippets in a styled readable format. Chakra UI is used for styling and layout, Framer Motion for animations and Multer for profile image upload. React Icons are used for icons throughout the application.
@@ -21,7 +21,7 @@ N/A, there is no installation required for this application, at this time. Futur
 
 ## Usage
 **Getting Started:**
-The Codex can be accessed at (`{insert link here}`).  
+The Codex can be accessed at https://the-codex.onrender.com/  
 <img src="screenshots/homepage.png" width="500"/>  
 
 The user can browse snippets without logging in, but must be logged in to post, comment, prop or drop, and save snippets.
