@@ -61,7 +61,7 @@ JWT Authentication file (./server/utils/auth.js);
 Apollo Provider / Client setup (./client/src/App.jsx);
 * https://git.bootcampcontent.com/University-of-Toronto/UTOR-VIRT-FSF-PT-07-2023-U-LOLC/-/blob/main/21-MERN/01-Activities/26-Stu_Resolver-Context/Unsolved/client/src/App.jsx?ref_type=heads
 
-multer setup (./server/server.js);
+Multer setup (./server/server.js);
 * https://github.com/UofTTeam2/TravIS/blob/main/controllers/api/trips-controller.js
 
 Profile picture preview setup (./client/src/components/UserSettingsForm/UserSettingsForm.jsx);
