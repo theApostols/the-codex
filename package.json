@@ -1,0 +1,33 @@
+{
+  "name": "the-codex",
+  "version": "1.0.0",
+  "description": "The CodeX",
+  "main": "server",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theApostols/the-codex.git"
+  },
+  "author": "theApostols",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/theApostols/the-codex/issues"
+  },
+  "homepage": "https://github.com/theApostols/the-codex#readme",
+  "scripts": {
+    "start": "node server --ignore client",
+    "develop": "concurrently \"cd server && npm run start\" \"cd client && npm run dev\"",
+    "install": "cd server && npm i && cd ../client && npm i",
+    "seed": "cd server && npm run seed",
+    "build": "cd client && npm run build"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "concurrently": "^5.1.0"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "framer-motion": "^10.16.16"
+  }
+}

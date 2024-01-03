@@ -1,0 +1,84 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  /* color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424; */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  --darkest: #181726;
+  --dark: #211E33;
+  --main: #292640;
+  --borders: #413C66;
+  --highlights: #8278CC;
+  --accents: #A5E9E1;
+  --text: #FFFFFF;
+  --text200: #E0E0E0;
+  --accents200: #87cac3;
+  --accents300: #448780;
+  margin: 0;
+  padding: 0;
+  background-color: var(--borders);
+  color: var(--accents300);
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+  background: var(--borders);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accents300);
+  -webkit-border-radius: 1ex;
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--borders);
+}
+
+html {
+  scroll-snap-type: y mandatory;
+}
+
+
+.parallax {
+  overflow: hidden;
+  letter-spacing: -2px;
+  line-height: 0.8;
+  margin: 0;
+  white-space: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.parallax .scroller {
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 64px;
+  display: flex;
+  white-space: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.parallax span {
+  display: block;
+  margin-right: 30px;
+}
+
+.hidden-input {
+  display: none;
+}
