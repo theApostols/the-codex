@@ -103,7 +103,8 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 
 ## Badges
 **License:**
-- ![License](https://img.shields.io/badge/License-MIT-1E88E5.svg)
+- ![License](https://img.shields.io/badge/License-MIT-1E88E5.svg)  
+
 **Frontend:**
 - ![React](https://img.shields.io/badge/React-18.2.0-61DAFB.svg)
 - ![React DOM](https://img.shields.io/badge/React%20DOM-18.2.0-61DAFB.svg)
