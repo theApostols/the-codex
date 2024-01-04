@@ -1,11 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Box, VStack, FormControl, FormLabel, Input, Checkbox, Button, Text, Link,
-  Heading, Modal, ModalOverlay, ModalContent, ModalHeader,
-  ModalFooter, ModalBody, useDisclosure, Container,
+  Box,
+  VStack,
+  FormControl,
+  FormLabel,
+  Input,
+  Checkbox,
+  Button,
+  Text,
+  Link,
+  Heading,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  useDisclosure,
+  Container,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 import { useMutation } from "@apollo/client";
 import { LOGIN_USER } from "../../utils/mutations";
 import Auth from "../../utils/auth";
@@ -13,10 +28,14 @@ import Auth from "../../utils/auth";
 const MotionContainer = motion(Container);
 
 function LoginForm() {
-  const { isOpen: isOpenError, onOpen: onOpenError, onClose: onCloseError } = useDisclosure();
+  const {
+    isOpen: isOpenError,
+    onOpen: onOpenError,
+    onClose: onCloseError,
+  } = useDisclosure();
   const [userFormData, setUserFormData] = useState({ email: "", password: "" });
   const [showAlert, setShowAlert] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -24,9 +43,16 @@ function LoginForm() {
   const handleRememberMeChange = () => {
     setRememberMe(!rememberMe);
   };
-  
+
   const [loginUser, { error, data }] = useMutation(LOGIN_USER);
   const navigate = useNavigate();
+
+  // Check if the user is already logged in
+  useEffect(() => {
+    if (Auth.loggedIn()) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -34,24 +60,24 @@ function LoginForm() {
   };
 
   //function to handle displaying an error modal
-  const handleErrorMessage = async (error) =>
-  {
+  const handleErrorMessage = async (error) => {
     let errorDetails; //variable to hold detailed error message
 
     //provides additional error details for specific errors
-    if (error.message === 'Failed to log in; Unable to log in using the provided details. Please try again.')
-    {
-      errorDetails = 'Unable to log in using the provided details. Please try again.'
-    }
-    else
-    {
+    if (
+      error.message ===
+      "Failed to log in; Unable to log in using the provided details. Please try again."
+    ) {
+      errorDetails =
+        "Unable to log in using the provided details. Please try again.";
+    } else {
       errorDetails = error.message;
     }
 
     //sets error message & opens error modal
     setErrorMessage(errorDetails);
     onOpenError();
-  }
+  };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -101,10 +127,10 @@ function LoginForm() {
           alignItems="center"
           justifyContent="center"
         >
-          <MotionContainer 
-            centerContent 
-            initial={{ opacity: 0, x: -100 }} 
-            animate={{ opacity: 1, x: 0 }} 
+          <MotionContainer
+            centerContent
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 100 }}
           >
             <VStack
@@ -143,8 +169,13 @@ function LoginForm() {
                 />
               </FormControl>
 
-              <Checkbox colorScheme="purple" isChecked={rememberMe}
-                onChange={handleRememberMeChange}>Remember me</Checkbox>
+              <Checkbox
+                colorScheme="purple"
+                isChecked={rememberMe}
+                onChange={handleRememberMeChange}
+              >
+                Remember me
+              </Checkbox>
               <Button
                 disabled={!(userFormData.email && userFormData.password)}
                 type="submit"
@@ -161,9 +192,7 @@ function LoginForm() {
                 <ModalContent bg="codex.accents" color="codex.darkest">
                   <ModalHeader>Oops! An error occured.</ModalHeader>
                   <ModalBody>
-                    <Text>
-                      {errorMessage}
-                    </Text>
+                    <Text>{errorMessage}</Text>
                   </ModalBody>
                   <ModalFooter>
                     <Button variant="secondary" mr={3} onClick={onCloseError}>
