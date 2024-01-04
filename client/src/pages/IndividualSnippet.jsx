@@ -355,7 +355,9 @@ export default function UserSnippets() {
                 <Link>
                   <IndividualSnippetPreview snippet={snippets} />
                 </Link>
-                <HStack color="codex.text">
+                <HStack color="codex.text"
+                justifyContent={isAuthenticated ? "space-evenly" : "flex-start"}
+                >
                   <Button
                     variant="icon"
                     size="sm"
@@ -372,9 +374,11 @@ export default function UserSnippets() {
                   >
                     <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
                   </Button>
+
                   <Text color="codex.highlights" fontSize="sm">
                     Props: {snippets.overallProps}
                   </Text>
+
                   <Button
                     variant="icon"
                     size="sm"
@@ -391,7 +395,6 @@ export default function UserSnippets() {
                   >
                     <Icon as={FaAngleDoubleUp} w={8} h={8} />
                   </Button>
-                  <Spacer />
 
                   {/* Conditionally render the edit button */}
                   {isAuthenticated && snippetUser === currentUser && (
@@ -468,10 +471,10 @@ export default function UserSnippets() {
                           {isResponsive ? "" : "Delete"}
                         </Button>
                       )}
-                      <Spacer />
+
                     </>
                   )}
-                </HStack>
+                  </HStack>
               </Box>
               {/* Conditionally render resource links */}
               {snippets.resources && snippets.resources.length > 0 && (
