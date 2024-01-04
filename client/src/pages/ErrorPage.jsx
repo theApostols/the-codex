@@ -25,7 +25,7 @@ export default function ErrorPage() {
         <Heading as="h1" size="2xl" color="codex.highlights">
           Oops!
         </Heading>
-        <Text fontSize="xl">Sorry, an unexpected error has occurred.</Text>
+        <Text fontSize="xl" color="codex.text">Sorry, an unexpected error has occurred.</Text>
         <Text color="codex.accents">
           <i>{error.statusText || error.message}</i>
         </Text>

@@ -230,9 +230,13 @@ function FeaturedSnippets() {
       variants={snippetsVariants}
       p={10}
       m="5"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
       textAlign="center"
     >
-      <Box p={10}>
+      <Box>
         <Heading color='codex.accents' mb={6}>Featured Snippets</Heading>
         <SimpleGrid color='codex.text200' columns={columns} spacing={10}>
           <SnippetCard title="React Components" category="Web Development" />
@@ -260,28 +264,32 @@ function HowItWorks() {
   
   return (
     <MotionBox
-    initial="hidden"
-    whileInView="visible"
-    viewport={{ once: true }}
-    transition={transition}
-    variants={howItWorksVariants}
-    p={10}
-    m='5'
-    textAlign="center"
-  >
-    <Box p={10}>
-      <Heading color='codex.accents' mb={6}>How It Works</Heading>
-      <Text color='codex.text200' mb={3}>
-        "This platform has transformed the way I manage my code snippets."
-      </Text>
-      <Text color='codex.text200' mb={3}>
-        "The community support is fantastic. I've learned so much!"
-      </Text>
-      <Button size="lg" variant='secondary' mt={4} onClick={handleSignUpClick}>
-        Start Sharing Today
-      </Button>
-    </Box>
-  </MotionBox>
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      transition={transition}
+      variants={howItWorksVariants}
+      p={10}
+      m='5'
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      textAlign="center"
+    >
+      <Box p={10}>
+        <Heading color='codex.accents' mb={6}>How It Works</Heading>
+        <Text color='codex.text200' mb={3}>
+          "This platform has transformed the way I manage my code snippets."
+        </Text>
+        <Text color='codex.text200' mb={3}>
+          "The community support is fantastic. I've learned so much!"
+        </Text>
+        <Button size="lg" variant='secondary' mt={4} onClick={handleSignUpClick}>
+          Start Sharing Today
+        </Button>
+      </Box>
+    </MotionBox>
   );
 }
 

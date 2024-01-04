@@ -45,7 +45,11 @@ const Footer = () => {
           </Stack>
           <Stack>
             <Heading as="p" size="md" fontWeight="bold">Social Media</Heading>
-            <Link href="#" fontSize="sm" variant='link'>something else</Link>
+            <Link variant="link" href="#" isExternal><Icon as={FaGithub} w="6" h="6"/> GitHub</Link>
+            {/* Additional social media icons... */}
+            <Link variant="link" href="mailto:theapostolsofveronica@outlook.com" isExternal>
+            <Icon as={FaEnvelope} w="6" h="6"/> E-mail
+            </Link>
           </Stack>
           <Stack>
             <Heading as="p" size="md" fontWeight="bold">License</Heading>
@@ -66,14 +70,6 @@ const Footer = () => {
           <Text fontSize="sm">
             © {new Date().getFullYear()} The CodeX. All rights reserved.
           </Text>
-          {/* Social media icons with links. */}
-          <Stack direction="row" spacing={6} mt={{ base: '4', md: '0' }} >
-            <Link variant="link" href="#" isExternal><Icon as={FaGithub} w="6" h="6"/></Link>
-            {/* Additional social media icons... */}
-            <Link variant="link" href="mailto:theapostolsofveronica@outlook.com" isExternal>
-            <Icon as={FaEnvelope} w="6" h="6"/>
-            </Link>
-          </Stack>
         </Box>
       </Container>
     </Box>
