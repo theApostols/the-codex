@@ -345,29 +345,41 @@ export default function UserSnippets() {
                     variant="secondary"
                     onClick={handleToggleTags}
                     size="sm"
+                    mb="4"
                   >
                     {showTagsSection ? "Hide Tags" : "Filter Tags"}
                   </Button>
                   {showTagsSection && (
-                    <Grid
-                      marginTop={2}
-                      templateColumns="repeat(3, 1fr)"
-                      gap={2}
+                    <Box
+                      w="full"
+                      maxH={{ base: "200px", md: "none" }}
+                      overflowY={{ base: "scroll", md: "visible" }}
+                      className="checkbox-container"
                     >
-                      {availableTags.map((tag, index) => (
-                        <Checkbox
-                          colorScheme="purple"
-                          size="md"
-                          color="codex.accents"
-                          key={index}
-                          isChecked={selectedTags.includes(tag)}
-                          onChange={() => handleTagChange(tag)}
-                          marginRight={2} // adds margin between tags
-                        >
-                          {tag}
-                        </Checkbox>
-                      ))}
-                    </Grid>
+                      <Grid
+                        marginTop={2}
+                        templateColumns={{
+                          base: "repeat(1, 1fr)",
+                          sm: "repeat(2, 1fr)",
+                          md: "repeat(3, 1fr)",
+                        }}
+                        gap={2}
+                      >
+                        {availableTags.map((tag, index) => (
+                          <Checkbox
+                            colorScheme="purple"
+                            size="md"
+                            color="codex.accents"
+                            key={index}
+                            isChecked={selectedTags.includes(tag)}
+                            onChange={() => handleTagChange(tag)}
+                            marginRight={{ base: 1, md: 2 }} // adds margin between tags
+                          >
+                            {tag}
+                          </Checkbox>
+                        ))}
+                      </Grid>
+                    </Box>
                   )}
                 </Box>
 
