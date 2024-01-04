@@ -387,7 +387,7 @@ export default function CreateSnippetPage() {
             </Button>
           </Box>
         ))}
-        <Button variant="secondary" onClick={handleAddSnippetBox} size="sm">
+        <Button variant="secondary" onClick={handleAddSnippetBox} size="sm" alignSelf="flex-start">
           Add Snippet
         </Button>
         {/*MORE code blocks*/}
@@ -422,7 +422,7 @@ export default function CreateSnippetPage() {
                   </Button>
                 </Box>
               ))}
-            <Button variant="secondary" onClick={handleAddResource} size="sm">
+            <Button variant="secondary" onClick={handleAddResource} size="sm" alignSelf="flex-start">
               Add Resource
             </Button>
           </VStack>
