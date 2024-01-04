@@ -1,96 +1,5 @@
 import { gql } from "@apollo/client";
 
-// OLD QUERIES
-// export const GET_ALL_USERS = gql`
-//   query AllUsers {
-//     allUsers {
-//       _id
-//       username
-//       snippets {
-//         snippetTitle
-//         snippetText
-//         snippetCode {
-//           code
-//           language
-//         }
-//         formattedCreationDate
-//         formattedEditDate
-//         comments {
-//           commentText
-//           username
-//           _id
-//           commentCode {
-//             code
-//           }
-//           formattedCreationDate
-//           formattedEditDate
-//         }
-//         overallProps
-//       }
-//     }
-//   }
-// `;
-// export const GET_USER_SNIPPETS = gql`
-//   query UserSnippets($username: String!, $tags: [String]) {
-//     userSnippets(username: $username, tags: $tags) {
-//       _id
-//       username
-//       snippetTitle
-//       snippetText
-//       snippetCode {
-//         code
-//         language
-//       }
-//       tags
-//       overallProps
-//       formattedCreationDate
-//       formattedEditDate
-//     }
-//   }
-// `;
-// export const GET_ALL_SNIPPETS = gql`
-//   query Query {
-//     allSnippets {
-//       _id
-//       snippetText
-//       snippetCode {
-//         code
-//         language
-//       }
-//       formattedCreationDate
-//       formattedEditDate
-//       props
-//       drops
-//     }
-//   }
-// `;
-// export const GET_INDIVIDUAL_SNIPPET = gql`
-//   query Query($snippetId: ID!) {
-//     oneSnippet(snippetId: $snippetId) {
-//       snippetText
-//       snippetTitle
-//       snippetCode {
-//         code
-//         language
-//       }
-//       creationDate
-//       editDate
-//       formattedCreationDate
-//       formattedEditDate
-//       props
-//       drops
-//       overallProps
-//       tags
-//       comments {
-//         username
-//         commentText
-//         formattedCreationDate
-//         formattedEditDate
-//       }
-//     }
-//   }
-// `;
-
 //GET_ALL_USERS QUERY WITHOUT COMMENT CODE AND RESOURCES
 export const GET_ALL_USERS = gql`
   query AllUsers {
@@ -148,31 +57,7 @@ query AllSnippets($tags: [String]) {
   }
 }`;
 
-//query to retrieve a specific user's snippets by username, filtering by tags, plus their username & image
-//used on the user snippets page
-//retrieves all snippet data necessary to render each snippet preview
-//username argument is retrieved from route parameter
-//tags argument is provided by checkboxes on the page (provide 'null' if no checkboxes are ticked)
-// export const GET_USER_SNIPPETS = gql`
-// query UserSnippets($username: String!, $tags: [String]) {
-//   userSnippets(username: $username, tags: $tags) {
-//     user {
-//       username
-//       image
-//     }
-//     snippets {
-//       _id
-//       username
-//       snippetTitle
-//       snippetText
-//       overallProps
-//       formattedCreationDate
-//       formattedEditDate
-//     }
-//   }
-// }`;
-
-//TEST GET_USER_SNIPPETS
+// GET_USER_SNIPPETS
 export const GET_USER_SNIPPETS = gql`
 query UserSnippets($username: String!, $tags: [String]) {
   userSnippets(username: $username, tags: $tags) {

@@ -1,26 +1,5 @@
 import { gql } from "@apollo/client";
 
-// export const ADD_USER = gql`
-//   mutation addUser(
-//     $firstName: String!
-//     $lastName: String!
-//     $email: String!
-//     $password: String!
-//   ) {
-//     addUser(
-//       firstName: $firstName
-//       lastName: $lastName
-//       email: $email
-//       password: $password
-//     ) {
-//       token
-//       user {
-//         _id
-//       }
-//     }
-//   }
-// `;
-
 //mutation to login a user
 //used on the login page
 //returns the signed JWT & user _id if successfully logged in
