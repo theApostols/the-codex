@@ -280,10 +280,10 @@ export default function UserSnippets() {
       >
         <Flex
           direction={{ base: "column", md: "row" }}
+          alignItems="center"
           w="full"
           maxW="5xl"
           mx="auto"
-          alignItems="start"
         >
           <VStack
             spacing="4"
@@ -292,15 +292,24 @@ export default function UserSnippets() {
             mx="auto"
             color="codex.accents"
           >
-            <HStack spacing={4}>
+            <Box
+              display="flex"
+              flexDirection={{ base: "column", md: "row" }}
+              alignItems="center"
+            >
               <Avatar
                 size="2xl"
                 src={`/images/file-uploads/${data?.userSnippets?.user?.image}`}
+                mb={{ base: 2, md: 0 }}
               />
-              <Heading color="codex.accents" size="3xl">
+              <Heading
+                color="codex.accents"
+                size="3xl"
+                textAlign={{ base: "center", md: "left" }}
+              >
                 {username}
               </Heading>
-            </HStack>
+            </Box>
 
             <Divider my={1} borderColor="codex.highlights" />
 
@@ -424,7 +433,6 @@ export default function UserSnippets() {
                 </Box>
               </>
             ) : (
-
               <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
