@@ -45,7 +45,7 @@ const Footer = () => {
           </Stack>
           <Stack>
             <Heading as="p" size="md" fontWeight="bold">Social Media</Heading>
-            <Link variant="link" href="#" isExternal><Icon as={FaGithub} w="6" h="6"/> GitHub</Link>
+            <Link variant="link" href="https://github.com/theApostols/the-codex" isExternal><Icon as={FaGithub} w="6" h="6"/> GitHub</Link>
             {/* Additional social media icons... */}
             <Link variant="link" href="mailto:theapostolsofveronica@outlook.com" isExternal>
             <Icon as={FaEnvelope} w="6" h="6"/> E-mail

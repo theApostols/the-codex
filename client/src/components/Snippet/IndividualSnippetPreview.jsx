@@ -96,7 +96,7 @@ const IndividualSnippetPreview = ({ snippet }) => {
           >
             {snippetData.username}
           </Box>{" "}
-          Created on {snippetData.formattedCreationDate}
+           on {snippetData.formattedCreationDate}
         </Text>
         <VStack
           align={["center", "flex-start"]}
