@@ -358,6 +358,7 @@ export default function UserSnippets() {
                 <HStack color="codex.text"
                 justifyContent={isAuthenticated ? "space-evenly" : "flex-start"}
                 >
+                  <HStack>
                   <Button
                     variant="icon"
                     size="sm"
@@ -395,6 +396,7 @@ export default function UserSnippets() {
                   >
                     <Icon as={FaAngleDoubleUp} w={8} h={8} />
                   </Button>
+                  </HStack>
 
                   {/* Conditionally render the edit button */}
                   {isAuthenticated && snippetUser === currentUser && (
