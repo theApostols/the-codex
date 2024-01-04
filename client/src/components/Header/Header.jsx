@@ -106,9 +106,6 @@ const Header = () => {
               <MenuItem bg="codex.main" color="codex.text" as={Link} to="/main-snippets" variant="primary">
                 Snippets
               </MenuItem>
-              <MenuItem bg="codex.main" color="codex.text" as={Link} to="/dashboard">
-                Dashboard
-              </MenuItem>
             </MenuList>
           </Menu>
           {/* Button to toggle dark or light mode */}
@@ -173,7 +170,6 @@ const Header = () => {
               </Button>
             )}
             <Button as={Link} to="/main-snippets" variant="link">Snippets</Button>
-            <Button as={Link} to="/dashboard" variant="link">Dashboard</Button>
 
             {isAuthenticated ? (
               <Avatar
