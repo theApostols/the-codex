@@ -217,7 +217,7 @@ export default function UserSnippets() {
   return (
     <>
       <Box
-        p="50"
+        p="5"
         d="flex"
         alignItems="center"
         justifyContent="center"
@@ -228,7 +228,6 @@ export default function UserSnippets() {
           w="full"
           maxW="5xl"
           mx="auto"
-          p="8"
           alignItems="start"
         >
           {/* Profile Section on the Left */}
@@ -241,45 +240,75 @@ export default function UserSnippets() {
             w="full"
             maxW="5xl"
             mx="auto"
-            p="8"
             color="codex.accents"
           >
             {/* Welcome message for logged-in users */}
             {currentUser ? (
-              <Text fontSize="x-large" fontWeight="bold" color="codex.highlights" pb="10" textAlign="center">
+              <Text
+                fontSize="x-large"
+                fontWeight="bold"
+                color="codex.highlights"
+                pb="10"
+                textAlign="center"
+              >
                 Welcome, {currentUser}!
                 <br /> Enjoy browsing The Codex.
               </Text>
             ) : (
-              <Text fontSize="x-large" fontWeight="bold" color="codex.highlights" pb="10" textAlign="center">
+              <Text
+                fontSize="x-large"
+                fontWeight="bold"
+                color="codex.highlights"
+                pb="10"
+                textAlign="center"
+              >
                 Welcome to The Codex!
                 <br /> Please <Link to="/login">Login</Link> or {}
                 <Link to="/signup">Signup</Link> for exclusive features.
-              </Text> 
-
+              </Text>
             )}
-                        
+
             {/* Toggle Tags Section */}
             <Box w="full">
-              <Button variant="secondary" onClick={handleToggleTags} size="sm">
+              <Button
+                variant="secondary"
+                onClick={handleToggleTags}
+                size="sm"
+                mb="4"
+              >
                 {showTagsSection ? "Hide Tags" : "Filter Tags"}
               </Button>
               {showTagsSection && (
-                <Grid marginTop={2} templateColumns="repeat(3, 1fr)" gap={2}>
-                  {availableTags.map((tag, index) => (
-                    <Checkbox
-                      colorScheme="purple"
-                      size="md"
-                      color="codex.accents"
-                      key={index}
-                      isChecked={selectedTags.includes(tag)}
-                      onChange={() => handleTagChange(tag)}
-                      marginRight={2} // adds margin between tags
-                    >
-                      {tag}
-                    </Checkbox>
-                  ))}
-                </Grid>
+                <Box
+                  w="full"
+                  maxH={{ base: "200px", md: "none" }}
+                  overflowY={{ base: "scroll", md: "visible" }}
+                  className="checkbox-container"
+                >
+                  <Grid
+                    marginTop={2}
+                    templateColumns={{
+                      base: "repeat(1, 1fr)",
+                      sm: "repeat(2, 1fr)",
+                      md: "repeat(3, 1fr)",
+                    }}
+                    gap={2}
+                  >
+                    {availableTags.map((tag, index) => (
+                      <Checkbox
+                        colorScheme="purple"
+                        size="md"
+                        color="codex.accents"
+                        key={index}
+                        isChecked={selectedTags.includes(tag)}
+                        onChange={() => handleTagChange(tag)}
+                        marginRight={{ base: 1, md: 2 }} // adds margin between tags
+                      >
+                        {tag}
+                      </Checkbox>
+                    ))}
+                  </Grid>
+                </Box>
               )}
             </Box>
 

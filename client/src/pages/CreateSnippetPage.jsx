@@ -264,7 +264,8 @@ export default function CreateSnippetPage() {
       setTimeout(() => {
         window.location.assign(
           `/individual-snippets/${response.data.createSnippet._id}`
-      );}, 1000); 
+        );
+      }, 1000);
     } catch (error) {
       console.error("Error creating snippet:", error);
     }
@@ -285,8 +286,8 @@ export default function CreateSnippetPage() {
   return (
     <Box p="50" d="flex" alignItems="center" justifyContent="center">
       <Heading textAlign="center" color="codex.text" mb="6">
-          Create Snippet
-        </Heading>
+        Create Snippet
+      </Heading>
       <VStack
         spacing="4"
         w="full"
@@ -351,7 +352,8 @@ export default function CreateSnippetPage() {
               rows={10}
               cols={40}
               mb={4}
-              onKeyDown={(e) => { // Add tab functionality to code snippet input
+              onKeyDown={(e) => {
+                // Add tab functionality to code snippet input
                 if (e.key === "Tab") {
                   e.preventDefault(); // Prevent default behavior (moving to the next field)
                   const { selectionStart, selectionEnd } = e.target;
@@ -362,7 +364,10 @@ export default function CreateSnippetPage() {
                     "\t" +
                     value.substring(selectionEnd);
                   // Move the caret position after the inserted tab character
-                  e.target.setSelectionRange(selectionStart + 1, selectionStart + 1);
+                  e.target.setSelectionRange(
+                    selectionStart + 1,
+                    selectionStart + 1
+                  );
                 }
               }}
             />
@@ -382,7 +387,7 @@ export default function CreateSnippetPage() {
             </Button>
           </Box>
         ))}
-        <Button variant="secondary" onClick={handleAddSnippetBox} size="sm">
+        <Button variant="secondary" onClick={handleAddSnippetBox} size="sm" alignSelf="flex-start">
           Add Snippet
         </Button>
         {/*MORE code blocks*/}
@@ -417,37 +422,53 @@ export default function CreateSnippetPage() {
                   </Button>
                 </Box>
               ))}
-            <Button variant="secondary" onClick={handleAddResource} size="sm">
+            <Button variant="secondary" onClick={handleAddResource} size="sm" alignSelf="flex-start">
               Add Resource
             </Button>
           </VStack>
         </Box>
         {/* Toggle Tags Section */}
         <Box w="full">
-          <Button variant="secondary" onClick={handleToggleTags} size="sm">
+          <Button
+            variant="secondary"
+            onClick={handleToggleTags}
+            size="sm"
+            mb="4"
+          >
             {showTagsSection ? "Hide Tags" : "Add Tags"}
           </Button>
           {showTagsSection && (
-            <Grid
-              marginTop={2}
-              templateColumns="repeat(3, 1fr)"
-              gap={2}
+            <Box
+              w="full"
+              maxH={{ base: "200px", md: "none" }}
+              overflowY={{ base: "scroll", md: "visible" }}
+              className="checkbox-container"
             >
-              {availableTags.map((tag, index) => (
-                <Checkbox
-                  colorScheme="purple"
-                  size="md"
-                  color="codex.accents"
-                  key={index}
-                  isChecked={selectedTags.includes(tag)}
-                  onChange={() => handleTagChange(tag)}
-                  mr={8}
-                  mt={1} // adds margin between tags
-                >
-                  {tag}
-                </Checkbox>
-              ))}
-            </Grid>
+              <Grid
+                marginTop={2}
+                templateColumns={{
+                  base: "repeat(1, 1fr)",
+                  sm: "repeat(2, 1fr)",
+                  md: "repeat(3, 1fr)",
+                }}
+                gap={2}
+              >
+                {availableTags.map((tag, index) => (
+                  <Checkbox
+                    colorScheme="purple"
+                    size="md"
+                    color="codex.accents"
+                    key={index}
+                    isChecked={selectedTags.includes(tag)}
+                    onChange={() => handleTagChange(tag)}
+                    marginRight={{ base: 1, md: 2 }}
+                    mt={1} // adds margin between tags
+                  >
+                    {tag}
+                  </Checkbox>
+                ))}
+              </Grid>
+            </Box>
           )}
         </Box>
         <Box w="full">
