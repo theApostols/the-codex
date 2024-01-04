@@ -14,6 +14,13 @@ import {
   useBreakpointValue,
   ColorModeContext,
   Spacer,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { GET_INDIVIDUAL_SNIPPET } from "../utils/queries";
@@ -54,6 +61,8 @@ export default function UserSnippets() {
   const [commentInput, setCommentInput] = useState("");
   const [commentInputVisible, setCommentInputVisible] = useState(false);
   const [createComment] = useMutation(CREATE_COMMENT);
+
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
 
   // Event handler for comment input change
   const handleCommentInputChange = (e) => {
@@ -148,7 +157,9 @@ export default function UserSnippets() {
 
   //DELETE SNIPPET MUTATION
   const [deleteSnippet] = useMutation(DELETE_SNIPPET, {
-    refetchQueries: [{ query: GET_INDIVIDUAL_SNIPPET, variables: { snippetId } }],
+    refetchQueries: [
+      { query: GET_INDIVIDUAL_SNIPPET, variables: { snippetId } },
+    ],
   });
 
   // Use the useQuery hook to execute the GET_INDIVIDUAL_SNIPPETS query
@@ -262,22 +273,31 @@ export default function UserSnippets() {
 
   // Event handler for deleting a snippet
   const handleDeleteSnippet = async (snippetId) => {
-    // Prompt the user to confirm they want to delete the snippet
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this snippet? This action cannot be undone.");
-    if (confirmDelete) {
-      try {
-        const result = await deleteSnippet({ variables: { snippetId } });
-        // Extract the deleted snippet's _id from the result
-        const deletedSnippetId = result.data.deleteSnippet._id;
-        console.log(`Snippet with _id ${deletedSnippetId} deleted successfully`);
-        // redirect to main page after deletion
-        window.location.assign(`/user-snippets/${currentUser}`);
-      
-      } catch (error) {
+    // Open the confirmation modal
+    setIsConfirmationModalOpen(true);
+  };
+
+  // Event handler for confirming deletion
+  const handleConfirmDelete = async () => {
+    try {
+      const result = await deleteSnippet({ variables: { snippetId } });
+      // Extract the deleted snippet's _id from the result
+      const deletedSnippetId = result.data.deleteSnippet._id;
+      console.log(`Snippet with _id ${deletedSnippetId} deleted successfully`);
+      // redirect to main page after deletion
+      window.location.assign(`/user-snippets/${currentUser}`);
+    } catch (error) {
       console.error("Error deleting snippet:", error);
-      }
+    } finally {
+      // Close the confirmation modal
+      setIsConfirmationModalOpen(false);
     }
+  };
+
+  // Event handler for cancelling deletion
+  const handleCancelDelete = () => {
+    // Close the confirmation modal
+    setIsConfirmationModalOpen(false);
   };
 
   return (
@@ -390,18 +410,18 @@ export default function UserSnippets() {
                       />
                       {isResponsive ? "" : "Add Comment"}
                     </Button>
-                    
                   ) : null}
                   {isAuthenticated && (
                     <>
-                    {/* conditionally render save/unsave buttons */}
+                      {/* conditionally render save/unsave buttons */}
                       <Button
                         variant="icon"
                         size="sm"
-                        onClick={() => 
+                        onClick={() =>
                           isSaved
                             ? handleUnsaveSnippet(snippets._id)
-                            : handleSaveSnippet(snippets._id)}
+                            : handleSaveSnippet(snippets._id)
+                        }
                       >
                         <Icon
                           as={isSaved ? MdCodeOff : MdCode}
@@ -409,7 +429,11 @@ export default function UserSnippets() {
                           h={8}
                           mr={isResponsive ? "0" : "2"}
                         />
-                        {isResponsive ? "" : isSaved ? "Unsave Snippet" : "Save Snippet"}
+                        {isResponsive
+                          ? ""
+                          : isSaved
+                          ? "Unsave Snippet"
+                          : "Save Snippet"}
                       </Button>
 
                       {/* conditionally render delete button */}
@@ -439,14 +463,14 @@ export default function UserSnippets() {
               </Box>
               {/* Conditionally render resource links */}
               {snippets.resources && snippets.resources.length > 0 && (
-                <VStack 
-                align={["center", "flex-start"]}
-                maxW="5xl"
-                mx="auto"
-                p="4"
-                m="4"
-                borderRadius="lg"
-                bg="rgba(45, 55, 72, 0.8)"
+                <VStack
+                  align={["center", "flex-start"]}
+                  maxW="5xl"
+                  mx="auto"
+                  p="4"
+                  m="4"
+                  borderRadius="lg"
+                  bg="rgba(45, 55, 72, 0.8)"
                 >
                   <Heading fontSize="m">Resources</Heading>
                   {snippets.resources.map((resource, index) => (
@@ -470,16 +494,15 @@ export default function UserSnippets() {
 
               {/* Conditionally render tags */}
               {snippets.tags && snippets.tags.length > 0 && (
-                <VStack 
-                align={["center", "flex-start"]}
-                maxW="5xl"
-                mx="auto"
-                p="4"
-                m="4"
-                borderRadius="lg"
-                bg="rgba(45, 55, 72, 0.8)"
+                <VStack
+                  align={["center", "flex-start"]}
+                  maxW="5xl"
+                  mx="auto"
+                  p="4"
+                  m="4"
+                  borderRadius="lg"
+                  bg="rgba(45, 55, 72, 0.8)"
                 >
-
                   <Heading fontSize="m">Tags</Heading>
                   <HStack>
                     {snippets.tags.map((tag, index) => (
@@ -488,7 +511,6 @@ export default function UserSnippets() {
                       </Text>
                     ))}
                   </HStack>
-                
                 </VStack>
               )}
 
@@ -518,6 +540,27 @@ export default function UserSnippets() {
           </VStack>
         </Flex>
       </Box>
+      <Modal isOpen={isConfirmationModalOpen} onClose={handleCancelDelete}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Delete Snippet</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>
+              Are you sure you want to delete this snippet? This action cannot
+              be undone.
+            </Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="secondary" mr={3} onClick={handleCancelDelete}>
+              Cancel
+            </Button>
+            <Button colorScheme="red" onClick={handleConfirmDelete}>
+              Delete
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 }
