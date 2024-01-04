@@ -27,7 +27,14 @@ import {
   HStack,
   Heading,
 } from "@chakra-ui/react";
-import { BiLogOut, BiMenu, BiPlus, BiUser, BiCog, BiArchive } from "react-icons/bi";
+import {
+  BiLogOut,
+  BiMenu,
+  BiPlus,
+  BiUser,
+  BiCog,
+  BiArchive,
+} from "react-icons/bi";
 import AuthService from "../../utils/auth";
 import { ThemeContext } from "../../main.jsx";
 import { BsFillSunFill, BsMoonFill } from "react-icons/bs";
@@ -103,7 +110,13 @@ const Header = () => {
                   Home
                 </MenuItem>
               )}
-              <MenuItem bg="codex.main" color="codex.text" as={Link} to="/main-snippets" variant="primary">
+              <MenuItem
+                bg="codex.main"
+                color="codex.text"
+                as={Link}
+                to="/main-snippets"
+                variant="primary"
+              >
                 Snippets
               </MenuItem>
             </MenuList>
@@ -141,27 +154,31 @@ const Header = () => {
         </>
       ) : (
         <>
-          <Flex align="center">
-            <Image
-              src={
-                isDarkMode ? "/images/logo_dark.png" : "/images/logo_light.png"
-              }
-              alt="Logo"
-              boxSize="50px"
-            />
-            <Text fontSize="xl" fontWeight="bold" ml="2" mr="6">
-              The CodeX
-            </Text>
+          <Link to="/">
+            <Flex align="center">
+              <Image
+                src={
+                  isDarkMode
+                    ? "/images/logo_dark.png"
+                    : "/images/logo_light.png"
+                }
+                alt="Logo"
+                boxSize="50px"
+              />
+              <Text fontSize="xl" fontWeight="bold" ml="2" mr="6">
+                The CodeX
+              </Text>
 
-            {/* Button to toggle dark or light mode */}
-            <Button onClick={toggleTheme} variant="ghost">
-              {isDarkMode ? (
-                <BsFillSunFill w={8} h={8} />
-              ) : (
-                <BsMoonFill w={8} h={8} />
-              )}
-            </Button>
-          </Flex>
+              {/* Button to toggle dark or light mode */}
+              <Button onClick={toggleTheme} variant="ghost">
+                {isDarkMode ? (
+                  <BsFillSunFill w={8} h={8} />
+                ) : (
+                  <BsMoonFill w={8} h={8} />
+                )}
+              </Button>
+            </Flex>
+          </Link>
 
           <Stack direction="row" spacing={4}>
             {isAuthenticated ? null : (
@@ -169,7 +186,9 @@ const Header = () => {
                 Home
               </Button>
             )}
-            <Button as={Link} to="/main-snippets" variant="link">Snippets</Button>
+            <Button as={Link} to="/main-snippets" variant="link">
+              Snippets
+            </Button>
 
             {isAuthenticated ? (
               <Avatar
@@ -202,7 +221,7 @@ const Header = () => {
       >
         <DrawerOverlay />
         <DrawerContent bg="codex.darkest">
-          <DrawerCloseButton color="codex.text200"/>
+          <DrawerCloseButton color="codex.text200" />
           <DrawerHeader color="codex.accents">{user?.name}</DrawerHeader>
           <DrawerBody>
             <VStack align="stretch" spacing={4}>
