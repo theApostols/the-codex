@@ -272,7 +272,7 @@ export default function UserSnippets() {
   return (
     <>
       <Box
-        p="50"
+        p="5"
         d="flex"
         alignItems="center"
         justifyContent="center"
@@ -280,29 +280,36 @@ export default function UserSnippets() {
       >
         <Flex
           direction={{ base: "column", md: "row" }}
+          alignItems="center"
           w="full"
           maxW="5xl"
           mx="auto"
-          p="8"
-          alignItems="start"
         >
           <VStack
             spacing="4"
             w="full"
             maxW="5xl"
             mx="auto"
-            p="8"
             color="codex.accents"
           >
-            <HStack spacing={4}>
+            <Box
+              display="flex"
+              flexDirection={{ base: "column", md: "row" }}
+              alignItems="center"
+            >
               <Avatar
                 size="2xl"
                 src={`/images/file-uploads/${data?.userSnippets?.user?.image}`}
+                mb={{ base: 2, md: 0 }}
               />
-              <Heading color="codex.accents" size="3xl">
+              <Heading
+                color="codex.accents"
+                size="3xl"
+                textAlign={{ base: "center", md: "left" }}
+              >
                 {username}
               </Heading>
-            </HStack>
+            </Box>
 
             <Divider my={1} borderColor="codex.highlights" />
 
@@ -338,29 +345,41 @@ export default function UserSnippets() {
                     variant="secondary"
                     onClick={handleToggleTags}
                     size="sm"
+                    mb="4"
                   >
                     {showTagsSection ? "Hide Tags" : "Filter Tags"}
                   </Button>
                   {showTagsSection && (
-                    <Grid
-                      marginTop={2}
-                      templateColumns="repeat(3, 1fr)"
-                      gap={2}
+                    <Box
+                      w="full"
+                      maxH={{ base: "200px", md: "none" }}
+                      overflowY={{ base: "scroll", md: "visible" }}
+                      className="checkbox-container"
                     >
-                      {availableTags.map((tag, index) => (
-                        <Checkbox
-                          colorScheme="purple"
-                          size="md"
-                          color="codex.accents"
-                          key={index}
-                          isChecked={selectedTags.includes(tag)}
-                          onChange={() => handleTagChange(tag)}
-                          marginRight={2} // adds margin between tags
-                        >
-                          {tag}
-                        </Checkbox>
-                      ))}
-                    </Grid>
+                      <Grid
+                        marginTop={2}
+                        templateColumns={{
+                          base: "repeat(1, 1fr)",
+                          sm: "repeat(2, 1fr)",
+                          md: "repeat(3, 1fr)",
+                        }}
+                        gap={2}
+                      >
+                        {availableTags.map((tag, index) => (
+                          <Checkbox
+                            colorScheme="purple"
+                            size="md"
+                            color="codex.accents"
+                            key={index}
+                            isChecked={selectedTags.includes(tag)}
+                            onChange={() => handleTagChange(tag)}
+                            marginRight={{ base: 1, md: 2 }} // adds margin between tags
+                          >
+                            {tag}
+                          </Checkbox>
+                        ))}
+                      </Grid>
+                    </Box>
                   )}
                 </Box>
 
@@ -426,7 +445,6 @@ export default function UserSnippets() {
                 </Box>
               </>
             ) : (
-
               <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>

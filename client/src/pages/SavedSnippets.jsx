@@ -25,7 +25,7 @@ export default function SavedSnippets() {
 
   return (
     <Box
-      p="50"
+      p="5"
       d="flex"
       alignItems="center"
       justifyContent="center"
@@ -36,7 +36,6 @@ export default function SavedSnippets() {
         w="full"
         maxW="5xl"
         mx="auto"
-        p="8"
         alignItems="start"
       >
         <VStack
@@ -44,7 +43,6 @@ export default function SavedSnippets() {
           w="full"
           maxW="5xl"
           mx="auto"
-          p="8"
           color="codex.accents"
         >
           <Heading color="codex.text" as="h1" m="4" textAlign="center">
