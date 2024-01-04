@@ -448,7 +448,7 @@ export default function CreateSnippetPage() {
           </Box>
         ))}
 
-        <Button variant="secondary" onClick={handleAddSnippetBox} size="sm">
+        <Button variant="secondary" onClick={handleAddSnippetBox} size="sm" alignSelf="flex-start">
           Add Snippet
         </Button>
         {/* Add resources section */}
@@ -482,7 +482,7 @@ export default function CreateSnippetPage() {
                   </Button>
                 </Box>
               ))}
-            <Button variant="secondary" onClick={handleAddResource} size="sm">
+            <Button variant="secondary" onClick={handleAddResource} size="sm" alignSelf="flex-start">
               Add Resource
             </Button>
           </VStack>
@@ -493,7 +493,19 @@ export default function CreateSnippetPage() {
             {showTagsSection ? "Hide Tags" : "Add Tags"}
           </Button>
           {showTagsSection && (
-            <Grid marginTop={2} templateColumns="repeat(3, 1fr)" gap={2}>
+            <Box
+            w="full"
+            maxH={{ base: "200px", md: "none" }}
+            overflowY={{ base: "scroll", md: "visible" }}
+            className="checkbox-container"
+          >
+            <Grid marginTop={2}
+                templateColumns={{
+                  base: "repeat(1, 1fr)",
+                  sm: "repeat(2, 1fr)",
+                  md: "repeat(3, 1fr)",
+                }}
+                gap={2}>
               {availableTags.map((tag, index) => (
                 <Checkbox
                   colorScheme="purple"
@@ -502,13 +514,14 @@ export default function CreateSnippetPage() {
                   key={index}
                   isChecked={selectedTags.includes(tag)}
                   onChange={() => handleTagChange(tag)}
-                  mr={8}
+                  marginRight={{ base: 1, md: 2 }}
                   mt={1} // adds margin between tags
                 >
                   {tag}
                 </Checkbox>
               ))}
             </Grid>
+          </Box>
           )}
         </Box>
         <Box w="full">
