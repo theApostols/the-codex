@@ -272,7 +272,7 @@ export default function UserSnippets() {
   return (
     <>
       <Box
-        p="50"
+        p="5"
         d="flex"
         alignItems="center"
         justifyContent="center"
@@ -283,7 +283,6 @@ export default function UserSnippets() {
           w="full"
           maxW="5xl"
           mx="auto"
-          p="8"
           alignItems="start"
         >
           <VStack
@@ -291,7 +290,6 @@ export default function UserSnippets() {
             w="full"
             maxW="5xl"
             mx="auto"
-            p="8"
             color="codex.accents"
           >
             <HStack spacing={4}>
