@@ -1,11 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Box, VStack, FormControl, FormLabel, Input, Button, Text, Link,
-  Heading, Checkbox, Modal, ModalOverlay, ModalContent, ModalHeader,
-  ModalFooter, ModalBody, useDisclosure, Container,
+  Box,
+  VStack,
+  FormControl,
+  FormLabel,
+  Input,
+  Button,
+  Text,
+  Link,
+  Heading,
+  Checkbox,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  useDisclosure,
+  Container,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 import { useMutation } from "@apollo/client";
 import Auth from "../../utils/auth";
 import { CREATE_USER } from "../../utils/mutations";
@@ -13,7 +28,11 @@ import { CREATE_USER } from "../../utils/mutations";
 const MotionContainer = motion(Container);
 
 function SignupForm() {
-  const { isOpen: isOpenError, onOpen: onOpenError, onClose: onCloseError } = useDisclosure();
+  const {
+    isOpen: isOpenError,
+    onOpen: onOpenError,
+    onClose: onCloseError,
+  } = useDisclosure();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [userFormData, setUserFormData] = useState({
@@ -62,10 +81,17 @@ function SignupForm() {
   `;
 
   const [showAlert, setShowAlert] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [createUser, { error, data }] = useMutation(CREATE_USER);
   const navigate = useNavigate();
+
+  // Check if the user is already logged in
+  useEffect(() => {
+    if (Auth.loggedIn()) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const handleAgreeChange = (event) => setAgreeToTerms(event.target.checked);
 
@@ -75,32 +101,34 @@ function SignupForm() {
   };
 
   //function to handle displaying an error modal
-  const handleErrorMessage = async (error) =>
-  {
+  const handleErrorMessage = async (error) => {
     let errorDetails; //variable to hold detailed error message
 
     //provides additional error details for specific errors
-    if (error.message === 'ValidationError: email: The provided email is invalid')
-    {
-      errorDetails = 'Provided email is invalid. Please try again.';
-    }
-    else if (error.message.match(/MongoServerError: E11000 duplicate key error collection: codexDB.users index: username_1 dup key: \{ username: ".*" \}/))
-    {
-      errorDetails = 'Provided username is already in use. Please try again.';
-    }
-    else if (error.message.match(/MongoServerError: E11000 duplicate key error collection: codexDB.users index: email_1 dup key: \{ email: ".*" \}/))
-    {
-      errorDetails = 'Provided email is already in use. Please try again.';
-    }
-    else
-    {
+    if (
+      error.message === "ValidationError: email: The provided email is invalid"
+    ) {
+      errorDetails = "Provided email is invalid. Please try again.";
+    } else if (
+      error.message.match(
+        /MongoServerError: E11000 duplicate key error collection: codexDB.users index: username_1 dup key: \{ username: ".*" \}/
+      )
+    ) {
+      errorDetails = "Provided username is already in use. Please try again.";
+    } else if (
+      error.message.match(
+        /MongoServerError: E11000 duplicate key error collection: codexDB.users index: email_1 dup key: \{ email: ".*" \}/
+      )
+    ) {
+      errorDetails = "Provided email is already in use. Please try again.";
+    } else {
       errorDetails = error.message;
     }
 
     //sets error message & opens error modal
     setErrorMessage(errorDetails);
     onOpenError();
-  }
+  };
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -149,10 +177,10 @@ function SignupForm() {
           alignItems="center"
           justifyContent="center"
         >
-          <MotionContainer 
-            centerContent 
-            initial={{ opacity: 0, x: -100 }} 
-            animate={{ opacity: 1, x: 0 }} 
+          <MotionContainer
+            centerContent
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 100 }}
           >
             <VStack
@@ -203,7 +231,11 @@ function SignupForm() {
                 />
               </FormControl>
 
-              <Checkbox colorScheme="purple" isChecked={agreeToTerms} onChange={handleAgreeChange}>
+              <Checkbox
+                colorScheme="purple"
+                isChecked={agreeToTerms}
+                onChange={handleAgreeChange}
+              >
                 I agree to the{" "}
                 <Link color="purple.300" onClick={handleTermsClick}>
                   Terms and Conditions
@@ -233,20 +265,20 @@ function SignupForm() {
 
           {/* Error message modal */}
           <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent bg="codex.text200" color="codex.darkest">
-            <ModalHeader>Terms and Conditions</ModalHeader>
-            <ModalBody>
-              {/* Inserting the terms and conditions text */}
-              <Text whiteSpace="pre-wrap">{termsAndConditions}</Text>
-            </ModalBody>
-            <ModalFooter>
-              <Button variant="secondary" mr={3} onClick={onClose}>
-                Close
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+            <ModalOverlay />
+            <ModalContent bg="codex.text200" color="codex.darkest">
+              <ModalHeader>Terms and Conditions</ModalHeader>
+              <ModalBody>
+                {/* Inserting the terms and conditions text */}
+                <Text whiteSpace="pre-wrap">{termsAndConditions}</Text>
+              </ModalBody>
+              <ModalFooter>
+                <Button variant="secondary" mr={3} onClick={onClose}>
+                  Close
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </Box>
       </form>
     </>
