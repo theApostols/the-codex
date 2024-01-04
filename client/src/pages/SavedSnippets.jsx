@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@apollo/client";
 import { Link, useParams } from "react-router-dom";
-import { Box, VStack, Heading, Flex, Divider } from "@chakra-ui/react";
+import { Box, VStack, Heading, Flex, Divider, Text } from "@chakra-ui/react";
 import { GET_SAVED_SNIPPETS } from "../utils/queries";
 import MainSnippetPreview from "../components/Snippet/MainSnippetPreview";
 
@@ -58,7 +58,8 @@ export default function SavedSnippets() {
           >
             <Divider mb="4" borderColor="codex.borders" />
 
-            {savedSnippets.map((snippet) => (
+            {savedSnippets.length > 0 ? (
+              savedSnippets.map((snippet) => (
               <Box
                 key={snippet._id}
                 pb="5"
@@ -68,7 +69,12 @@ export default function SavedSnippets() {
               >
                 <MainSnippetPreview key={snippet._id} snippet={snippet} />
               </Box>
-            ))}
+            ))
+          ) : (
+            <Text textAlign="center" color="codex.text" p="4" fontSize="x-large">
+              You haven't saved any snippets yet!
+            </Text>
+            )}
           </Box>
         </VStack>
       </Flex>
