@@ -23,7 +23,7 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { GET_INDIVIDUAL_SNIPPET } from "../utils/queries";
+import { GET_INDIVIDUAL_SNIPPET, GET_SAVED_SNIPPETS } from "../utils/queries";
 import IndividualSnippetPreview from "../components/Snippet/IndividualSnippetPreview";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 import {
@@ -150,8 +150,7 @@ export default function UserSnippets() {
     refetchQueries: [{ query: GET_INDIVIDUAL_SNIPPET }],
   });
 
-  //SAVE AND UNSAVE MUTATIONS/STATE
-  const [isSaved, setIsSaved] = useState(false);
+  //SAVE AND UNSAVE MUTATIONS
   const [saveSnippet] = useMutation(SAVE_SNIPPET);
   const [unsaveSnippet] = useMutation(UNSAVE_SNIPPET);
 
@@ -165,6 +164,11 @@ export default function UserSnippets() {
   // Use the useQuery hook to execute the GET_INDIVIDUAL_SNIPPETS query
   const { loading, error, data } = useQuery(GET_INDIVIDUAL_SNIPPET, {
     variables: { snippetId },
+  });
+
+  // Use the useQuery hook to execute the GET_SAVED_SNIPPETS query
+  const { data: savedSnippetsData } = useQuery(GET_SAVED_SNIPPETS, {
+    variables: { username: currentUser },
   });
 
   if (loading) return <p>Loading...</p>;
@@ -247,8 +251,10 @@ export default function UserSnippets() {
             username: currentUser,
             snippetId: snippetId,
           },
+          refetchQueries: [
+            { query: GET_SAVED_SNIPPETS, variables: { username: currentUser } },
+          ],
         });
-        setIsSaved(true);
       } catch (err) {
         console.error("Error saving snippet:", err);
       }
@@ -263,13 +269,18 @@ export default function UserSnippets() {
             username: currentUser,
             snippetId: snippetId,
           },
+          refetchQueries: [
+            { query: GET_SAVED_SNIPPETS, variables: { username: currentUser } },
+          ],
         });
-        setIsSaved(false);
       } catch (err) {
         console.error("Error unsaving snippet:", err);
       }
     }
   };
+  const isSaved = savedSnippetsData?.userSavedSnippets?.savedSnippets.some(
+    (savedSnippet) => savedSnippet._id === snippetId
+  );
 
   // Event handler for deleting a snippet
   const handleDeleteSnippet = async (snippetId) => {
@@ -414,6 +425,7 @@ export default function UserSnippets() {
                   {isAuthenticated && (
                     <>
                       {/* conditionally render save/unsave buttons */}
+
                       <Button
                         variant="icon"
                         size="sm"
