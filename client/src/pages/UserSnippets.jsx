@@ -392,7 +392,8 @@ export default function UserSnippets() {
                   borderRadius="lg"
                   bg="codex.darkest"
                 >
-                  {snippets.map((snippet, index) => (
+                  {snippets.length > 0 ? (
+                    snippets.map((snippet, index) => (
                     <Box
                       key={index}
                       pb="5"
@@ -441,7 +442,19 @@ export default function UserSnippets() {
                         </Button>
                       </HStack>
                     </Box>
-                  ))}
+                  ))
+                ) : (
+                  <Text
+                    textAlign="center"
+                    color="codex.text"
+                    p="4"
+                    fontSize="x-large"
+                  >
+                    {currentUser === username
+                    ? "You haven't created any snippets yet!"
+                    : "This user hasn't created any snippets yet!"}
+                  </Text>
+                  )}
                 </Box>
               </>
             ) : (
