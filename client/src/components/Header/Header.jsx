@@ -154,8 +154,9 @@ const Header = () => {
         </>
       ) : (
         <>
-          <Link to="/">
+          {/* <Link to="/"> */}
             <Flex align="center">
+            <Link to="/">
               <Image
                 src={
                   isDarkMode
@@ -165,9 +166,14 @@ const Header = () => {
                 alt="Logo"
                 boxSize="50px"
               />
-              <Text fontSize="xl" fontWeight="bold" ml="2" mr="6">
+              </Link>
+              <Link to="/">
+              <Text fontSize="xl" fontWeight="bold" ml="2" mr="6" alignItems="center">
                 The CodeX
               </Text>
+              </Link>
+            
+              
 
               {/* Button to toggle dark or light mode */}
               <Button onClick={toggleTheme} variant="ghost">
@@ -178,7 +184,7 @@ const Header = () => {
                 )}
               </Button>
             </Flex>
-          </Link>
+          {/* </Link> */}
 
           <Stack direction="row" spacing={4}>
             {isAuthenticated ? null : (
