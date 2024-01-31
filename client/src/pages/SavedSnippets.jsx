@@ -49,17 +49,24 @@ export default function SavedSnippets() {
             Saved Snippets
           </Heading>
 
-          <Box
+          {/* <Box
             w="full"
             border="1px solid"
             borderColor="codex.borders"
             borderRadius="lg"
             bg="codex.darkest"
-          >
+          > */}
             <Divider mb="4" borderColor="codex.borders" />
 
             {savedSnippets.length > 0 ? (
               savedSnippets.map((snippet) => (
+                <Box
+                w="full"
+                border="1px solid"
+                borderColor="codex.borders"
+                borderRadius="lg"
+                bg="codex.darkest"
+              >
               <Box
                 key={snippet._id}
                 pb="5"
@@ -69,13 +76,15 @@ export default function SavedSnippets() {
               >
                 <MainSnippetPreview key={snippet._id} snippet={snippet} />
               </Box>
+              </Box>
             ))
           ) : (
             <Text textAlign="center" color="codex.text" p="4" fontSize="x-large">
               You haven't saved any snippets yet!
             </Text>
+            
             )}
-          </Box>
+          {/* </Box> */}
         </VStack>
       </Flex>
     </Box>
