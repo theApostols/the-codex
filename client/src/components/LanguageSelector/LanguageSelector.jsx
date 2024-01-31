@@ -7,14 +7,23 @@ const LanguageSelector = ({
   customLanguage,
   onCustomLanguageChange,
 }) => {
+
   return (
     <>
       <FormLabel color="codex.accents">Choose Language:</FormLabel>
       <Select
-        bg="codex.borders"
-        color="black"
+        bg="codex.highlights"
+        textColor="codex.text"
+        // color="black"
+        width="30%"
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        _focus={{
+          border: "2px solid",
+          borderColor: "codex.accents",
+          bg: "codex.borders",
+          color: "black",
+        }}
       >
         <option value="apache">Apache</option>
         <option value="bash">Bash</option>
