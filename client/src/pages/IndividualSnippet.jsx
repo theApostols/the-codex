@@ -311,6 +311,16 @@ export default function UserSnippets() {
     setIsConfirmationModalOpen(false);
   };
 
+  function shareOnTwitter() {
+    const tweetText = encodeURIComponent("Your tweet text");
+    const tweetUrl = encodeURIComponent(window.location.href);
+
+    window.open(
+      `https://twitter.com/intent/tweet?text=${tweetText}%0A%0A${tweetUrl}`,
+      "_blank"
+    );
+}
+
   return (
     <>
       <Box
@@ -355,47 +365,50 @@ export default function UserSnippets() {
                 <Link>
                   <IndividualSnippetPreview snippet={snippets} />
                 </Link>
-                <HStack color="codex.text"
-                justifyContent={isAuthenticated ? "space-evenly" : "flex-start"}
+                <HStack
+                  color="codex.text"
+                  justifyContent={
+                    isAuthenticated ? "space-evenly" : "flex-start"
+                  }
                 >
                   <HStack>
-                  <Button
-                    variant="icon"
-                    size="sm"
-                    onClick={() => {
-                      if (snippets) {
-                        handleAddDrops(snippets._id);
+                    <Button
+                      variant="icon"
+                      size="sm"
+                      onClick={() => {
+                        if (snippets) {
+                          handleAddDrops(snippets._id);
+                        }
+                      }}
+                      color={
+                        snippets.drops.includes(currentUser)
+                          ? "codex.highlights"
+                          : "codex.borders"
                       }
-                    }}
-                    color={
-                      snippets.drops.includes(currentUser)
-                        ? "codex.highlights"
-                        : "codex.borders"
-                    }
-                  >
-                    <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
-                  </Button>
+                    >
+                      <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
+                    </Button>
 
-                  <Text color="codex.highlights" fontSize="sm">
-                    Props: {snippets.overallProps}
-                  </Text>
+                    <Text color="codex.highlights" fontSize="sm">
+                      Props: {snippets.overallProps}
+                    </Text>
 
-                  <Button
-                    variant="icon"
-                    size="sm"
-                    onClick={() => {
-                      if (snippets) {
-                        handleAddProps(snippets._id);
+                    <Button
+                      variant="icon"
+                      size="sm"
+                      onClick={() => {
+                        if (snippets) {
+                          handleAddProps(snippets._id);
+                        }
+                      }}
+                      color={
+                        snippets.props.includes(currentUser)
+                          ? "codex.highlights"
+                          : "codex.borders"
                       }
-                    }}
-                    color={
-                      snippets.props.includes(currentUser)
-                        ? "codex.highlights"
-                        : "codex.borders"
-                    }
-                  >
-                    <Icon as={FaAngleDoubleUp} w={8} h={8} />
-                  </Button>
+                    >
+                      <Icon as={FaAngleDoubleUp} w={8} h={8} />
+                    </Button>
                   </HStack>
 
                   {/* Conditionally render the edit button */}
@@ -452,7 +465,7 @@ export default function UserSnippets() {
                           ? "Unsave Snippet"
                           : "Save Snippet"}
                       </Button>
-
+                      <Button onClick={shareOnTwitter}>Share on Twitter</Button>
                       {/* conditionally render delete button */}
                       {currentUser && snippetUser === currentUser && (
                         <Button
@@ -473,10 +486,9 @@ export default function UserSnippets() {
                           {isResponsive ? "" : "Delete"}
                         </Button>
                       )}
-
                     </>
                   )}
-                  </HStack>
+                </HStack>
               </Box>
               {/* Conditionally render resource links */}
               {snippets.resources && snippets.resources.length > 0 && (

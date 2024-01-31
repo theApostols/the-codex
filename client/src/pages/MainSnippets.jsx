@@ -267,7 +267,6 @@ export default function UserSnippets() {
                 <Link to="/signup">Signup</Link> for exclusive features.
               </Text>
             )}
-
             {/* Toggle Tags Section */}
             <Box w="full">
               <Button
