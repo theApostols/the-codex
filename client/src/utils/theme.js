@@ -22,8 +22,10 @@ const lightColors = {
     darkest: '#f0f0f3',
     dark: '#dadada',
     main: '#ffffff',
-    borders: '#989898',
+    borders: '#90899E',
+    // borders: '#989898',
     highlights: '#b5aedd',
+    // highlights: '#EAE9F8',
     accents: '#413C66',
     text: '#1d1c1c',
     text200: '#313d44',
@@ -44,10 +46,12 @@ const buttonStyles = {
         },
       },
       secondary: {
-        bg: 'codex.highlights',
+        // bg: 'codex.highlights',
+        bg: 'codex.borders',
         color: 'codex.text',
         _hover: {
-          bg: 'codex.borders',
+          // bg: 'codex.borders',
+          bg: 'codex.highlights',
         },
       },
       ghost: {

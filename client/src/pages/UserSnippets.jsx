@@ -319,7 +319,7 @@ export default function UserSnippets() {
                   onChange={handleInputChange}
                   onKeyDown={handleKeyPress}
                   value={userSearch}
-                  placeholder="Enter username"
+                  placeholder="Search for a user..."
                   borderColor="codex.borders"
                   focusBorderColor="codex.highlights"
                   borderWidth={2}
@@ -385,77 +385,93 @@ export default function UserSnippets() {
 
                 <Divider my={1} borderColor="codex.highlights" />
 
-                <Box
+                {/* <Box
                   w="full"
                   border="1px solid"
                   borderColor="codex.borders"
                   borderRadius="lg"
                   bg="codex.darkest"
-                >
-                  {snippets.length > 0 ? (
-                    snippets.map((snippet, index) => (
+                > */}
+                {snippets.length > 0 ? (
+                  snippets.map((snippet, index) => (
                     <Box
-                      key={index}
-                      pb="5"
                       w="full"
-                      borderBottom="1px solid"
+                      border="1px solid"
                       borderColor="codex.borders"
+                      borderRadius="lg"
+                      bg="codex.darkest"
                     >
-                      <MainSnippetPreview snippet={snippet} />
-                      <HStack color="codex.text">
-                        <Button
-                          variant="icon"
-                          size="sm"
-                          onClick={() => {
-                            if (snippet) {
-                              handleAddDrops(snippet._id);
+                      <Box
+                        key={index}
+                        pb="5"
+                        w="full"
+                        borderBottom="1px solid"
+                        borderColor="codex.borders"
+                      >
+                        <MainSnippetPreview snippet={snippet} />
+                        <HStack color="codex.text">
+                          <Button
+                            variant="icon"
+                            size="sm"
+                            onClick={() => {
+                              if (snippet) {
+                                handleAddDrops(snippet._id);
+                              }
+                            }}
+                            color={
+                              snippet.drops.includes(currentUser)
+                                ? "codex.highlights"
+                                : "codex.borders"
                             }
-                          }}
-                          color={
-                            snippet.drops.includes(currentUser)
-                              ? "codex.highlights"
-                              : "codex.borders"
-                          }
-                        >
-                          <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
-                        </Button>
+                          >
+                            <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
+                          </Button>
 
-                        <Text color="codex.highlights" fontSize="sm">
-                          Props: {snippet.overallProps}
-                        </Text>
+                          <Text color="codex.highlights" fontSize="sm">
+                            Props: {snippet.overallProps}
+                          </Text>
 
-                        <Button
-                          variant="icon"
-                          size="sm"
-                          onClick={() => {
-                            if (snippet) {
-                              handleAddProps(snippet._id);
+                          <Button
+                            variant="icon"
+                            size="sm"
+                            onClick={() => {
+                              if (snippet) {
+                                handleAddProps(snippet._id);
+                              }
+                            }}
+                            color={
+                              snippet.props.includes(currentUser)
+                                ? "codex.highlights"
+                                : "codex.borders"
                             }
-                          }}
-                          color={
-                            snippet.props.includes(currentUser)
-                              ? "codex.highlights"
-                              : "codex.borders"
-                          }
-                        >
-                          <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
-                        </Button>
-                      </HStack>
+                          >
+                            <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
+                          </Button>
+                        </HStack>
+                      </Box>
                     </Box>
                   ))
                 ) : (
-                  <Text
-                    textAlign="center"
-                    color="codex.text"
-                    p="4"
-                    fontSize="x-large"
+                  <Box
+                    w="full"
+                    border="1px solid"
+                    borderColor="codex.borders"
+                    borderRadius="lg"
+                    bg="codex.darkest"
                   >
-                    {currentUser === username
-                    ? "You haven't created any snippets yet!"
-                    : "This user hasn't created any snippets yet!"}
-                  </Text>
-                  )}
-                </Box>
+                    <Text
+                      textAlign="center"
+                      color="codex.text"
+                      p="10"
+                      fontSize="x-large"
+                    >
+                      {currentUser === username
+                        ? "You haven't created any snippets yet!"
+                        : "This user hasn't created any snippets yet!"}
+                    </Text>
+                  </Box>
+                )}
+                {/* </Box> */}
               </>
             ) : (
               <Modal isOpen={isOpen} onClose={onClose}>
