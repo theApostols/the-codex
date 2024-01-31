@@ -319,7 +319,7 @@ export default function UserSnippets() {
                   onChange={handleInputChange}
                   onKeyDown={handleKeyPress}
                   value={userSearch}
-                  placeholder="Enter username"
+                  placeholder="Search for a user..."
                   borderColor="codex.borders"
                   focusBorderColor="codex.highlights"
                   borderWidth={2}
@@ -385,15 +385,22 @@ export default function UserSnippets() {
 
                 <Divider my={1} borderColor="codex.highlights" />
 
-                <Box
+                {/* <Box
                   w="full"
                   border="1px solid"
                   borderColor="codex.borders"
                   borderRadius="lg"
                   bg="codex.darkest"
-                >
+                > */}
                   {snippets.length > 0 ? (
                     snippets.map((snippet, index) => (
+                      <Box
+                      w="full"
+                      border="1px solid"
+                      borderColor="codex.borders"
+                      borderRadius="lg"
+                      bg="codex.darkest"
+                    >
                     <Box
                       key={index}
                       pb="5"
@@ -442,6 +449,8 @@ export default function UserSnippets() {
                         </Button>
                       </HStack>
                     </Box>
+                    </Box>
+                  
                   ))
                 ) : (
                   <Text
@@ -455,7 +464,7 @@ export default function UserSnippets() {
                     : "This user hasn't created any snippets yet!"}
                   </Text>
                   )}
-                </Box>
+                {/* </Box> */}
               </>
             ) : (
               <Modal isOpen={isOpen} onClose={onClose}>

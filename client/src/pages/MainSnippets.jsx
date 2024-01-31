@@ -314,6 +314,14 @@ export default function UserSnippets() {
 
             <Divider my={1} borderColor="codex.highlights" />
 
+            {/* <Box
+              w="full"
+              border="1px solid"
+              borderColor="codex.borders"
+              borderRadius="lg"
+              bg="codex.darkest"
+            > */}
+              {snippets?.map((snippet, index) => (
             <Box
               w="full"
               border="1px solid"
@@ -321,7 +329,6 @@ export default function UserSnippets() {
               borderRadius="lg"
               bg="codex.darkest"
             >
-              {snippets?.map((snippet, index) => (
                 <Box
                   key={index}
                   pb="5"
@@ -368,8 +375,9 @@ export default function UserSnippets() {
                     </Button>
                   </HStack>
                 </Box>
+                </Box>
               ))}
-            </Box>
+            {/* </Box> */}
           </VStack>
         </Flex>
       </Box>
