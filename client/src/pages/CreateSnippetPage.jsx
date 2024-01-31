@@ -14,11 +14,14 @@ import {
   Checkbox,
   Icon,
   Heading,
+  FormControl,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { BiSave } from "react-icons/bi";
 import { CREATE_SNIPPET } from "../utils/mutations";
 import { useMutation } from "@apollo/client";
 import Auth from "../utils/auth";
+import { Form } from "react-router-dom";
 
 export default function CreateSnippetPage() {
   // State to manage an array of snippet data
@@ -89,6 +92,53 @@ export default function CreateSnippetPage() {
     "Web Dev",
     "Web Security",
   ];
+
+  // Define state variables to hold error messages if fields are left blank
+  const [snippetTitleError, setSnippetTitleError] = useState("");
+  const [snippetTextError, setSnippetTextError] = useState("");
+  const [codeError, setCodeError] = useState("");
+
+  // Set Validation Error Messages
+  const validateSnippetTitle = () => {
+    if (!snippetTitle) {
+      setSnippetTitleError("Snippet Title is required");
+    } else {
+      setSnippetTitleError("");
+    }
+  };
+
+  const validateSnippetText = () => {
+    if (!snippetText) {
+      setSnippetTextError("Snippet Description is required");
+    } else {
+      setSnippetTextError("");
+    }
+  };
+
+  const validateCode = () => {
+    const isBlank = code.some((snippet) => snippet === "");
+    if (isBlank) {
+      setCodeError("Code is required");
+    } else {
+      setCodeError("");
+    }
+  };
+
+  // set up blur event handlers, which trigger validation
+  // when input field loses focus
+  // the user will see an error message when they exit a field
+  // that has invalid input
+  const handleSnippetTitleBlur = () => {
+    validateSnippetTitle();
+  };
+
+  const handleSnippetTextBlur = () => {
+    validateSnippetText();
+  };
+
+  const handleCodeBlur = () => {
+    validateCode();
+  };
 
   //////////////////Handlers//////////////////////
 
@@ -303,41 +353,28 @@ export default function CreateSnippetPage() {
       >
         <Box w="full">
           {/* Snippet title */}
-          <Input
-            borderLeft="4px"
-            borderColor="codex.accents"
-            borderRight="0"
-            borderTop="0"
-            borderBottom="0"
-            bg="codex.darkest"
-            color="codex.text"
-            type="text"
-            placeholder="Enter Snippet Title"
-            value={snippetTitle}
-            onChange={handleSnippetTitleChange}
-          />
+          <FormControl isInvalid={!!snippetTitleError}>
+            <Input
+              borderLeft="4px"
+              borderColor="codex.accents"
+              borderRight="0"
+              borderTop="0"
+              borderBottom="0"
+              bg="codex.darkest"
+              color="codex.text"
+              type="text"
+              placeholder="Enter Snippet Title"
+              value={snippetTitle}
+              onChange={handleSnippetTitleChange}
+              onBlur={handleSnippetTitleBlur}
+            />
+            <FormErrorMessage>{snippetTitleError}</FormErrorMessage>
+          </FormControl>
         </Box>
+
         <Box w="full">
           {/* Snippet text */}
-          <Textarea
-            borderLeft="4px"
-            borderColor="codex.accents"
-            borderRight="0"
-            borderTop="0"
-            borderBottom="0"
-            bg="codex.darkest"
-            color="codex.text"
-            type="text"
-            value={snippetText}
-            onChange={(e) => handleSnippetTextChange(e)}
-            placeholder="Say something about your snippet!"
-            rows={5}
-            cols={40}
-          />
-        </Box>
-        {snippetList.map((snippet, index) => (
-          <Box key={index} w="full">
-            {/* Text area for code snippet input */}
+          <FormControl isInvalid={!!snippetTextError}>
             <Textarea
               borderLeft="4px"
               borderColor="codex.accents"
@@ -346,31 +383,56 @@ export default function CreateSnippetPage() {
               borderBottom="0"
               bg="codex.darkest"
               color="codex.text"
-              value={code[index]}
-              onChange={(e) => handleCodeChange(e.target.value, index)}
-              placeholder="Enter your code snippet here"
-              rows={10}
+              type="text"
+              value={snippetText}
+              onChange={(e) => handleSnippetTextChange(e)}
+              placeholder="Say something about your snippet!"
+              onBlur={handleSnippetTextBlur}
+              rows={5}
               cols={40}
-              mb={4}
-              onKeyDown={(e) => {
-                // Add tab functionality to code snippet input
-                if (e.key === "Tab") {
-                  e.preventDefault(); // Prevent default behavior (moving to the next field)
-                  const { selectionStart, selectionEnd } = e.target;
-                  const value = e.target.value;
-                  // Insert a tab character at the caret position
-                  e.target.value =
-                    value.substring(0, selectionStart) +
-                    "\t" +
-                    value.substring(selectionEnd);
-                  // Move the caret position after the inserted tab character
-                  e.target.setSelectionRange(
-                    selectionStart + 1,
-                    selectionStart + 1
-                  );
-                }
-              }}
             />
+            <FormErrorMessage>{snippetTextError}</FormErrorMessage>
+          </FormControl>
+        </Box>
+        {snippetList.map((snippet, index) => (
+          <Box key={index} w="full">
+            {/* Text area for code snippet input */}
+            <FormControl isInvalid={!!codeError}>
+              <Textarea
+                borderLeft="4px"
+                borderColor="codex.accents"
+                borderRight="0"
+                borderTop="0"
+                borderBottom="0"
+                bg="codex.darkest"
+                color="codex.text"
+                value={code[index]}
+                onChange={(e) => handleCodeChange(e.target.value, index)}
+                placeholder="Enter your code snippet here"
+                onBlur={handleCodeBlur}
+                rows={10}
+                cols={40}
+                onKeyDown={(e) => {
+                  // Add tab functionality to code snippet input
+                  if (e.key === "Tab") {
+                    e.preventDefault(); // Prevent default behavior (moving to the next field)
+                    const { selectionStart, selectionEnd } = e.target;
+                    const value = e.target.value;
+                    // Insert a tab character at the caret position
+                    e.target.value =
+                      value.substring(0, selectionStart) +
+                      "\t" +
+                      value.substring(selectionEnd);
+                    // Move the caret position after the inserted tab character
+                    e.target.setSelectionRange(
+                      selectionStart + 1,
+                      selectionStart + 1
+                    );
+                  }
+                }}
+              />
+              <FormErrorMessage mb={4}>{codeError}</FormErrorMessage>
+            </FormControl>
             {/* Language dropdown */}
             <LanguageSelector
               value={language[index] || "javascript"} // Default to "javascript" if language is not provided
@@ -387,7 +449,12 @@ export default function CreateSnippetPage() {
             </Button>
           </Box>
         ))}
-        <Button variant="secondary" onClick={handleAddSnippetBox} size="sm" alignSelf="flex-start">
+        <Button
+          variant="secondary"
+          onClick={handleAddSnippetBox}
+          size="sm"
+          alignSelf="flex-start"
+        >
           Add Snippet
         </Button>
         {/*MORE code blocks*/}
@@ -422,7 +489,12 @@ export default function CreateSnippetPage() {
                   </Button>
                 </Box>
               ))}
-            <Button variant="secondary" onClick={handleAddResource} size="sm" alignSelf="flex-start">
+            <Button
+              variant="secondary"
+              onClick={handleAddResource}
+              size="sm"
+              alignSelf="flex-start"
+            >
               Add Resource
             </Button>
           </VStack>
