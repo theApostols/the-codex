@@ -388,11 +388,9 @@ export default function UserSnippets() {
                     >
                       <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
                     </Button>
-
-                    <Text color="codex.highlights" fontSize="sm">
-                      Props: {snippets.overallProps}
-                    </Text>
-
+                  <Text color="codex.borders" fontSize="sm">
+                    Props: <Text as="span" color="codex.highlights">{snippets.overallProps}</Text>
+                  </Text>
                     <Button
                       variant="icon"
                       size="sm"

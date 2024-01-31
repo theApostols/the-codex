@@ -38,44 +38,59 @@ export default function SavedSnippets() {
         mx="auto"
         alignItems="start"
       >
-        <VStack
-          spacing="4"
-          w="full"
-          maxW="5xl"
-          mx="auto"
-          color="codex.accents"
-        >
+        <VStack spacing="4" w="full" maxW="5xl" mx="auto" color="codex.accents">
           <Heading color="codex.text" as="h1" m="4" textAlign="center">
             Saved Snippets
           </Heading>
 
-          <Box
+          {/* <Box
             w="full"
             border="1px solid"
             borderColor="codex.borders"
             borderRadius="lg"
             bg="codex.darkest"
-          >
-            <Divider mb="4" borderColor="codex.borders" />
+          > */}
+          <Divider mb="4" borderColor="codex.borders" />
 
-            {savedSnippets.length > 0 ? (
-              savedSnippets.map((snippet) => (
+          {savedSnippets.length > 0 ? (
+            savedSnippets.map((snippet) => (
               <Box
-                key={snippet._id}
-                pb="5"
                 w="full"
-                borderBottom="1px solid"
+                border="1px solid"
                 borderColor="codex.borders"
+                borderRadius="lg"
+                bg="codex.darkest"
               >
-                <MainSnippetPreview key={snippet._id} snippet={snippet} />
+                <Box
+                  key={snippet._id}
+                  pb="5"
+                  w="full"
+                  borderBottom="1px solid"
+                  borderColor="codex.borders"
+                >
+                  <MainSnippetPreview key={snippet._id} snippet={snippet} />
+                </Box>
               </Box>
             ))
           ) : (
-            <Text textAlign="center" color="codex.text" p="4" fontSize="x-large">
-              You haven't saved any snippets yet!
-            </Text>
-            )}
-          </Box>
+            <Box
+              w="full"
+              border="1px solid"
+              borderColor="codex.borders"
+              borderRadius="lg"
+              bg="codex.darkest"
+            >
+              <Text
+                textAlign="center"
+                color="codex.text"
+                p="10"
+                fontSize="x-large"
+              >
+                You haven't saved any snippets yet!
+              </Text>
+            </Box>
+          )}
+          {/* </Box> */}
         </VStack>
       </Flex>
     </Box>
