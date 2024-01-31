@@ -263,9 +263,11 @@ function FeaturedSnippets() {
 
 function HowItWorks() {
   const navigate = useNavigate();
+  const isLoggedIn = Auth.loggedIn();
 
   const handleSignUpClick = () => {
-    // Navigate to the sign-up page
+    // Navigate to the sign-up page/create-snippet page
+    isLoggedIn ? navigate("/createsnippet") :
     navigate("/signup");
   };
   
