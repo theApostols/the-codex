@@ -89,7 +89,8 @@ const IndividualSnippetPreview = ({ snippet }) => {
           Created by{" "}
           <Box
             as="span"
-            color="codex.accents300"
+            // color="codex.accents300"
+            _hover={{ color: "codex.accents200" }}
             textDecoration="underline"
             cursor="pointer"
             onClick={handleUsernameClick}
