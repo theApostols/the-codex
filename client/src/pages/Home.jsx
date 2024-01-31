@@ -26,17 +26,24 @@ import {
 import { wrap } from "@motionone/utils";
 import { heroVariants, aboutVariants, snippetsVariants, howItWorksVariants, transition } from "../utils/animations";
 import '../index.css'
+import Auth from "../utils/auth";
 
 
 const MotionBox = motion(Box);
 
 function HeroSection() {
   const navigate = useNavigate();
+  const isLoggedIn = Auth.loggedIn();
 
-  const handleSignUpClick = () => {
-    // Navigate to the sign-up page
-    navigate("/signup");
+  const handleGetStartedClick = () => {
+    // Navigate to main page if logged in, otherwise to the sign-up page
+    isLoggedIn ? navigate("/main-snippets") : navigate("/signup");
   };
+
+  // const handleSignUpClick = () => {
+  //   // Navigate to the sign-up page
+  //   navigate("/signup");
+  // };
 
   return (
     <MotionBox
@@ -54,7 +61,7 @@ function HeroSection() {
       <Text color='codex.text200' fontSize="xl" mb={5}>
         Join a community of passionate developers
       </Text>
-      <Button size="lg" variant="secondary" mt={4} onClick={handleSignUpClick}>
+      <Button size="lg" variant="secondary" mt={4} onClick={handleGetStartedClick}>
         Get Started
       </Button>
     </Box>
