@@ -79,9 +79,17 @@ export default function SavedSnippets() {
               </Box>
             ))
           ) : (
-            <Text textAlign="center" color="codex.text" p="4" fontSize="x-large">
+            <Box
+            w="full"
+            border="1px solid"
+            borderColor="codex.borders"
+            borderRadius="lg"
+            bg="codex.darkest"
+          > 
+            <Text textAlign="center" color="codex.text" p="10" fontSize="x-large">
               You haven't saved any snippets yet!
             </Text>
+            </Box>
             
             )}
           {/* </Box> */}
