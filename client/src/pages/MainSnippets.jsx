@@ -267,7 +267,6 @@ export default function UserSnippets() {
                 <Link to="/signup">Signup</Link> for exclusive features.
               </Text>
             )}
-
             {/* Toggle Tags Section */}
             <Box w="full">
               <Button
@@ -296,15 +295,19 @@ export default function UserSnippets() {
                   >
                     {availableTags.map((tag, index) => (
                       <Checkbox
+                        key={index}
                         colorScheme="purple"
                         size="md"
                         color="codex.accents"
-                        key={index}
                         isChecked={selectedTags.includes(tag)}
                         onChange={() => handleTagChange(tag)}
-                        marginRight={{ base: 1, md: 2 }} // adds margin between tags
+                        marginRight={{ base: 1, md: 2 }}
+                        _hover={{
+                          fontWeight: "bold", // Make the text bold on hover
+                          cursor: "pointer",
+                        }}
                       >
-                        {tag}
+                        <Text>{tag}</Text>
                       </Checkbox>
                     ))}
                   </Grid>

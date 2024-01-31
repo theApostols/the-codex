@@ -3,11 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content="The CodeX" />
+    <meta
+      property="og:description"
+      content="Share your favorite code snippets"
+    />
+    <meta property="og:image" content="URL to Your Image" />
+    <meta property="og:url" id="ogUrl" content="" />
     <link rel="icon" href="./src/assets/The-CodeX-icon.png" />
     <title>The CodeX</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script
+      async
+      src="https://platform.twitter.com/widgets.js"
+      charset="utf-8"
+    ></script>
+    <script>
+      // Set og:url dynamically based on the current page's URL
+      document
+        .getElementById("ogUrl")
+        .setAttribute("content", window.location.href);
+    </script>
   </body>
 </html>
