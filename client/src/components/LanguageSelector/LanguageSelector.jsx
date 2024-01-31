@@ -12,7 +12,7 @@ const LanguageSelector = ({
     <>
       <FormLabel color="codex.accents">Choose Language:</FormLabel>
       <Select
-        bg="codex.highlights"
+        bg="codex.borders"
         textColor="codex.text"
         // color="black"
         width="30%"
@@ -21,7 +21,7 @@ const LanguageSelector = ({
         _focus={{
           border: "2px solid",
           borderColor: "codex.accents",
-          bg: "codex.borders",
+          bg: "codex.highlights",
           color: "black",
         }}
       >
