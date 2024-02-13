@@ -95,12 +95,18 @@ const buttonStyles = {
       icon: {
         background: 'transparent',
         border: 'none',
-        color: 'codex.borders',
+        // color: 'codex.borders',
+        color: 'codex.highlights',
+        // _hover: {
+        //   color: 'codex.highlights',
+        // },
+        // _active: {
+        //   color: 'codex.highlights',
         _hover: {
-          color: 'codex.highlights',
+          color: 'codex.accents200',
         },
         _active: {
-          color: 'codex.highlights',
+          color: 'codex.accents200',
         },
       },
     },

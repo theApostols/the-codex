@@ -33,6 +33,8 @@ import {
   MdOutlineEditNote,
   MdOutlineDeleteForever,
 } from "react-icons/md";
+import { FaSquareXTwitter } from "react-icons/fa6";
+
 import Auth from "../utils/auth";
 import {
   CREATE_COMMENT,
@@ -463,7 +465,18 @@ export default function UserSnippets() {
                           ? "Unsave Snippet"
                           : "Save Snippet"}
                       </Button>
-                      <Button onClick={shareOnTwitter}>Share on Twitter</Button>
+                      <Button 
+                        variant="icon"
+                        size="sm"
+                        onClick={shareOnTwitter}>
+                        <Icon
+                          as={FaSquareXTwitter}
+                          w={6}
+                          h={6}
+                          mr={isResponsive ? "0" : "2"}
+                        />
+                        {isResponsive ? "" : "Share on Twitter"}
+                      </Button>
                       {/* conditionally render delete button */}
                       {currentUser && snippetUser === currentUser && (
                         <Button
