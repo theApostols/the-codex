@@ -458,6 +458,7 @@ export default function CreateSnippetPage() {
               resources.map((resource, index) => (
                 <Box key={index} w="full">
                   <Input
+                    color="codex.text"
                     bg="codex.darkest"
                     type="text"
                     placeholder="Resource Title"
@@ -465,6 +466,7 @@ export default function CreateSnippetPage() {
                     onChange={(e) => handleResourceTitleChange(e, index)}
                   />
                   <Input
+                    color="codex.text"
                     bg="codex.darkest"
                     type="text"
                     placeholder="Resource Link"
@@ -510,7 +512,7 @@ export default function CreateSnippetPage() {
                 <Checkbox
                   colorScheme="purple"
                   size="md"
-                  color="codex.accents"
+                  color="codex.accents300"
                   key={index}
                   isChecked={selectedTags.includes(tag)}
                   onChange={() => handleTagChange(tag)}
