@@ -37,12 +37,22 @@ const lightColors = {
 // Button styles
 const buttonStyles = {
   Button: {
+    baseStyle: {
+      // Common base styles for all button variants
+      borderRadius: 'md',
+      transition: 'all 0.3s ease-in-out',
+      _hover: {
+        transform: 'scale(1.05)',
+      },
+    },
     variants: {
       primary: {
         bg: 'codex.main',
         color: 'codex.text',
         _hover: {
           bg: 'codex.dark',
+          boxShadow: 'lg',
+          transform: 'scale(1.05)',
         },
       },
       secondary: {
@@ -52,6 +62,7 @@ const buttonStyles = {
         _hover: {
           // bg: 'codex.borders',
           bg: 'codex.highlights',
+          boxShadow: 'md',
         },
       },
       ghost: {
@@ -70,6 +81,7 @@ const buttonStyles = {
         _hover: {
           bg: 'codex.dark',
           color: 'codex.text',
+          boxShadow: 'md',
         },
       },
       disabled: {
@@ -101,9 +113,12 @@ const buttonStyles = {
         //   color: 'codex.highlights',
         // },
         // _active: {
-        //   color: 'codex.highlights',
+        //   color:'codex.highlights',
         _hover: {
+          borderRadius: 'full',
           color: 'codex.accents200',
+          transform: 'scale(1.1)',
+          boxShadow: '0 0 10px 0 #8278CC',
         },
         _active: {
           color: 'codex.accents200',

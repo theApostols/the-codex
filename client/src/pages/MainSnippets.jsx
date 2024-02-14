@@ -344,6 +344,7 @@ export default function UserSnippets() {
                     <Button
                       variant="icon"
                       size="sm"
+                      ml="2"
                       onClick={() => {
                         if (snippet) {
                           handleAddDrops(snippet._id);
@@ -355,7 +356,7 @@ export default function UserSnippets() {
                           : "codex.borders"
                       }
                     >
-                      <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
+                      <Icon as={FaAngleDoubleDown} w={8} h={8}/>
                     </Button>
                     <Text color="codex.highlights" fontSize="m">
                       <Text as="span" fontWeight="bold">Props: </Text><Text as="span" color="codex.accents"> {snippet.overallProps} </Text>
@@ -374,7 +375,7 @@ export default function UserSnippets() {
                           : "codex.borders"
                       }
                     >
-                      <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
+                      <Icon as={FaAngleDoubleUp} w={8} h={8} />
                     </Button>
                   </HStack>
                 </Box>

@@ -390,7 +390,7 @@ export default function UserSnippets() {
                           : "codex.borders"
                       }
                     >
-                      <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
+                      <Icon as={FaAngleDoubleDown} w={8} h={8} />
                     </Button>
                   <Text color="codex.highlights" fontSize="m">
                     <Text as="span" fontWeight="bold">Props: </Text><Text as="span" color="codex.accents">{snippets.overallProps}</Text>
@@ -548,7 +548,7 @@ export default function UserSnippets() {
                   <Heading fontSize="m">Tags</Heading>
                   <HStack>
                     {snippets.tags.map((tag, index) => (
-                      <Text key={index} color="codex.text" fontSize="sm">
+                      <Text key={index} color="codex.accents300" fontSize="sm">
                         {tag}
                       </Text>
                     ))}
