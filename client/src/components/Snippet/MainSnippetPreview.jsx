@@ -48,7 +48,7 @@ const SnippetPreview = ({ snippet }) => {
               boxShadow="0 4px 6px rgba(0, 0, 0, 0.1)"
               bg="rgba(45, 55, 72, 0.8)"
               backdropFilter="saturate(100%) blur(10px)"
-              color="codex.text"
+              color="white"
             >
               <Text fontSize="xl" fontWeight="bold">
                 {snippetData.snippetTitle}
