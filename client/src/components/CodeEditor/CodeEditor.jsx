@@ -1,8 +1,9 @@
-import React from 'react';
+import { React, useContext } from 'react';
+import { ThemeContext } from '../../main';
 // import react-syntax-highlighter styles and languages
 import { Light as SyntaxHighlighter } from 'react-syntax-highlighter';
-// import { docco } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import { agate } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+
+import { agate, atelierCaveLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import {
   apache,
   bash,
@@ -75,18 +76,23 @@ SyntaxHighlighter.registerLanguage('zephir', zephir);
 import { Box } from '@chakra-ui/react';
 
 const CodeEditor = ({ code,language }) => {
+  const { isDarkMode } = useContext(ThemeContext);
+
+  const selectedStyle = isDarkMode ? agate : atelierCaveLight;
+  
+  // determine language based on user selection
   const highlightedLanguage = language === 'custom' ? 'javascript' : language;
 
 
   return (
     <Box p={4} borderRadius="md" borderWidth="1px" borderColor="codex.highlights" bg="codex.darkest"overflow="auto">
       <SyntaxHighlighter
-        lineProps={{style: {wordBreak: 'break-word', whiteSpace: 'pre-wrap',}}}
+        lineProps={{style: {wordBreak: 'break-word', whiteSpace: 'pre-wrap'}}}
         wrapLongLines={true}
         //want to add line numbers but rendering weird when wrapping
-        //showLineNumbers={true}
+        // showLineNumbers={true}
         language={highlightedLanguage} 
-        style={ agate }>
+        style={ selectedStyle }>
           {code}
       </SyntaxHighlighter>
     </Box>

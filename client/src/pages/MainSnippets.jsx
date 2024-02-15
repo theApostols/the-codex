@@ -267,7 +267,6 @@ export default function UserSnippets() {
                 <Link to="/signup">Signup</Link> for exclusive features.
               </Text>
             )}
-
             {/* Toggle Tags Section */}
             <Box w="full">
               <Button
@@ -296,15 +295,19 @@ export default function UserSnippets() {
                   >
                     {availableTags.map((tag, index) => (
                       <Checkbox
+                        key={index}
                         colorScheme="purple"
                         size="md"
                         color="codex.accents"
-                        key={index}
                         isChecked={selectedTags.includes(tag)}
                         onChange={() => handleTagChange(tag)}
-                        marginRight={{ base: 1, md: 2 }} // adds margin between tags
+                        marginRight={{ base: 1, md: 2 }}
+                        _hover={{
+                          fontWeight: "bold", // Make the text bold on hover
+                          cursor: "pointer",
+                        }}
                       >
-                        {tag}
+                        <Text>{tag}</Text>
                       </Checkbox>
                     ))}
                   </Grid>
@@ -314,6 +317,14 @@ export default function UserSnippets() {
 
             <Divider my={1} borderColor="codex.highlights" />
 
+            {/* <Box
+              w="full"
+              border="1px solid"
+              borderColor="codex.borders"
+              borderRadius="lg"
+              bg="codex.darkest"
+            > */}
+              {snippets?.map((snippet, index) => (
             <Box
               w="full"
               border="1px solid"
@@ -321,7 +332,6 @@ export default function UserSnippets() {
               borderRadius="lg"
               bg="codex.darkest"
             >
-              {snippets?.map((snippet, index) => (
                 <Box
                   key={index}
                   pb="5"
@@ -334,6 +344,7 @@ export default function UserSnippets() {
                     <Button
                       variant="icon"
                       size="sm"
+                      ml="2"
                       onClick={() => {
                         if (snippet) {
                           handleAddDrops(snippet._id);
@@ -345,10 +356,10 @@ export default function UserSnippets() {
                           : "codex.borders"
                       }
                     >
-                      <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
+                      <Icon as={FaAngleDoubleDown} w={8} h={8}/>
                     </Button>
-                    <Text color="codex.highlights" fontSize="sm">
-                      Props: {snippet.overallProps}
+                    <Text color="codex.highlights" fontSize="m">
+                      <Text as="span" fontWeight="bold">Props: </Text><Text as="span" color="codex.accents"> {snippet.overallProps} </Text>
                     </Text>
                     <Button
                       variant="icon"
@@ -364,12 +375,13 @@ export default function UserSnippets() {
                           : "codex.borders"
                       }
                     >
-                      <Icon as={FaAngleDoubleUp} w={8} h={8} mr="2" />
+                      <Icon as={FaAngleDoubleUp} w={8} h={8} />
                     </Button>
                   </HStack>
                 </Box>
+                </Box>
               ))}
-            </Box>
+            {/* </Box> */}
           </VStack>
         </Flex>
       </Box>

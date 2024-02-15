@@ -22,8 +22,10 @@ const lightColors = {
     darkest: '#f0f0f3',
     dark: '#dadada',
     main: '#ffffff',
-    borders: '#989898',
+    borders: '#90899E',
+    // borders: '#989898',
     highlights: '#b5aedd',
+    // highlights: '#EAE9F8',
     accents: '#413C66',
     text: '#1d1c1c',
     text200: '#313d44',
@@ -35,19 +37,32 @@ const lightColors = {
 // Button styles
 const buttonStyles = {
   Button: {
+    baseStyle: {
+      // Common base styles for all button variants
+      borderRadius: 'md',
+      transition: 'all 0.3s ease-in-out',
+      _hover: {
+        transform: 'scale(1.05)',
+      },
+    },
     variants: {
       primary: {
         bg: 'codex.main',
         color: 'codex.text',
         _hover: {
           bg: 'codex.dark',
+          boxShadow: 'lg',
+          transform: 'scale(1.05)',
         },
       },
       secondary: {
-        bg: 'codex.highlights',
+        // bg: 'codex.highlights',
+        bg: 'codex.borders',
         color: 'codex.text',
         _hover: {
-          bg: 'codex.borders',
+          // bg: 'codex.borders',
+          bg: 'codex.highlights',
+          boxShadow: 'md',
         },
       },
       ghost: {
@@ -66,6 +81,7 @@ const buttonStyles = {
         _hover: {
           bg: 'codex.dark',
           color: 'codex.text',
+          boxShadow: 'md',
         },
       },
       disabled: {
@@ -91,12 +107,21 @@ const buttonStyles = {
       icon: {
         background: 'transparent',
         border: 'none',
-        color: 'codex.borders',
+        // color: 'codex.borders',
+        color: 'codex.highlights',
+        // _hover: {
+        //   color: 'codex.highlights',
+        // },
+        // _active: {
+        //   color:'codex.highlights',
         _hover: {
-          color: 'codex.highlights',
+          borderRadius: 'full',
+          color: 'codex.accents200',
+          transform: 'scale(1.1)',
+          boxShadow: '0 0 10px 0 #8278CC',
         },
         _active: {
-          color: 'codex.highlights',
+          color: 'codex.accents200',
         },
       },
     },
