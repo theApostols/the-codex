@@ -316,14 +316,14 @@ export default function UserSnippets() {
   };
 
   function shareOnTwitter() {
-    const tweetText = encodeURIComponent("Your tweet text");
+    const tweetText = encodeURIComponent("");
     const tweetUrl = encodeURIComponent(window.location.href);
 
     window.open(
       `https://twitter.com/intent/tweet?text=${tweetText}%0A%0A${tweetUrl}`,
       "_blank"
     );
-}
+  }
 
   return (
     <>
@@ -392,9 +392,14 @@ export default function UserSnippets() {
                     >
                       <Icon as={FaAngleDoubleDown} w={8} h={8} />
                     </Button>
-                  <Text color="codex.highlights" fontSize="m">
-                    <Text as="span" fontWeight="bold">Props: </Text><Text as="span" color="codex.accents">{snippets.overallProps}</Text>
-                  </Text>
+                    <Text color="codex.highlights" fontSize="m">
+                      <Text as="span" fontWeight="bold">
+                        Props:{" "}
+                      </Text>
+                      <Text as="span" color="codex.accents">
+                        {snippets.overallProps}
+                      </Text>
+                    </Text>
                     <Button
                       variant="icon"
                       size="sm"
@@ -467,10 +472,7 @@ export default function UserSnippets() {
                           ? "Unsave Snippet"
                           : "Save Snippet"}
                       </Button>
-                      <Button 
-                        variant="icon"
-                        size="sm"
-                        onClick={shareOnTwitter}>
+                      <Button variant="icon" size="sm" onClick={shareOnTwitter}>
                         <Icon
                           as={FaSquareXTwitter}
                           w={6}
