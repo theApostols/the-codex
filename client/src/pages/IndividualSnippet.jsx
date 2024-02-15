@@ -33,6 +33,8 @@ import {
   MdOutlineEditNote,
   MdOutlineDeleteForever,
 } from "react-icons/md";
+import { FaSquareXTwitter } from "react-icons/fa6";
+
 import Auth from "../utils/auth";
 import {
   CREATE_COMMENT,
@@ -44,6 +46,8 @@ import {
   UNSAVE_SNIPPET,
   DELETE_SNIPPET,
 } from "../utils/mutations";
+import { BiBold } from "react-icons/bi";
+import { m } from "framer-motion";
 
 export default function UserSnippets() {
   const paragraphStyle = {
@@ -386,10 +390,10 @@ export default function UserSnippets() {
                           : "codex.borders"
                       }
                     >
-                      <Icon as={FaAngleDoubleDown} w={8} h={8} ml="2" />
+                      <Icon as={FaAngleDoubleDown} w={8} h={8} />
                     </Button>
-                  <Text color="codex.borders" fontSize="sm">
-                    Props: <Text as="span" color="codex.highlights">{snippets.overallProps}</Text>
+                  <Text color="codex.highlights" fontSize="m">
+                    <Text as="span" fontWeight="bold">Props: </Text><Text as="span" color="codex.accents">{snippets.overallProps}</Text>
                   </Text>
                     <Button
                       variant="icon"
@@ -463,7 +467,18 @@ export default function UserSnippets() {
                           ? "Unsave Snippet"
                           : "Save Snippet"}
                       </Button>
-                      <Button onClick={shareOnTwitter}>Share on Twitter</Button>
+                      <Button 
+                        variant="icon"
+                        size="sm"
+                        onClick={shareOnTwitter}>
+                        <Icon
+                          as={FaSquareXTwitter}
+                          w={6}
+                          h={6}
+                          mr={isResponsive ? "0" : "2"}
+                        />
+                        {isResponsive ? "" : "Share on Twitter"}
+                      </Button>
                       {/* conditionally render delete button */}
                       {currentUser && snippetUser === currentUser && (
                         <Button
@@ -533,7 +548,7 @@ export default function UserSnippets() {
                   <Heading fontSize="m">Tags</Heading>
                   <HStack>
                     {snippets.tags.map((tag, index) => (
-                      <Text key={index} color="codex.text" fontSize="sm">
+                      <Text key={index} color="codex.accents300" fontSize="sm">
                         {tag}
                       </Text>
                     ))}
